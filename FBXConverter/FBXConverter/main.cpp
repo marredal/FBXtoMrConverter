@@ -3,5 +3,10 @@
 
 int main()
 {
+
+	FbxManager* manager = FbxManager::Create();
+
+	manager->Destroy();
+
 	return 0;
 }
