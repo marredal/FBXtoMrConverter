@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Export">
-      <UniqueIdentifier>{1518a0a4-8f37-452b-b567-f05583c8bc3e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Import">
-      <UniqueIdentifier>{fd6b0328-3edf-4756-9ad8-c0eceeed4bbc}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
