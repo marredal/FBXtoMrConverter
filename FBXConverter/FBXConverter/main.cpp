@@ -111,6 +111,9 @@ void PrintNode(FbxNode* node)
 
 }
 
+
+// Structs
+
 struct Keyframe
 {
 	FbxLongLong mFrameNum;
@@ -158,6 +161,14 @@ struct Skeleton
 // Skeleton
 Skeleton mSkeleton;
 
+FbxAMatrix GeometryTransformation(FbxNode* node)
+{
+	FbxVector4 translation = node->GetGeometricTranslation(FbxNode::eSourcePivot);
+	FbxVector4 rotation = node->GetGeometricRotation(FbxNode::eSourcePivot);
+	FbxVector4 scaling = node->GetGeometricScaling(FbxNode::eSourcePivot);
+
+	return FbxAMatrix(translation, rotation, scaling);
+}
 
 void SkeletonHierachyRecursive(FbxNode* node, int index, int parentIndex)
 {
@@ -185,9 +196,59 @@ void SkeletonHierachy(FbxNode* node)
 	}
 }
 
+uint32_t FindJointIndex(const std::string& name)
+{
+	for (int i = 0; i < mSkeleton.mJoints.size(); i++)
+	{
+		if (mSkeleton.mJoints[i].mName == name)
+		{
+			return i;
+		}
+	}
+}
+
 void SkeletonJointsAndAnimations(FbxNode* node)
 {
 	FbxMesh* currentMesh = node->GetMesh();
+
+	uint32_t numDeformer = currentMesh->GetDeformerCount();
+
+	FbxAMatrix identityMatrix = GeometryTransformation(node);
+
+	for (int i = 0; i < numDeformer; i++)
+	{
+		FbxSkin* currentSkin = reinterpret_cast<FbxSkin*>(currentMesh->GetDeformer(i, FbxDeformer::eSkin));
+
+		if (!currentSkin)
+		{
+			std::cout << "NO SKIN!" << std::endl;
+		}
+		else
+		{
+			uint32_t numClusters = currentSkin->GetClusterCount();
+			for (int j = 0; j < numClusters; j++)
+			{
+				FbxCluster* currentCluster = currentSkin->GetCluster(j);
+
+				// This is where we access the REAL joint, via GetLink().
+				std::string currentJointName = currentCluster->GetLink()->GetName();
+				uint32_t currentJointIndex = FindJointIndex(currentJointName);
+
+				// Matrices
+				FbxAMatrix transformMat;
+				FbxAMatrix transformLinkMat;
+				FbxAMatrix globalBindposeInverseMat;
+
+				currentCluster->GetTransformMatrix(transformMat);
+				currentCluster->GetTransformLinkMatrix(transformLinkMat);
+				globalBindposeInverseMat = transformLinkMat.Inverse() * transformMat * identityMatrix;
+
+
+			}
+
+		}
+
+	}
 
 }
 
