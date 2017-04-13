@@ -157,6 +157,17 @@ struct Skeleton
 	std::vector<Joint> mJoints;
 };
 
+struct BlendingIndexWeightPair
+{
+	uint32_t mBlendingIndex;
+	double mBlendingWeight;
+
+	BlendingIndexWeightPair() :
+		mBlendingIndex(0),
+		mBlendingWeight(0)
+	{}
+};
+
 
 // Skeleton
 Skeleton mSkeleton;
@@ -243,6 +254,19 @@ void SkeletonJointsAndAnimations(FbxNode* node)
 				currentCluster->GetTransformLinkMatrix(transformLinkMat);
 				globalBindposeInverseMat = transformLinkMat.Inverse() * transformMat * identityMatrix;
 
+				// Update skeleton
+				mSkeleton.mJoints[currentJointIndex].mGlobalBindposeInverse = globalBindposeInverseMat;
+				mSkeleton.mJoints[currentJointIndex].mNode = currentCluster->GetLink();
+
+				uint32_t numIndices = currentCluster->GetControlPointIndicesCount();
+				for (int g = 0; g < numIndices; g++)
+				{
+					BlendingIndexWeightPair currentBlendingIndexWeightPair;
+					currentBlendingIndexWeightPair.mBlendingIndex = currentJointIndex;
+					currentBlendingIndexWeightPair.mBlendingWeight = currentCluster->GetControlPointWeights()[i];
+					
+					//TODO Add mControlPoints, check FBXExporter.h from gamedev
+				}
 
 			}
 
