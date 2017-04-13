@@ -1,8 +1,13 @@
 #include <fbxsdk.h>
 #pragma comment(lib, "libfbxsdk.lib")
 
-#include <iostream>
 
+#include <iostream>
+#include <vector>
+
+
+
+// Function
 FbxString GetNodeAttributeTypeName(FbxNodeAttribute::EType nodeType)
 {
 	switch (nodeType)
@@ -48,7 +53,7 @@ FbxString GetNodeAttributeTypeName(FbxNodeAttribute::EType nodeType)
 	case FbxNodeAttribute::eSubDiv:
 		return "subdiv";
 	default:
-		return "Don't know";
+		return "Don't know type";
 	}
 }
 
@@ -58,7 +63,7 @@ void PrintNodeAttribute(FbxNodeAttribute* nodeAttribute)
 	FbxString nodeAttributeName = nodeAttribute->GetName();
 
 	std::cout << "nodeTypeName: " << nodeTypeName.Buffer() << std::endl;
-	std::cout << "nodeAttributeName: " << nodeAttributeName.Buffer() << std::endl;
+	std::cout << "nodeAttributeName: " << nodeAttributeName.Buffer() << std::endl << std::endl;
 
 	return;
 }
@@ -72,41 +77,133 @@ void PrintNode(FbxNode* node)
 	FbxDouble3 nodeScaling = node->LclScaling.Get();
 
 	std::cout << "Node name: " << nodeName << std::endl;
-	std::cout << "Translation: (" << nodeTranslation[0] << ", " << nodeTranslation[1] << ", " << nodeTranslation[2]  << ")" << std::endl;
+	std::cout << "Translation: (" << nodeTranslation[0] << ", " << nodeTranslation[1] << ", " << nodeTranslation[2] << ")" << std::endl;
 	std::cout << "Rotation: (" << nodeRotation[0] << ", " << nodeRotation[1] << ", " << nodeRotation[2] << ")" << std::endl;
 	std::cout << "Scaling: (" << nodeScaling[0] << ", " << nodeScaling[1] << ", " << nodeScaling[2] << ")" << std::endl;
 
-
+	FbxNodeAttribute::EType nodeType;
+	nodeType = node->GetNodeAttribute()->GetAttributeType();
+	int counter = 0;
 	// Print attributes
 	for (int i = 0; i < node->GetNodeAttributeCount(); i++)
 	{
-		PrintNodeAttribute(node->GetNodeAttributeByIndex(i));
+		if (GetNodeAttributeTypeName(node->GetNodeAttributeByIndex(i)->GetAttributeType()) == "skeleton")
+		{
+			std::cout << "Tjena" << counter << std::endl;
+			counter++;
+			//PrintNodeAttribute(node->GetNodeAttributeByIndex(i));
+		}
 	}
 
-	// Print children
+	// Print material
+	//for (int i = 0; i < node->GetMaterialCount(); i++)
+	//{
+	//	FbxSurfaceMaterial* material = node->GetMaterial(i);
+	//	std::cout << "Material: " << material->GetName() << std::endl;
+	//}
+
+
+	// Recursive
 	for (int i = 0; i < node->GetChildCount(); i++)
 	{
 		PrintNode(node->GetChild(i));
 	}
 
-	std::cout << "<node>" << std::endl;
+}
+
+struct Keyframe
+{
+	FbxLongLong mFrameNum;
+	FbxAMatrix mGlobalTransform;
+	Keyframe* mNext;
+
+	Keyframe() :
+		mNext(nullptr)
+	{}
+};
+
+struct Joint
+{
+	std::string mName;
+	int mParentIndex;
+	FbxAMatrix mGlobalBindposeInverse;
+	Keyframe* mAnimation;
+	FbxNode* mNode;
+
+	Joint() :
+		mNode(nullptr),
+		mAnimation(nullptr)
+	{
+		mGlobalBindposeInverse.SetIdentity();
+		mParentIndex = -1;
+	}
+
+	~Joint()
+	{
+		while (mAnimation)
+		{
+			Keyframe* temp = mAnimation->mNext;
+			delete mAnimation;
+			mAnimation = temp;
+		}
+	}
+};
+
+struct Skeleton
+{
+	std::vector<Joint> mJoints;
+};
+
+
+// Skeleton
+Skeleton mSkeleton;
+
+
+void SkeletonHierachyRecursive(FbxNode* node, int index, int parentIndex)
+{
+	if (node->GetNodeAttribute() && node->GetNodeAttribute() && node->GetNodeAttribute()->GetAttributeType() == FbxNodeAttribute::eSkeleton)
+	{
+		std::cout << "SKELETON: " << node->GetName() << std::endl;
+		Joint currentJoint;
+		currentJoint.mParentIndex = parentIndex;
+		currentJoint.mName = node->GetName();
+		mSkeleton.mJoints.push_back(currentJoint);
+	}
+
+	for (int i = 0; i < node->GetChildCount(); i++)
+	{
+		SkeletonHierachyRecursive(node->GetChild(i), mSkeleton.mJoints.size(), index);
+	}
+}
+
+void SkeletonHierachy(FbxNode* node)
+{
+	for (int i = 0; i < node->GetChildCount(); i++)
+	{
+		FbxNode* currentNode = node->GetChild(i);
+		SkeletonHierachyRecursive(currentNode, 0, -1);
+	}
+}
+
+void SkeletonJointsAndAnimations(FbxNode* node)
+{
+	FbxMesh* currentMesh = node->GetMesh();
 
 }
 
 int main(int argc, char** argv)
 {
-
 	FbxManager* manager = FbxManager::Create();
 
 	FbxIOSettings* ioSettings = FbxIOSettings::Create(manager, IOSROOT);
-	ioSettings->SetBoolProp(IMP_FBX_MATERIAL, true);
-	ioSettings->SetBoolProp(IMP_FBX_TEXTURE, false);
-	ioSettings->SetBoolProp(IMP_FBX_ANIMATION, false);
+	//ioSettings->SetBoolProp(IMP_FBX_MATERIAL, true);
+	//ioSettings->SetBoolProp(IMP_FBX_TEXTURE, true);
+	//ioSettings->SetBoolProp(IMP_FBX_ANIMATION, false);
 
 	manager->SetIOSettings(ioSettings);
 
 	FbxImporter* importer = FbxImporter::Create(manager, "");
-	bool importInit = importer->Initialize(".\\Assets\\hej2.fbx", -1, manager->GetIOSettings());
+	bool importInit = importer->Initialize(".\\Assets\\hej5.fbx", -1, manager->GetIOSettings());
 	if (!importInit)
 	{
 		std::cout << "Error importing file!" << std::endl;
@@ -118,20 +215,19 @@ int main(int argc, char** argv)
 	importer->Import(scene);
 
 	//Importer is done
-	importer->Destroy();
-
+	//importer->Destroy();
 	FbxNode* rootNode = scene->GetRootNode();
 
-	for (int i = 0; i < rootNode->GetChildCount(); i++)
-	{
-		PrintNode(rootNode->GetChild(i));
-	}
-
+	SkeletonHierachy(rootNode);
 
 	getchar();
 	// Destroy at bottom
 	manager->Destroy();
 
-
 	return 0;
 }
+
+
+
+
+
