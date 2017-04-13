@@ -2,8 +2,10 @@
 #pragma comment(lib, "libfbxsdk.lib")
 
 
+#include <math.h>
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 
 
 
@@ -168,9 +170,29 @@ struct BlendingIndexWeightPair
 	{}
 };
 
+struct Vec3
+{
+	float x;
+	float y;
+	float z;
+};
+
+struct CtrlPoint
+{
+	Vec3 mPosition;
+	std::vector<BlendingIndexWeightPair> mBlendingInfo;
+
+	CtrlPoint()
+	{
+		mBlendingInfo.reserve(4);
+	}
+};
+
 
 // Skeleton
 Skeleton mSkeleton;
+
+std::unordered_map<uint32_t, CtrlPoint*>mControlPoints;
 
 FbxAMatrix GeometryTransformation(FbxNode* node)
 {
@@ -264,9 +286,10 @@ void SkeletonJointsAndAnimations(FbxNode* node)
 					BlendingIndexWeightPair currentBlendingIndexWeightPair;
 					currentBlendingIndexWeightPair.mBlendingIndex = currentJointIndex;
 					currentBlendingIndexWeightPair.mBlendingWeight = currentCluster->GetControlPointWeights()[i];
-					
-					//TODO Add mControlPoints, check FBXExporter.h from gamedev
+					mControlPoints[currentCluster->GetControlPointIndices()[i]]->mBlendingInfo.push_back(currentBlendingIndexWeightPair);
 				}
+
+				FbxAnimStack* currentAnimStack; //TODO ADD INIT FOR FBX
 
 			}
 
