@@ -16,13 +16,24 @@
     <Filter Include="Source Files\Export">
       <UniqueIdentifier>{e3e4e37b-e071-491b-a385-d79975978d4f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Process">
-      <UniqueIdentifier>{3ea90e55-c7f9-421c-a483-7070f8dbcfe3}</UniqueIdentifier>
+    <Filter Include="Source Files\Struct">
+      <UniqueIdentifier>{aad8d1a4-ed59-421c-8721-1e0595d341f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Exporter.cpp">
+      <Filter>Source Files\Export</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Exporter.h">
+      <Filter>Source Files\Export</Filter>
+    </ClInclude>
+    <ClInclude Include="ExporterStruct.h">
+      <Filter>Source Files\Struct</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
