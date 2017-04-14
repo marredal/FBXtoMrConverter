@@ -1,5 +1,5 @@
+#define FBXSDK_SHARED
 #include <fbxsdk.h>
-#pragma comment(lib, "libfbxsdk.lib")
 
 
 #include <math.h>
@@ -8,6 +8,36 @@
 #include <unordered_map>
 
 
+// Init
+
+FbxManager* manager;
+FbxScene* scene;
+FbxImporter* importer;
+
+void Init()
+{
+	manager = FbxManager::Create();
+
+	FbxIOSettings* ioSettings = FbxIOSettings::Create(manager, IOSROOT);
+	//ioSettings->SetBoolProp(IMP_FBX_MATERIAL, true);
+	//ioSettings->SetBoolProp(IMP_FBX_TEXTURE, true);
+	//ioSettings->SetBoolProp(IMP_FBX_ANIMATION, false);
+
+	manager->SetIOSettings(ioSettings);
+
+	importer = FbxImporter::Create(manager, "");
+	bool importInit = importer->Initialize(".\\Assets\\hej5.fbx", -1, manager->GetIOSettings());
+	if (!importInit)
+	{
+		std::cout << "Error importing file!" << std::endl;
+		getchar();
+		return;
+	}
+
+	scene = FbxScene::Create(manager, "FBX Scene");
+	importer->Import(scene);
+	importer->Destroy();
+}
 
 // Function
 FbxString GetNodeAttributeTypeName(FbxNodeAttribute::EType nodeType)
@@ -240,8 +270,25 @@ uint32_t FindJointIndex(const std::string& name)
 	}
 }
 
+void fixControlPoints(FbxNode* node)
+{
+	FbxMesh* currentMesh = node->GetMesh();
+	uint32_t controlPointCount = currentMesh->GetControlPointsCount();
+	for (int i = 0; i < controlPointCount; i++)
+	{
+		CtrlPoint* currentControlPoint = new CtrlPoint;
+		Vec3 currentPosition;
+		currentPosition.x = static_cast<float>(currentMesh->GetControlPointAt(i).mData[0]);
+		currentPosition.y = static_cast<float>(currentMesh->GetControlPointAt(i).mData[1]);
+		currentPosition.z = static_cast<float>(currentMesh->GetControlPointAt(i).mData[2]);
+		currentControlPoint->mPosition = currentPosition;
+		mControlPoints[i] = currentControlPoint;
+	}
+}
+
 void SkeletonJointsAndAnimations(FbxNode* node)
 {
+	std::cout << "SkeletonJointsAndAnimations" << std::endl;
 	FbxMesh* currentMesh = node->GetMesh();
 
 	uint32_t numDeformer = currentMesh->GetDeformerCount();
@@ -278,7 +325,7 @@ void SkeletonJointsAndAnimations(FbxNode* node)
 
 				// Update skeleton
 				mSkeleton.mJoints[currentJointIndex].mGlobalBindposeInverse = globalBindposeInverseMat;
-				mSkeleton.mJoints[currentJointIndex].mNode = currentCluster->GetLink();
+				mSkeleton.mJoints[currentJointIndex].mNode = currentCluster->GetLink(); 
 
 				uint32_t numIndices = currentCluster->GetControlPointIndicesCount();
 				for (int g = 0; g < numIndices; g++)
@@ -289,7 +336,25 @@ void SkeletonJointsAndAnimations(FbxNode* node)
 					mControlPoints[currentCluster->GetControlPointIndices()[i]]->mBlendingInfo.push_back(currentBlendingIndexWeightPair);
 				}
 
-				FbxAnimStack* currentAnimStack; //TODO ADD INIT FOR FBX
+				FbxAnimStack* currentAnimStack = scene->GetSrcObject<FbxAnimStack>(0);
+				FbxString currentAnimStackName = currentAnimStack->GetName();
+				std::string mAnimName = currentAnimStackName.Buffer();
+				FbxTakeInfo* takeInfo = scene->GetTakeInfo(currentAnimStackName);
+				FbxTime start = takeInfo->mLocalTimeSpan.GetStart();
+				FbxTime end = takeInfo->mLocalTimeSpan.GetStop();
+				FbxLongLong mAnimationLength = end.GetFrameCount(FbxTime::eFrames24) - start.GetFrameCount(FbxTime::eFrames24) + 1;
+				Keyframe** currentAnimation = &mSkeleton.mJoints[currentJointIndex].mAnimation;
+
+				for (FbxLongLong i = start.GetFrameCount(FbxTime::eFrames24); i <= end.GetFrameCount(FbxTime::eFrames24); i++)
+				{
+					FbxTime currentTime;
+					currentTime.SetFrame(i, FbxTime::eFrames24);
+					*currentAnimation = new Keyframe();
+					(*currentAnimation)->mFrameNum = i;
+					FbxAMatrix currentTransformOffset = node->EvaluateGlobalTransform(currentTime) * identityMatrix;
+					(*currentAnimation)->mGlobalTransform = currentTransformOffset.Inverse() * currentCluster->GetLink()->EvaluateGlobalTransform(currentTime);
+					currentAnimation = &((*currentAnimation)->mNext);
+				}
 
 			}
 
@@ -299,34 +364,36 @@ void SkeletonJointsAndAnimations(FbxNode* node)
 
 }
 
-int main(int argc, char** argv)
+void checkMesh(FbxNode* node)
 {
-	FbxManager* manager = FbxManager::Create();
-
-	FbxIOSettings* ioSettings = FbxIOSettings::Create(manager, IOSROOT);
-	//ioSettings->SetBoolProp(IMP_FBX_MATERIAL, true);
-	//ioSettings->SetBoolProp(IMP_FBX_TEXTURE, true);
-	//ioSettings->SetBoolProp(IMP_FBX_ANIMATION, false);
-
-	manager->SetIOSettings(ioSettings);
-
-	FbxImporter* importer = FbxImporter::Create(manager, "");
-	bool importInit = importer->Initialize(".\\Assets\\hej5.fbx", -1, manager->GetIOSettings());
-	if (!importInit)
+	if (node->GetNodeAttribute())
 	{
-		std::cout << "Error importing file!" << std::endl;
-		getchar();
-		return 1;
+		switch (node->GetNodeAttribute()->GetAttributeType())
+		{
+		case FbxNodeAttribute::eMesh:
+			fixControlPoints(node);
+			SkeletonJointsAndAnimations(node);
+			break;
+		}
 	}
 
-	FbxScene* scene = FbxScene::Create(manager, "FBX Scene");
-	importer->Import(scene);
+	for (int i = 0; i < node->GetChildCount(); i++)
+	{
+		checkMesh(node->GetChild(i));
+	}
+}
 
-	//Importer is done
-	//importer->Destroy();
+
+
+int main(int argc, char** argv)
+{
+
+	Init();
 	FbxNode* rootNode = scene->GetRootNode();
 
 	SkeletonHierachy(rootNode);
+
+	checkMesh(rootNode);
 
 	getchar();
 	// Destroy at bottom
@@ -334,8 +401,4 @@ int main(int argc, char** argv)
 
 	return 0;
 }
-
-
-
-
 
