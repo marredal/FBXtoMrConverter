@@ -1,6 +1,7 @@
 #include "fbxsdk.h"
 #include <vector>
 #include <iostream>
+#include "SuperExporter.h"
 #pragma comment(lib, "libfbxsdk.lib")
 
 //Tab character ("\t") counter
@@ -561,9 +562,9 @@ int main(int argc, char** argv) {
 	}
 	// Destroy the SDK manager and all the other objects it was handling.
 
+	SuperExporter se;
+	se.Run();
 
-
-	getchar();
 	lSdkManager->Destroy();
 	return 0;
 }

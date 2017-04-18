@@ -23,11 +23,9 @@
     <ClCompile Include="MrAnimHandler.cpp">
       <Filter>IMPORTEXPORT</Filter>
     </ClCompile>
+    <ClCompile Include="SuperExporter.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Mr.h">
-      <Filter>IMPORTEXPORT</Filter>
-    </ClInclude>
     <ClInclude Include="MrHandler.h">
       <Filter>IMPORTEXPORT</Filter>
     </ClInclude>
@@ -40,5 +38,6 @@
     <ClInclude Include="MrAnimHandler.h">
       <Filter>IMPORTEXPORT</Filter>
     </ClInclude>
+    <ClInclude Include="SuperExporter.h" />
   </ItemGroup>
 </Project>
