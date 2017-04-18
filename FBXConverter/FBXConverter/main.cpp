@@ -4,10 +4,12 @@
 
 int main()
 {
-
+	MeshInfo t;
 	Manager m;
 
 	m.Init();
+	m.Run();
+	//m.GetMesh(t);
 
 	
 
