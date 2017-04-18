@@ -149,6 +149,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Manager.cpp" />
+    <ClCompile Include="VertexInfo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Manager.h" />
+    <ClInclude Include="VertexInfo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
