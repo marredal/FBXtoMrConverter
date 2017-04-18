@@ -54,3 +54,12 @@ void Manager::Run()
 		}
 	}
 }
+
+MeshInfo Manager::GetMesh(MeshInfo mesh)
+{
+	mesh.pos = m_vertexInfo.GetPosition();
+	mesh.nor = m_vertexInfo.GetNormal();
+	mesh.uv = m_vertexInfo.GetUV();
+	
+	return mesh;
+}

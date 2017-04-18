@@ -175,10 +175,25 @@ void VertexInfo::SavetNormal(FbxNode * pNode)
 						
 						FbxDouble3 normal = normalElement->GetDirectArray().GetAt(normalIndex);
 
-						m_normal.push_back(glm::vec3(normal[0], normal[1], normal[2]));
+						m_normal.push_back(glm::vec3(normal[i]));
 					}
 				}
 			}
 		}
 	}
+}
+
+std::vector<glm::vec3> VertexInfo::GetPosition() const
+{
+	return m_postion;
+}
+
+std::vector<glm::vec2> VertexInfo::GetUV() const
+{
+	return m_uv;
+}
+
+std::vector<glm::vec3> VertexInfo::GetNormal() const
+{
+	return m_normal;
 }

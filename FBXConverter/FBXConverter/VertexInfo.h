@@ -22,11 +22,11 @@ public:
 	void SaveBiTangent (FbxNode* pNode);
 
 	//..::GET FUNCTIONS::..//
-	glm::vec3 GetPosition() const;
-	glm::vec2 GetUV() const;
-	glm::vec3 GetNormal() const;
-	glm::vec3 GetTangent() const;
-	glm::vec3 GetBiTangent() const;
+	std::vector<glm::vec3> GetPosition() const;
+	std::vector<glm::vec2> GetUV() const;
+	std::vector<glm::vec3> GetNormal() const;
+	std::vector<glm::vec3> GetTangent() const;
+	std::vector<glm::vec3> GetBiTangent() const;
 
 
 private:
