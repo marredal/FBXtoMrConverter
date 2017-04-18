@@ -67,7 +67,10 @@ void Manager::Run()
 				//FbxProperty<FbxDouble3> lKFbx
 				for (int count = 0; count < materialCount; count++)
 				{
-					
+					//FbxSurfaceMaterial
+
+
+
 				}
 			}
 		}

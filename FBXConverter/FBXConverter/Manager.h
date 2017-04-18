@@ -25,8 +25,6 @@ private:
 	
 	
 	VertexInfo		m_vertexInfo;
-
-	VertexInfo		m_vertexInfo;
 };
 
 
