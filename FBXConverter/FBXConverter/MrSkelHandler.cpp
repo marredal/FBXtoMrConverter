@@ -18,6 +18,7 @@ MrSkelHandler::~MrSkelHandler()
 	Free();
 }
 
+
 bool MrSkelHandler::Import(const char * filepath)
 {
 	if (m_isLoaded)
@@ -34,6 +35,7 @@ bool MrSkelHandler::Import(const char * filepath)
 
 	file.write(reinterpret_cast<char*>(&m_numJoints), sizeof(uint32_t));
 	file.write(reinterpret_cast<char*>(m_matrix), sizeof(glm::mat4) * m_numJoints);
+	file.write(reinterpret_cast<char*>(m_IDs), sizeof(uint32_t) * m_numJoints);
 	file.write(reinterpret_cast<char*>(m_parentIDs), sizeof(uint32_t) * m_numJoints);
 
 	file.close();
@@ -41,8 +43,8 @@ bool MrSkelHandler::Import(const char * filepath)
 	return true;
 }
 
-bool MrSkelHandler::Export(const char * filepath, uint32_t numJoints, 
-	glm::mat4 * mat, uint32_t * parentIDs)
+bool MrSkelHandler::Export(const char* filepath, uint32_t numJoints, glm::mat4 * mat,
+	uint32_t * IDs, uint32_t * parentIDs)
 {
 	std::ofstream file(filepath, std::ios::binary);
 
@@ -53,6 +55,7 @@ bool MrSkelHandler::Export(const char * filepath, uint32_t numJoints,
 
 	file.write(reinterpret_cast<char*>(&numJoints), sizeof(uint32_t));
 	file.write(reinterpret_cast<char*>(mat), sizeof(glm::mat4) * numJoints);
+	file.write(reinterpret_cast<char*>(IDs), sizeof(uint32_t) * numJoints);
 	file.write(reinterpret_cast<char*>(parentIDs), sizeof(uint32_t) * numJoints);
 
 	file.close();
@@ -79,18 +82,34 @@ void MrSkelHandler::Free()
 
 }
 
+
+//::.. GET FUNCTIONS ..:://
 uint32_t MrSkelHandler::GetNumJoints()
 {
 	return m_numJoints;
 }
+
 
 glm::mat4 * MrSkelHandler::GetMatrix()
 {
 	return m_matrix;
 }
 
+
 uint32_t * MrSkelHandler::GetParentIDs()
 {
 	return m_parentIDs;
+}
+
+
+//::.. HELP FUNCTIONS ..:://
+void MrSkelHandler::Init()
+{
+	m_isLoaded		= false;
+
+	m_numJoints		= 0;
+
+	m_matrix		= nullptr;
+	m_parentIDs		= nullptr;
 }
 

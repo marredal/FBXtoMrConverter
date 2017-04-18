@@ -34,6 +34,10 @@ public:
 	glm::vec4 * GetJointIDs();
 
 private:
+	//::.. HELP FUNCTIONS .:://
+	void Init();
+
+private:
 	bool		m_isLoaded;
 
 	uint64_t	m_numVerts;
