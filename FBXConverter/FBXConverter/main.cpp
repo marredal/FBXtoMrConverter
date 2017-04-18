@@ -4,7 +4,7 @@
 
 int main()
 {
-	MeshInfo t;
+	//MeshInfo t;
 	Manager m;
 
 	m.Init();
