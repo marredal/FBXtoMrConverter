@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include "VertexInfo.h"
+#include "glm.hpp"
 
 struct Vec3 {
 	float x;
@@ -27,8 +28,6 @@ private:
 
 	FbxNode* m_root;
 
-
-	VertexInfo();
 
 };
 

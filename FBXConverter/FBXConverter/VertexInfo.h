@@ -3,6 +3,7 @@
 
 
 #include "Manager.h"
+#include <glm.hpp>
 
 
 class VertexInfo
@@ -13,11 +14,11 @@ public:
 
 	void SetInfo(FbxMesh &mesh);
 
-	void SetPosition(FbxMesh *mesh);
-	void SetUV(FbxMesh *mesh);
-	void SetNormal(FbxMesh &mesh);
-	void SetTangent(FbxMesh) &mesh);
-	void SetBiTangent (FbxMEsh &mesh);
+	void SetPosition(FbxNode* pNode);
+	void SetUV(FbxNode* pNode);
+	void SetNormal(FbxNode* pNode);
+	void SetTangent(FbxNode* pNode);
+	void SetBiTangent (FbxNode* pNode);
 
 	//..::GET FUNCTIONS::..//
 	void GetPosition() const;
@@ -29,11 +30,11 @@ public:
 
 private:
 
-	std::vector <Vec3>					m_postion;
-	std::vector <FbxVector2>			m_uv;
-	std::vector <Vec3>					m_normal;
-	std::vector <Vec3>					m_tangent;
-	std::vector <Vec3>					m_bitangent;
+	std::vector <glm::vec3>					m_postion;
+	std::vector <glm::vec2>					m_uv;
+	std::vector <glm::vec3>					m_normal;
+	std::vector <glm::vec3>					m_tangent;
+	std::vector <glm::vec3>					m_bitangent;
 
 
 };
