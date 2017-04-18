@@ -14,7 +14,7 @@ Manager::~Manager()
 
 void Manager::Init()
 {
-	const char* m_FilePath = ".\\Assets\\tangentTest.fbx";
+	const char* m_FilePath = ".\\Assets\\TangentTest.fbx";
 
 	m_Manager = FbxManager::Create();
 	FbxIOSettings *ios = FbxIOSettings::Create(m_Manager, IOSROOT);
@@ -45,18 +45,18 @@ void Manager::Run()
 {
 	for (int i = 0; i < m_root->GetChildCount(); i++)
 	{
-		m_vertexInfo.SetPosition(m_root->GetChild(i));
-		m_vertexInfo.SetUV(m_root->GetChild(i));
-		m_vertexInfo.SetNormal(m_root->GetChild(i));
+		m_vertexInfo.SavePosition(m_root->GetChild(i));
+		m_vertexInfo.SaveUV(m_root->GetChild(i));
+		m_vertexInfo.SavetNormal(m_root->GetChild(i));
 	}
 
 }
 
 MeshInfo Manager::GetMesh(MeshInfo info)
 {
-	info.pos = m_vertexInfo.GetPosition();
+	/*info.pos = m_vertexInfo.GetPosition();
 	info.nor = m_vertexInfo.GetNormal();
-	info.uv = m_vertexInfo.GetUV();
+	info.uv = m_vertexInfo.GetUV();*/
 
 	return info;
 }
