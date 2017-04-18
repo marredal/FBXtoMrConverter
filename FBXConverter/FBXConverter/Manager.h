@@ -6,11 +6,13 @@
 #include <iostream>
 #include "VertexInfo.h"
 #include "glm.hpp"
+#include <iostream>
 
-struct Vec3 {
-	float x;
-	float y;
-	float z;
+struct MeshInfo {
+	std::vector<glm::vec3> pos;
+	std::vector<glm::vec3> nor;
+	std::vector<glm::vec2> uv;
+
 };
 
 class Manager
@@ -21,14 +23,19 @@ public:
 	void Init();
 	void Run();
 
+	MeshInfo GetMesh(MeshInfo mesh);
+
+
+
 private:
 	FbxManager*		m_Manager;
 	FbxScene*		m_Scene;
 	FbxImporter*	m_Importer;
 
-	FbxNode* m_root;
-
-
+	FbxNode*		m_root;
+	
+	
+	VertexInfo		m_vertexInfo;
 };
 
 

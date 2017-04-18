@@ -15,7 +15,7 @@ VertexInfo::~VertexInfo()
 
 
 
-void VertexInfo::SetPosition(FbxNode* pNode)
+void VertexInfo::SavePosition(FbxNode* pNode)
 {
 	if (!pNode)
 		return;
@@ -24,11 +24,9 @@ void VertexInfo::SetPosition(FbxNode* pNode)
 	FbxMesh* mesh = pNode->GetMesh();
 	if (mesh)
 	{
-
-		glm::vec3 output;
-
 		for (int i = 0; i < mesh->GetControlPointsCount(); i++)
 		{
+			glm::vec3 output;
 			output.x = mesh->GetControlPointAt(i).mData[0];
 			output.x = mesh->GetControlPointAt(i).mData[1];
 			output.z = mesh->GetControlPointAt(i).mData[2];
@@ -38,11 +36,11 @@ void VertexInfo::SetPosition(FbxNode* pNode)
 	int count = pNode->GetChildCount();
 	for (int i = 0; i < count; i++)
 	{
-		SetPosition(pNode->GetChild(i));
+		SavePosition(pNode->GetChild(i));
 	}
 }
 
-void VertexInfo::SetUV(FbxNode* pNode)
+void VertexInfo::SaveUV(FbxNode* pNode)
 {
 
 	if (!pNode)
@@ -84,14 +82,14 @@ void VertexInfo::SetUV(FbxNode* pNode)
 					const int polySize = mesh->GetPolygonSize(polyIndex);
 					for (int i = 0; i < polySize; i++)
 					{
-						FbxVector2 UVvalue;
+						FbxVector2 output;
 						int polyVertIndex = mesh->GetPolygonSize(polyIndex);
 
 						int uvIndex = UseIndex ? uvElement->GetIndexArray().GetAt(polyVertIndex) : polyVertIndex;
-						UVvalue = uvElement->GetDirectArray().GetAt(uvIndex);
+						output = uvElement->GetDirectArray().GetAt(uvIndex);
 						vertexCounter++;
 						//kanske inte funkar
-						m_uv.push_back(glm::vec2((float)UVvalue[0], (float)UVvalue[1]));
+						m_uv.push_back(glm::vec2((float)output[0], (float)output[1]));
 
 					}
 				}
@@ -123,11 +121,11 @@ void VertexInfo::SetUV(FbxNode* pNode)
 	int count = pNode->GetChildCount();
 	for (int i = 0; i < count; i++)
 	{
-		this->SetUV(pNode->GetChild(i));
+		this->SaveUV(pNode->GetChild(i));
 	}
 }
 
-void VertexInfo::SetNormal(FbxNode * pNode)
+void VertexInfo::SavetNormal(FbxNode * pNode)
 {
 	if (!pNode)
 		return;
@@ -177,7 +175,7 @@ void VertexInfo::SetNormal(FbxNode * pNode)
 						
 						FbxDouble3 normal = normalElement->GetDirectArray().GetAt(normalIndex);
 
-						m_normal.push_back(glm::vec3(normal[0], normal[1], normal[2]));
+						m_normal.push_back(glm::vec3(normal[i]));
 					}
 				}
 			}
@@ -185,4 +183,17 @@ void VertexInfo::SetNormal(FbxNode * pNode)
 	}
 }
 
+std::vector<glm::vec3> VertexInfo::GetPosition() const
+{
+	return m_postion;
+}
 
+std::vector<glm::vec2> VertexInfo::GetUV() const
+{
+	return m_uv;
+}
+
+std::vector<glm::vec3> VertexInfo::GetNormal() const
+{
+	return m_normal;
+}

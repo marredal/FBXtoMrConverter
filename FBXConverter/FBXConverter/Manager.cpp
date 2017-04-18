@@ -45,14 +45,21 @@ void Manager::Run()
 {
 	if (m_root)
 	{
-		FbxMesh* mesh = m_root->GetMesh();
 		for (int i = 0; i < m_root->GetChildCount(); i++)
 		{
+			m_vertexInfo.SavePosition(m_root->GetChild(i));
+			m_vertexInfo.SaveUV(m_root->GetChild(i));
+			m_vertexInfo.SavetNormal(m_root->GetChild(i));
 
 		}
 	}
+}
 
-
-
-
+MeshInfo Manager::GetMesh(MeshInfo mesh)
+{
+	mesh.pos = m_vertexInfo.GetPosition();
+	mesh.nor = m_vertexInfo.GetNormal();
+	mesh.uv = m_vertexInfo.GetUV();
+	
+	return mesh;
 }
