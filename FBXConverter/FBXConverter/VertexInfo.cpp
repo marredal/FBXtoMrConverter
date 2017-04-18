@@ -70,12 +70,8 @@ void VertexInfo::SaveUV(FbxNode* pNode)
 			}
 
 			const bool UseIndex = uvElement->GetReferenceMode() != FbxGeometryElement::eDirect;
-			const int indexCount = 0;
-			if (UseIndex)
-			{
-				const int indexCount = uvElement->GetIndexArray().GetCount();
-			}
-			//int indexCount = 0;
+			const int indexCount = (UseIndex) ? uvElement->GetIndexArray().GetCount() : 0;
+
 			const int polyCount = mesh->GetPolygonCount();
 
 			if (uvElement->GetMappingMode() == FbxGeometryElement::eByControlPoint)

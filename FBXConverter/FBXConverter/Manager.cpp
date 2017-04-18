@@ -51,28 +51,6 @@ void Manager::Run()
 			m_vertexInfo.SaveUV(m_root->GetChild(i));
 			m_vertexInfo.SavetNormal(m_root->GetChild(i));
 
-			FbxGeometry* geometry = m_root->GetGeometry();
-			int materialCount = 0;
-			FbxNode* node = NULL;
-			if (geometry)
-			{
-				node = geometry->GetNode();
-				if (node)
-				{
-					materialCount = node->GetMaterialCount();
-				}
-			}
-			if (materialCount > 0)
-			{
-				//FbxProperty<FbxDouble3> lKFbx
-				for (int count = 0; count < materialCount; count++)
-				{
-					//FbxSurfaceMaterial
-
-
-
-				}
-			}
 		}
 	}
 }

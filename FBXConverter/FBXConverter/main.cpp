@@ -1,20 +1,16 @@
 #include "Manager.h"
-#include "SuperExporter.h"
+#include <iostream>
+#pragma comment(lib, "libfbxsdk.lib")
 
 
-int main()
-{
-	//MeshInfo t;
-	Manager m;
+int main(int argc, char** argv) {
 
-	m.Init();
-	m.Run();
-	//m.GetMesh(t);
+	Manager m_mananger;
 
-	
+	m_mananger.Init();
 
+	m_mananger.Run();
 
-
-
+	getchar();
 	return 0;
 }
