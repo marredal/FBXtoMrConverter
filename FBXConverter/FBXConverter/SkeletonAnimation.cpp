@@ -1,4 +1,4 @@
-#include "Exporter.h"
+#include "SkeletonAnimation.h"
 
 
 
@@ -19,7 +19,7 @@ void Exporter::Init()
 	FbxIOSettings* ioSettings = FbxIOSettings::Create(m_Manager, IOSROOT);
 	m_Manager->SetIOSettings(ioSettings);
 	m_Importer = FbxImporter::Create(m_Manager, "");
-	bool importInit = m_Importer->Initialize(".\\Assets\\hej5.fbx", -1, m_Manager->GetIOSettings());
+	bool importInit = m_Importer->Initialize(".\\Assets\\tjena5.fbx", -1, m_Manager->GetIOSettings());
 	if (!importInit)
 	{
 		std::cout << "Error importing file!" << std::endl;
@@ -34,14 +34,31 @@ void Exporter::Init()
 
 void Exporter::Shutdown()
 {
+	m_Scene->Destroy();
 	m_Manager->Destroy();
+
+	m_Skeleton.Joints.clear();
+}
+
+void Exporter::GetSkeleton()
+{
+	SkeletonHierachy(m_Scene->GetRootNode());
+
+	// Maybe necessary we will see
+	//if (m_Skeleton.Joints.empty())
+	//{
+	//	m_Animation = false;
+	//}
+	checkMesh(m_Scene->GetRootNode());
+	GetAnimation();
+
 }
 
 FbxAMatrix Exporter::GeometryTransformation(FbxNode * node)
 {
-	FbxVector4 translation = node->GetGeometricTranslation(FbxNode::eSourcePivot);
-	FbxVector4 rotation = node->GetGeometricRotation(FbxNode::eSourcePivot);
-	FbxVector4 scaling = node->GetGeometricScaling(FbxNode::eSourcePivot);
+	const FbxVector4 translation = node->GetGeometricTranslation(FbxNode::eSourcePivot);
+	const FbxVector4 rotation = node->GetGeometricRotation(FbxNode::eSourcePivot);
+	const FbxVector4 scaling = node->GetGeometricScaling(FbxNode::eSourcePivot);
 
 	return FbxAMatrix(translation, rotation, scaling);
 }
@@ -50,7 +67,6 @@ void Exporter::SkeletonHierachyRecursive(FbxNode * node, int index, int parentIn
 {
 	if (node->GetNodeAttribute() && node->GetNodeAttribute() && node->GetNodeAttribute()->GetAttributeType() == FbxNodeAttribute::eSkeleton)
 	{
-		std::cout << "SKELETON: " << node->GetName() << std::endl;
 		Joint currentJoint;
 		currentJoint.ParentIndex = parentIndex;
 		currentJoint.Name = node->GetName();
@@ -101,16 +117,15 @@ void Exporter::fixControlPoints(FbxNode * node)
 
 void Exporter::SkeletonJointsAndAnimations(FbxNode * node)
 {
-	std::cout << "SkeletonJointsAndAnimations" << std::endl;
 	FbxMesh* currentMesh = node->GetMesh();
 
 	uint32_t numDeformer = currentMesh->GetDeformerCount();
 
 	FbxAMatrix identityMatrix = GeometryTransformation(node);
 
-	for (int i = 0; i < numDeformer; i++)
+	for (int deformerIndex = 0; deformerIndex < numDeformer; deformerIndex++)
 	{
-		FbxSkin* currentSkin = reinterpret_cast<FbxSkin*>(currentMesh->GetDeformer(i, FbxDeformer::eSkin));
+		FbxSkin* currentSkin = reinterpret_cast<FbxSkin*>(currentMesh->GetDeformer(deformerIndex, FbxDeformer::eSkin));
 
 		if (!currentSkin)
 		{
@@ -118,14 +133,15 @@ void Exporter::SkeletonJointsAndAnimations(FbxNode * node)
 		}
 		else
 		{
-			uint32_t numClusters = currentSkin->GetClusterCount();
-			for (int j = 0; j < numClusters; j++)
+			uint32_t numCluster = currentSkin->GetClusterCount();
+			for (int clusterIndex = 0; clusterIndex < numCluster; clusterIndex++)
 			{
-				FbxCluster* currentCluster = currentSkin->GetCluster(j);
+				FbxCluster* currentCluster = currentSkin->GetCluster(clusterIndex);
 
-				// This is where we access the real joint, via GetLink().
+				// This is where we access the joint with GetLink().
 				std::string currentJointName = currentCluster->GetLink()->GetName();
 				uint32_t currentJointIndex = FindJointIndex(currentJointName);
+
 
 				// Matrices
 				FbxAMatrix transformMat;
@@ -140,13 +156,13 @@ void Exporter::SkeletonJointsAndAnimations(FbxNode * node)
 				m_Skeleton.Joints[currentJointIndex].GlobalBindposeInverse = globalBindposeInverseMat;
 				m_Skeleton.Joints[currentJointIndex].Node = currentCluster->GetLink();
 
-				uint32_t numIndices = currentCluster->GetControlPointIndicesCount();
-				for (int g = 0; g < numIndices; g++)
+				uint32_t numIndice = currentCluster->GetControlPointIndicesCount();
+				for (int indiceIndex = 0; indiceIndex < numIndice; indiceIndex++)
 				{
 					BlendingIndexWeightPair currentBlendingIndexWeightPair;
 					currentBlendingIndexWeightPair.BlendingIndex = currentJointIndex;
-					currentBlendingIndexWeightPair.BlendingWeight = currentCluster->GetControlPointWeights()[i];
-					m_ControlPoints[currentCluster->GetControlPointIndices()[i]]->BlendingInfo.push_back(currentBlendingIndexWeightPair);
+					currentBlendingIndexWeightPair.BlendingWeight = currentCluster->GetControlPointWeights()[indiceIndex];
+					m_ControlPoints[currentCluster->GetControlPointIndices()[indiceIndex]]->BlendingInfo.push_back(currentBlendingIndexWeightPair);
 				}
 
 				FbxAnimStack* currentAnimStack = m_Scene->GetSrcObject<FbxAnimStack>(0);
@@ -155,7 +171,7 @@ void Exporter::SkeletonJointsAndAnimations(FbxNode * node)
 				FbxTakeInfo* takeInfo = m_Scene->GetTakeInfo(currentAnimStackName);
 				FbxTime start = takeInfo->mLocalTimeSpan.GetStart();
 				FbxTime end = takeInfo->mLocalTimeSpan.GetStop();
-				FbxLongLong mAnimationLength = end.GetFrameCount(FbxTime::eFrames24) - start.GetFrameCount(FbxTime::eFrames24) + 1;
+				FbxLongLong animationLength = end.GetFrameCount(FbxTime::eFrames24) - start.GetFrameCount(FbxTime::eFrames24) + 1;
 				Keyframe** currentAnimation = &m_Skeleton.Joints[currentJointIndex].Animation;
 
 				for (FbxLongLong i = start.GetFrameCount(FbxTime::eFrames24); i <= end.GetFrameCount(FbxTime::eFrames24); i++)
@@ -168,16 +184,27 @@ void Exporter::SkeletonJointsAndAnimations(FbxNode * node)
 					(*currentAnimation)->GlobalTransform = currentTransformOffset.Inverse() * currentCluster->GetLink()->EvaluateGlobalTransform(currentTime);
 					currentAnimation = &((*currentAnimation)->Next);
 				}
-
 			}
-
 		}
 
+		/*BlendingIndexWeightPair currBlendingIndexWeightPair;
+		currBlendingIndexWeightPair.BlendingIndex = 0;
+		currBlendingIndexWeightPair.BlendingWeight = 0;
+		for (auto itr = m_ControlPoints.begin(); itr != m_ControlPoints.end(); ++itr)
+		{
+			for (unsigned int i = itr->second->BlendingInfo.size(); i <= 4; ++i)
+			{
+				itr->second->BlendingInfo.push_back(currBlendingIndexWeightPair);
+			}
+		}*/
 	}
 }
 
+
+
 void Exporter::checkMesh(FbxNode * node)
 {
+
 	if (node->GetNodeAttribute())
 	{
 		switch (node->GetNodeAttribute()->GetAttributeType())
@@ -192,5 +219,43 @@ void Exporter::checkMesh(FbxNode * node)
 	for (int i = 0; i < node->GetChildCount(); i++)
 	{
 		checkMesh(node->GetChild(i));
+	}
+}
+
+void Exporter::GetAnimation()
+{
+	//for (int i = 0; i < m_Skeleton.Joints.size(); i++)
+	//{
+	//	FbxVector4 translation = m_Skeleton.Joints[i].GlobalBindposeInverse.GetT();
+	//	FbxVector4 rotation = m_Skeleton.Joints[i].GlobalBindposeInverse.GetR();
+	//	translation.Set(translation.mData[0], translation.mData[1], translation.mData[2]);
+	//	rotation.Set(rotation.mData[0], rotation.mData[1], rotation.mData[2]);
+	//	m_Skeleton.Joints[i].GlobalBindposeInverse.SetT(translation);
+	//	m_Skeleton.Joints[i].GlobalBindposeInverse.SetR(rotation);
+	//	FbxMatrix finalMat = m_Skeleton.Joints[i].GlobalBindposeInverse;
+	//	finalMat = finalMat.Transpose();
+	//}
+
+	for (int i = 0; i < m_Skeleton.Joints.size(); i++)
+	{
+		std::cout << m_Skeleton.Joints[i].Name.c_str() << std::endl;
+
+		Keyframe* swag = m_Skeleton.Joints[i].Animation;
+		while (swag)
+		{
+			FbxVector4 translation = swag->GlobalTransform.GetT();
+			FbxVector4 rotation = swag->GlobalTransform.GetR();
+			translation.Set(translation.mData[0], translation.mData[1], translation.mData[2]);
+			rotation.Set(rotation.mData[0], rotation.mData[1], rotation.mData[2]);
+			swag->GlobalTransform.SetT(translation);
+			swag->GlobalTransform.SetR(rotation);
+			FbxMatrix yolo = swag->GlobalTransform;
+			
+			std::cout << swag->GlobalTransform.GetROnly().mData[0] << ", ";
+			std::cout << swag->GlobalTransform.GetROnly().mData[1] << ", ";
+			std::cout << swag->GlobalTransform.GetROnly().mData[2] << std::endl;
+
+			swag = swag->Next;
+		}
 	}
 }

@@ -1,5 +1,5 @@
-#ifndef __EXPORTERSTRUCT_H__
-#define __EXPORTERSTRUCT_H__
+#ifndef __SKELETONSTRUCT_H__
+#define __SKELETONSTRUCT_H__
 #include <fbxsdk.h>
 
 #include <math.h>
@@ -16,6 +16,10 @@ struct Keyframe
 	FbxLongLong FrameNum;
 	FbxAMatrix GlobalTransform;
 	Keyframe* Next;
+
+	Keyframe() :
+		Next(nullptr)
+	{}
 };
 
 struct Joint
@@ -76,4 +80,4 @@ struct ControlPoint
 	}
 };
 
-#endif // ! __EXPORTERSTRUCT_H__
+#endif
