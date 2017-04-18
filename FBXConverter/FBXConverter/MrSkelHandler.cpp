@@ -28,7 +28,7 @@ bool MrSkelHandler::Import(const char * filepath)
 
 	std::ofstream file(filepath, std::ios::binary);
 
-	if (!file.is_open)
+	if (!file.is_open())
 	{
 		return false;
 	}
@@ -48,7 +48,7 @@ bool MrSkelHandler::Export(const char* filepath, uint32_t numJoints, glm::mat4 *
 {
 	std::ofstream file(filepath, std::ios::binary);
 
-	if (!file.is_open)
+	if (!file.is_open())
 	{
 		return false;
 	}
@@ -111,5 +111,6 @@ void MrSkelHandler::Init()
 
 	m_matrix		= nullptr;
 	m_parentIDs		= nullptr;
+	m_IDs			= nullptr;
 }
 

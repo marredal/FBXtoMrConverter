@@ -23,7 +23,7 @@ bool MrMeshHandler::Import(const char * filepath)
 
 	std::ifstream file(filepath, std::ios::binary);
 
-	if (!file.is_open)
+	if (!file.is_open())
 	{
 		return false;
 	}
@@ -50,7 +50,7 @@ bool MrMeshHandler::Export(const char* filepath, uint32_t numVerts,
 {
 	std::ofstream file(filepath, std::ios::binary);
 
-	if (!file.is_open)
+	if (!file.is_open())
 	{
 		return false;
 	}
