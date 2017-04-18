@@ -14,7 +14,7 @@ Manager::~Manager()
 
 void Manager::Init()
 {
-	const char* m_FilePath = ".\\Assets\\TangentTest.fbx";
+	const char* m_FilePath = ".\\Assets\\tangentTest.fbx";
 
 	m_Manager = FbxManager::Create();
 	FbxIOSettings *ios = FbxIOSettings::Create(m_Manager, IOSROOT);
@@ -43,21 +43,36 @@ void Manager::Init()
 
 void Manager::Run()
 {
-	for (int i = 0; i < m_root->GetChildCount(); i++)
+	if (m_root)
 	{
-		m_vertexInfo.SavePosition(m_root->GetChild(i));
-		m_vertexInfo.SaveUV(m_root->GetChild(i));
-		m_vertexInfo.SavetNormal(m_root->GetChild(i));
+		for (int i = 0; i < m_root->GetChildCount(); i++)
+		{
+			m_vertexInfo.SavePosition(m_root->GetChild(i));
+			m_vertexInfo.SaveUV(m_root->GetChild(i));
+			m_vertexInfo.SavetNormal(m_root->GetChild(i));
+
+			FbxGeometry* geometry = m_root->GetGeometry();
+			int materialCount = 0;
+			FbxNode* node = NULL;
+			if (geometry)
+			{
+				node = geometry->GetNode();
+				if (node)
+				{
+					materialCount = node->GetMaterialCount();
+				}
+			}
+			if (materialCount > 0)
+			{
+				//FbxProperty<FbxDouble3> lKFbx
+				for (int count = 0; count < materialCount; count++)
+				{
+					//FbxSurfaceMaterial
+
+
+
+				}
+			}
+		}
 	}
-
 }
-
-MeshInfo Manager::GetMesh(MeshInfo info)
-{
-	/*info.pos = m_vertexInfo.GetPosition();
-	info.nor = m_vertexInfo.GetNormal();
-	info.uv = m_vertexInfo.GetUV();*/
-
-	return info;
-}
-
