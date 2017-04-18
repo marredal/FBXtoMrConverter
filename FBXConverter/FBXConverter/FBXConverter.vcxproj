@@ -155,15 +155,16 @@
     <ClCompile Include="MrHandler.cpp" />
     <ClCompile Include="MrMeshHandler.cpp" />
     <ClCompile Include="MrSkelHandler.cpp" />
+    <ClCompile Include="SuperExporter.cpp" />
     <ClCompile Include="VertexInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Manager.h" />
-    <ClInclude Include="Mr.h" />
     <ClInclude Include="MrAnimHandler.h" />
     <ClInclude Include="MrHandler.h" />
     <ClInclude Include="MrMeshHandler.h" />
     <ClInclude Include="MrSkelHandler.h" />
+    <ClInclude Include="SuperExporter.h" />
     <ClInclude Include="VertexInfo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
