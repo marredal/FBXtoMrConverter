@@ -4,17 +4,7 @@
 
 MrMeshHandler::MrMeshHandler()
 {
-	m_isLoaded = false;
-
-	m_numVerts		= 0;
-	
-	m_postions		= nullptr;
-	m_TexCoords		= nullptr;
-	m_normals		= nullptr;
-	m_tangents		= nullptr;
-	m_bitangents	= nullptr;
-	m_skinweights	= nullptr;
-	m_jointIDs		= nullptr;
+	Init();
 }
 
 
@@ -96,17 +86,7 @@ void MrMeshHandler::Free()
 	delete[] m_skinweights;
 	delete[] m_jointIDs;
 
-	m_isLoaded = false;
-
-	m_numVerts = 0;
-
-	m_postions = nullptr;
-	m_TexCoords = nullptr;
-	m_normals = nullptr;
-	m_tangents = nullptr;
-	m_bitangents = nullptr;
-	m_skinweights = nullptr;
-	m_jointIDs = nullptr;
+	Init();
 }
 
 
@@ -149,4 +129,19 @@ glm::vec4 * MrMeshHandler::GetSkinWeights()
 glm::vec4 * MrMeshHandler::GetJointIDs()
 {
 	return m_jointIDs;
+}
+
+void MrMeshHandler::Init()
+{
+	m_isLoaded = false;
+
+	m_numVerts = 0;
+
+	m_postions = nullptr;
+	m_TexCoords = nullptr;
+	m_normals = nullptr;
+	m_tangents = nullptr;
+	m_bitangents = nullptr;
+	m_skinweights = nullptr;
+	m_jointIDs = nullptr;
 }

@@ -14,8 +14,8 @@ public:
 	virtual ~MrSkelHandler();
 
 	bool Import(const char* filepath);
-	bool Export(const char* filepath, uint32_t numJoints, glm::mat4 * mat,
-		uint32_t * parentIDs);
+	bool Export(const char* filepath, uint32_t numJoints, glm::mat4 * mat, 
+		uint32_t * IDs, uint32_t * parentIDs);
 
 	void Free();
 
@@ -25,15 +25,18 @@ public:
 	uint32_t * GetParentIDs();
 
 private:
+	//::.. HELP FUNCTIONS ..:://
+	void Init();
+
+private:
 	bool m_isLoaded;
 
 	uint32_t m_numJoints;
 
 	glm::mat4 * m_matrix;
 	uint32_t *	m_parentIDs;
-
+	uint32_t *	m_IDs;
 };
-
 
 
 #endif

@@ -20,7 +20,9 @@
     <ClCompile Include="MrSkelHandler.cpp">
       <Filter>IMPORTEXPORT</Filter>
     </ClCompile>
-    <ClCompile Include="MrAnimHandler.cpp" />
+    <ClCompile Include="MrAnimHandler.cpp">
+      <Filter>IMPORTEXPORT</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mr.h">
@@ -35,6 +37,8 @@
     <ClInclude Include="MrSkelHandler.h">
       <Filter>IMPORTEXPORT</Filter>
     </ClInclude>
-    <ClInclude Include="MrAnimHandler.h" />
+    <ClInclude Include="MrAnimHandler.h">
+      <Filter>IMPORTEXPORT</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
