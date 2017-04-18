@@ -160,7 +160,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Manager.h" />
-    <ClInclude Include="Mr.h" />
     <ClInclude Include="MrAnimHandler.h" />
     <ClInclude Include="MrHandler.h" />
     <ClInclude Include="MrMeshHandler.h" />

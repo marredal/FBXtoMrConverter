@@ -18,18 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MrAnimHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MrHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MrMeshHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MrSkelHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -39,11 +27,20 @@
     <ClCompile Include="SuperExporter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MrAnimHandler.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MrHandler.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MrMeshHandler.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MrSkelHandler.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Mr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MrAnimHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -56,14 +53,14 @@
     <ClInclude Include="MrSkelHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Manager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="VertexInfo.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="SuperExporter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Manager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

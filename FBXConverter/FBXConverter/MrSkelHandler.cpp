@@ -35,7 +35,7 @@ bool MrSkelHandler::Import(const char * filepath)
 
 	file.write(reinterpret_cast<char*>(&m_numJoints), sizeof(uint32_t));
 	file.write(reinterpret_cast<char*>(m_matrix), sizeof(glm::mat4) * m_numJoints);
-	file.write(reinterpret_cast<char*>(m_IDs), sizeof(uint32_t) * m_numJoints);
+	file.write(reinterpret_cast<char*>(m_ids), sizeof(uint32_t) * m_numJoints);
 	file.write(reinterpret_cast<char*>(m_parentIDs), sizeof(uint32_t) * m_numJoints);
 
 	file.close();
@@ -102,6 +102,37 @@ uint32_t * MrSkelHandler::GetParentIDs()
 }
 
 
+uint32_t * MrSkelHandler::GetIDs()
+{
+	return nullptr;
+}
+
+
+//::.. SET FUNCTIONS ..:://
+void MrSkelHandler::SetNumJoints(uint32_t numJoints)
+{
+	m_numJoints = numJoints;
+}
+
+
+void MrSkelHandler::SetMatrix(glm::mat4 * mat)
+{
+	m_matrix = mat;
+}
+
+
+void MrSkelHandler::SetParentIDs(uint32_t * parentIDs)
+{
+	m_parentIDs = parentIDs;
+}
+
+
+void MrSkelHandler::SetIDs(uint32_t * ids)
+{
+	m_ids = ids;
+}
+
+
 //::.. HELP FUNCTIONS ..:://
 void MrSkelHandler::Init()
 {
@@ -111,6 +142,6 @@ void MrSkelHandler::Init()
 
 	m_matrix		= nullptr;
 	m_parentIDs		= nullptr;
-	m_IDs			= nullptr;
+	m_ids			= nullptr;
 }
 
