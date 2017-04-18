@@ -14,20 +14,19 @@ public:
 	VertexInfo();
 	virtual ~VertexInfo();
 
-	void SetInfo(FbxMesh &mesh);
-
-	void SetPosition(FbxNode* pNode);
-	void SetUV(FbxNode* pNode);
-	void SetNormal(FbxNode* pNode);
-	void SetTangent(FbxNode* pNode);
-	void SetBiTangent (FbxNode* pNode);
+	//..::SAVE FUNCTIONS::..//
+	void SavePosition(FbxNode* pNode);
+	void SaveUV(FbxNode* pNode);
+	void SavetNormal(FbxNode* pNode);
+	void SaveTangent(FbxNode* pNode);
+	void SaveBiTangent (FbxNode* pNode);
 
 	//..::GET FUNCTIONS::..//
-	void GetPosition() const;
-	void GetUV() const;
-	void GetNormal() const;
-	void GetTangent() const;
-	void GetBiTangent() const;
+	glm::vec3 GetPosition() const;
+	glm::vec2 GetUV() const;
+	glm::vec3 GetNormal() const;
+	glm::vec3 GetTangent() const;
+	glm::vec3 GetBiTangent() const;
 
 
 private:

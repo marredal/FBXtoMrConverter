@@ -7,12 +7,6 @@
 #include "VertexInfo.h"
 #include "glm.hpp"
 
-struct Vec3 {
-	float x;
-	float y;
-	float z;
-};
-
 class Manager
 {
 public:
@@ -29,6 +23,7 @@ private:
 	FbxNode* m_root;
 
 
+	VertexInfo		m_vertexInfo;
 };
 
 
