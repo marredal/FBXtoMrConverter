@@ -185,4 +185,17 @@ void VertexInfo::SetNormal(FbxNode * pNode)
 	}
 }
 
+std::vector<glm::vec3> VertexInfo::GetPosition() const
+{
+	return m_postion;
+}
 
+std::vector<glm::vec2> VertexInfo::GetUV() const
+{
+	return m_uv;
+}
+
+std::vector<glm::vec3> VertexInfo::GetNormal() const
+{
+	return m_normal;
+}

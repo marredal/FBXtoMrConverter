@@ -3,6 +3,7 @@
 
 
 #include <iostream>
+#include "Manager.h"
 
 
 class SuperExporter

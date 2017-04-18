@@ -43,16 +43,9 @@ void Manager::Init()
 
 void Manager::Run()
 {
-	if (m_root)
+	for (int i = 0; i < m_root->GetChildCount(); i++)
 	{
-		FbxMesh* mesh = m_root->GetMesh();
-		for (int i = 0; i < m_root->GetChildCount(); i++)
-		{
-
-		}
+		m_vertexInfo.SetPosition(m_root->GetChild(i));
+		std::cout << m_vertexInfo.GetPosition();
 	}
-
-
-
-
 }

@@ -6,6 +6,7 @@
 #include <iostream>
 #include "VertexInfo.h"
 #include "glm.hpp"
+#include <iostream>
 
 struct Vec3 {
 	float x;
@@ -26,8 +27,10 @@ private:
 	FbxScene*		m_Scene;
 	FbxImporter*	m_Importer;
 
-	FbxNode* m_root;
-
+	FbxNode*		m_root;
+	
+	
+	VertexInfo		m_vertexInfo;
 
 };
 
