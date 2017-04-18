@@ -22,7 +22,7 @@ bool MrAnimHandler::Import(const char * filepath)
 
 	std::ifstream file(filepath, std::ios::binary);
 
-	if (!file.is_open)
+	if (!file.is_open())
 	{
 		return false;
 	}
@@ -42,7 +42,7 @@ bool MrAnimHandler::Export(const char * filepath, uint32_t numKeyframedJoints,
 
 	std::ofstream file(filepath, std::ios::binary);
 
-	if (!file.is_open)
+	if (!file.is_open())
 	{
 		return false;
 	}
