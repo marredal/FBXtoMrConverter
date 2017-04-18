@@ -35,6 +35,11 @@ void VertexInfo::SetPosition(FbxNode* pNode)
 			m_postion.push_back(output);
 		}
 	}
+	int count = pNode->GetChildCount();
+	for (int i = 0; i < count; i++)
+	{
+		SetPosition(pNode->GetChild(i));
+	}
 }
 
 void VertexInfo::SetUV(FbxNode* pNode)
@@ -119,6 +124,64 @@ void VertexInfo::SetUV(FbxNode* pNode)
 	for (int i = 0; i < count; i++)
 	{
 		this->SetUV(pNode->GetChild(i));
+	}
+}
+
+void VertexInfo::SetNormal(FbxNode * pNode)
+{
+	if (!pNode)
+		return;
+
+	FbxMesh* mesh = pNode->GetMesh();
+	if (mesh)
+	{
+		FbxGeometryElementNormal* normalElement = mesh->GetElementNormal();
+
+		if (normalElement)
+		{
+			if (normalElement->GetMappingMode() == FbxGeometryElement::eByControlPoint)
+			{
+
+				for (int vertexIndex = 0; vertexIndex < mesh->GetControlPointsCount(); vertexIndex++)
+				{
+					int normalIndex = 0;
+
+					if (normalElement->GetReferenceMode() == FbxGeometryElement::eDirect)
+						normalIndex = vertexIndex;
+
+					if (normalElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+						normalIndex = normalElement->GetIndexArray().GetAt(vertexIndex);
+
+					FbxDouble3 normal = normalElement->GetDirectArray().GetAt(normalIndex);
+
+					m_normal.push_back(glm::vec3(normal[0], normal[1], normal[2]));
+				}
+			}
+			else if(normalElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+			{
+				int indexByPolygonVertex = 0;
+
+				for (int polygonIndex = 0; polygonIndex < mesh->GetPolygonCount(); polygonIndex++)
+				{
+					int polygonSize = mesh->GetPolygonSize(polygonIndex);
+
+					for (int i = 0; i < polygonSize; i++)
+					{
+						int normalIndex = 0;
+
+						if (normalElement->GetReferenceMode() == FbxGeometryElement::eDirect)
+							normalIndex = indexByPolygonVertex;
+						
+						if (normalElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+							normalIndex = normalElement->GetIndexArray().GetAt(indexByPolygonVertex);
+						
+						FbxDouble3 normal = normalElement->GetDirectArray().GetAt(normalIndex);
+
+						m_normal.push_back(glm::vec3(normal[0], normal[1], normal[2]));
+					}
+				}
+			}
+		}
 	}
 }
 

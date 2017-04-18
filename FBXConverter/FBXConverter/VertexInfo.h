@@ -2,7 +2,9 @@
 #define __VERTEXINFO_H__
 
 
-#include "Manager.h"
+#include "fbxsdk.h"
+#include <vector>
+#include <iostream>
 #include <glm.hpp>
 
 
@@ -30,11 +32,11 @@ public:
 
 private:
 
-	std::vector <glm::vec3>					m_postion;
-	std::vector <glm::vec2>					m_uv;
-	std::vector <glm::vec3>					m_normal;
-	std::vector <glm::vec3>					m_tangent;
-	std::vector <glm::vec3>					m_bitangent;
+	std::vector <glm::vec3>		m_postion;
+	std::vector <glm::vec2>		m_uv;
+	std::vector <glm::vec3>		m_normal;
+	std::vector <glm::vec3>		m_tangent;
+	std::vector <glm::vec3>		m_bitangent;
 
 
 };
