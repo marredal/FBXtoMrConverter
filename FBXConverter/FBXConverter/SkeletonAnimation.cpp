@@ -251,9 +251,9 @@ void Exporter::GetAnimation()
 			swag->GlobalTransform.SetR(rotation);
 			FbxMatrix yolo = swag->GlobalTransform;
 			
-			std::cout << swag->GlobalTransform.GetROnly().mData[0] << ", ";
-			std::cout << swag->GlobalTransform.GetROnly().mData[1] << ", ";
-			std::cout << swag->GlobalTransform.GetROnly().mData[2] << std::endl;
+			std::cout << swag->GlobalTransform.GetR().mData[0] << ", ";
+			std::cout << swag->GlobalTransform.GetR().mData[1] << ", ";
+			std::cout << swag->GlobalTransform.GetR().mData[2] << std::endl;
 
 			swag = swag->Next;
 		}
