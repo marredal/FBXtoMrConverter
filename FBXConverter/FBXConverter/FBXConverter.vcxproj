@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="Exporter.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SkeletonAnimation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Exporter.h" />

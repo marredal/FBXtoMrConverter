@@ -27,6 +27,9 @@
     <ClCompile Include="Exporter.cpp">
       <Filter>Source Files\Export</Filter>
     </ClCompile>
+    <ClCompile Include="SkeletonAnimation.cpp">
+      <Filter>Source Files\Export</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Exporter.h">
