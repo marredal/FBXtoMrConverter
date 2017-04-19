@@ -2,6 +2,9 @@
 #define __SUPEREXPORTER_H__
 
 
+#include "MrHandler.h"
+
+
 #include <iostream>
 #include "Manager.h"
 
@@ -20,6 +23,8 @@ public:
 	void Export();
 
 private:
+	MR::MrAnimHandler * m_animHandler;
+	
 };
 
 
