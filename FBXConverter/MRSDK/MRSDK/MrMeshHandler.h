@@ -6,46 +6,54 @@
 #include <cstdint>
 #include <glm.hpp>
 
-namespace MR
+
+#if DLLEXPORT
+#define DLL __declspec(dllexport)
+#else
+#define DLL __declspec(dllimport)
+#endif
+
+
+namespace mr
 {
 	class MrMeshHandler
 	{
 	public:
-		__declspec(dllexport) MrMeshHandler();
-		__declspec(dllexport) virtual ~MrMeshHandler();
+		DLL MrMeshHandler();
+		DLL virtual ~MrMeshHandler();
 
 		//::.. IMPORT/EXPORT ..:://
-		__declspec(dllexport) bool Import(const char* filepath);
-		__declspec(dllexport) bool Export(const char* filepath);
+		DLL bool Import(const char* filepath);
+		DLL bool Export(const char* filepath);
 
-		void Free();
+		DLL void Free();
 
 		//::.. GET FUNCTIONS ..:://
-		__declspec(dllexport) const char * GetName();
-		__declspec(dllexport) uint32_t	GetNumVerts();
-		__declspec(dllexport) glm::vec3 * GetPositions();
-		__declspec(dllexport) glm::vec2 * GetTexCoords();
-		__declspec(dllexport) glm::vec3 * GetNormals();
-		__declspec(dllexport) glm::vec3 * GetTangents();
-		__declspec(dllexport) glm::vec3 * GetBiTangents();
-		__declspec(dllexport) glm::vec4 * GetSkinWeights();
-		__declspec(dllexport) glm::vec4 * GetJointIDs();
+		DLL const char * GetName();
+		DLL uint32_t	GetNumVerts();
+		DLL glm::vec3 * GetPositions();
+		DLL glm::vec2 * GetTexCoords();
+		DLL glm::vec3 * GetNormals();
+		DLL glm::vec3 * GetTangents();
+		DLL glm::vec3 * GetBiTangents();
+		DLL glm::vec4 * GetSkinWeights();
+		DLL glm::vec4 * GetJointIDs();
 
 		//::.. SET FUNCTIONS ..:://
-		__declspec(dllexport) void SetFileName(const char * fileName);
-		__declspec(dllexport) void SetNumVerts(uint32_t numVerts);
-		__declspec(dllexport) void SetPositions(glm::vec3 * pos);
-		__declspec(dllexport) void SetTexCoords(glm::vec2 * tex);
-		__declspec(dllexport) void SetNormals(glm::vec3 * nor);
-		__declspec(dllexport) void SetTangents(glm::vec3 * tan);
-		__declspec(dllexport) void SetBiTangents(glm::vec3 * bi);
-		__declspec(dllexport) void SetSkinWeights(glm::vec4 * weights);
-		__declspec(dllexport) void SetJointIDs(glm::vec4 * jointIDs);
+		DLL void SetFileName(const char * fileName);
+		DLL void SetNumVerts(uint32_t numVerts);
+		DLL void SetPositions(glm::vec3 * pos);
+		DLL void SetTexCoords(glm::vec2 * tex);
+		DLL void SetNormals(glm::vec3 * nor);
+		DLL void SetTangents(glm::vec3 * tan);
+		DLL void SetBiTangents(glm::vec3 * bi);
+		DLL void SetSkinWeights(glm::vec4 * weights);
+		DLL void SetJointIDs(glm::vec4 * jointIDs);
 
 
 	private:
 		//::.. HELP FUNCTIONS .:://
-		__declspec(dllexport) void Init();
+		DLL void Init();
 
 	private:
 		bool			m_isLoaded;

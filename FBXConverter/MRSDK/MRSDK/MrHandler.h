@@ -6,48 +6,50 @@
 #include "MrMeshHandler.h"
 #include "MrSkelHandler.h"
 #include "MrAnimHandler.h"
+#include "MrMatHandler.h"
+
 
 #include <string>
 #include <cstring>
 #include <cstdint>
 
 
-#if IMPORT
-#define DLL __declspec(dllimport) 
+#if DLLEXPORT
+#define DLL __declspec(dllexport)
 #else
-#define DLL __declspec(dllexport) 
-#endif 
+#define DLL __declspec(dllimport)
+#endif
 
 
-namespace MR
+namespace mr
 {
 	class MrHandler
 	{
 	public:
 		//::.. CONSTRUCTORS ..:://
-		__declspec(dllexport) MrHandler();
-		__declspec(dllexport) virtual ~MrHandler();
+		DLL MrHandler();
+		DLL virtual ~MrHandler();
 
 		//::.. IMPORT/EXPORT ..:://
-		__declspec(dllexport) bool Import(const char * filepath);
-		__declspec(dllexport) bool Export();
+		DLL bool Import(const char * filepath);
+		DLL bool Export();
 
-		__declspec(dllexport) void Free();
+		DLL void Free();
 
 		//::.. GET FUNCTIONS ..:://
-		__declspec(dllexport) const char * GetName();
-		__declspec(dllexport) uint32_t GetNumMeshHandlers();
-		__declspec(dllexport) uint32_t GetNumSkelHandlers();
-		__declspec(dllexport) uint32_t GetNumAnimHandlers();
-		__declspec(dllexport) MrMeshHandler * GetMeshHandlers();
-		__declspec(dllexport) MrSkelHandler * GetSkelHandlers();
-		__declspec(dllexport) MrAnimHandler * GetAnimHandlers();
+		DLL const char * GetName();
+		DLL uint32_t GetNumMeshHandlers();
+		DLL uint32_t GetNumSkelHandlers();
+		DLL uint32_t GetNumAnimHandlers();
+		DLL MrMeshHandler * GetMeshHandlers();
+		DLL MrSkelHandler * GetSkelHandlers();
+		DLL MrAnimHandler * GetAnimHandlers();
 
 		//::.. SET FUNCTIONS ..:://
-		__declspec(dllexport) void SetName(const char * name);
-		__declspec(dllexport) void SetMeshHandlers(MrMeshHandler * meshHandlers, uint32_t num);
-		__declspec(dllexport) void SetSkelHandlers(MrSkelHandler * skelHandlers, uint32_t num);
-		__declspec(dllexport) void SetAnimHandlers(MrAnimHandler * animHandlers, uint32_t num);
+		DLL void SetName(const char * name);
+		DLL void SetMeshHandlers(MrMeshHandler * meshHandlers, uint32_t num);
+		DLL void SetSkelHandlers(MrSkelHandler * skelHandlers, uint32_t num);
+		DLL void SetAnimHandlers(MrAnimHandler * animHandlers, uint32_t num);
 
 	private:
 		//::.. HELP FUNCTIONS ..:://

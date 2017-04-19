@@ -1,7 +1,7 @@
 #include "MrMatHandler.h"
 
 
-namespace MR
+namespace mr
 {
 	//::.. CONSTURCTORS ..:://
 	MrMatHandler::MrMatHandler()
@@ -18,13 +18,79 @@ namespace MR
 	//::.. IMPORT/EXPORT ..:://
 	bool MrMatHandler::Import(const char * filepath)
 	{
-		return false;
+		if (m_isLoaded)
+		{
+			Free();
+		}
+
+		std::ifstream file(filepath, std::ios::binary);
+
+		if (!file.is_open())
+		{
+			return false;
+		}
+
+		file.read(reinterpret_cast<char*>(&m_numTextures), sizeof(uint32_t));
+
+		m_textures = new MrTexture[m_numTextures];
+
+		for (uint32_t i = 0; i < m_numTextures; i++)
+		{
+			file.read(reinterpret_cast<char*>(&m_textures[i].textureFlag), sizeof(uint32_t));
+			file.read(reinterpret_cast<char*>(&m_textures[i].numComponents), sizeof(uint32_t));
+			file.read(reinterpret_cast<char*>(&m_textures[i].width), sizeof(int32_t));
+			file.read(reinterpret_cast<char*>(&m_textures[i].height), sizeof(int32_t));
+
+			// Size.
+			uint32_t size = static_cast<uint32_t>(m_textures[i].numComponents * m_textures[i].width * m_textures[i].height);
+
+			m_textures[i].data = new int32_t[size];
+
+			file.read(reinterpret_cast<char*>(m_textures[i].data), sizeof(int32_t) * size);
+
+		}
+
+		// Close file.
+		file.close();
+
+		m_isLoaded = true;
+
+		return true;
 	}
 
 
 	bool MrMatHandler::Export(const char * filepath)
 	{
-		return false;
+		if (!m_isLoaded)
+		{
+			return false;
+		}
+
+		std::ofstream file(filepath, std::ios::binary);
+
+		if (!file.is_open())
+		{
+			return false;
+		}
+
+		file.write(reinterpret_cast<char*>(&m_numTextures), sizeof(uint32_t));
+
+		for (uint32_t i = 0; i < m_numTextures; i++)
+		{
+			file.write(reinterpret_cast<char*>(&m_textures[i].textureFlag), sizeof(uint32_t));
+			file.write(reinterpret_cast<char*>(&m_textures[i].numComponents), sizeof(uint32_t));
+			file.write(reinterpret_cast<char*>(&m_textures[i].width), sizeof(int32_t));
+			file.write(reinterpret_cast<char*>(&m_textures[i].height), sizeof(int32_t));
+
+			// Size.
+			uint32_t size = static_cast<uint32_t>(m_textures[i].numComponents * m_textures[i].width * m_textures[i].height);
+			file.write(reinterpret_cast<char*>(m_textures[i].data), sizeof(int32_t) * size);
+			
+		}
+
+		file.close();
+
+		return true;
 	}
 
 
@@ -33,6 +99,11 @@ namespace MR
 		if (!m_isLoaded)
 		{
 			return;
+		}
+
+		for (uint32_t i = 0; i < m_numTextures; i++)
+		{
+			delete[] m_textures[i].data;
 		}
 
 		delete[] m_textures;

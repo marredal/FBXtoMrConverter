@@ -19,6 +19,8 @@ int main(int argc, char** argv) {
 
 
 
-	getchar();
+	SuperExporter se;
+	se.Run();
+
 	return 0;
 }
