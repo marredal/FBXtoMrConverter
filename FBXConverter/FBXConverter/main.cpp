@@ -1,4 +1,5 @@
 #include "Manager.h"
+#include "SuperExporter.h"
 #include <iostream>
 #pragma comment(lib, "libfbxsdk.lib")
 
@@ -11,6 +12,10 @@ int main(int argc, char** argv) {
 	m_mananger.Init();
 
 	m_mananger.Run();
+
+	SuperExporter hej;
+	hej.AddMesh();
+	
 
 
 

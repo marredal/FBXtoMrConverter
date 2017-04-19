@@ -23,8 +23,9 @@ public:
 	void Init();
 	void Run();
 
-	void SendInfo();
-	void sendPos()
+
+	//..::GET FUNCTIONS::..//
+	//std::vector<glm::vec3> GetPos();
 
 
 
@@ -35,7 +36,6 @@ private:
 	FbxImporter*	m_Importer;
 
 	FbxNode*		m_root;
-	
 	
 	VertexInfo		m_vertexInfo;
 };

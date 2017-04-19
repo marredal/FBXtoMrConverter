@@ -1,6 +1,7 @@
 #include "SuperExporter.h"
 
-
+#include <MrHandler.h>
+#include "VertexInfo.h"
 
 SuperExporter::SuperExporter()
 {
@@ -69,6 +70,13 @@ void SuperExporter::Convert()
 void SuperExporter::AddMesh()
 {
 
+	uint32_t t = 8;
+	m_mesh->SetPositions(&m_target->GetPos()[0]);
+	m_mesh->SetNumVerts(t);
+	m_mesh->SetNormals(&m_target->GetNormal()[0]);
+	m_mesh->SetTexCoords(&m_target->GetUV()[0]);
+
+	m_mesh->Import("test");
 }
 
 void SuperExporter::AddSkeleton()

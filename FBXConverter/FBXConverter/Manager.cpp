@@ -55,7 +55,8 @@ void Manager::Run()
 	}
 }
 
-void Manager::SendInfo(std::vector<glm::vec3>)
-{
-}
+//std::vector<glm::vec3> Manager::GetPos()
+//{
+//	return m_vertexInfo.GetPos();
+//}
 

@@ -11,14 +11,6 @@
 #include <cstring>
 #include <cstdint>
 
-
-#if IMPORT
-#define DLL __declspec(dllimport) 
-#else
-#define DLL __declspec(dllexport) 
-#endif 
-
-
 namespace MR
 {
 	class MrHandler

@@ -13,6 +13,11 @@ VertexInfo::~VertexInfo()
 {
 }
 
+void VertexInfo::init()
+{
+
+}
+
 
 
 void VertexInfo::SavePosition(FbxNode* pNode)
@@ -190,7 +195,7 @@ void VertexInfo::SavetNormal(FbxNode * pNode)
 		this->SaveUV(pNode->GetChild(i));
 	}
 }
-std::vector<glm::vec3> VertexInfo::GetPosition() const
+std::vector<glm::vec3> VertexInfo::GetPos() const
 {
 	return m_postion;
 }

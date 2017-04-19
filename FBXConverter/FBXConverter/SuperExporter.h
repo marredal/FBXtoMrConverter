@@ -23,7 +23,11 @@ public:
 	void Export();
 
 private:
+	VertexInfo * m_target;
+
+
 	MR::MrAnimHandler * m_animHandler;
+	MR::MrMeshHandler * m_mesh;
 	
 };
 

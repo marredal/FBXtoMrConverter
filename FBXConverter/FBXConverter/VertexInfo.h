@@ -14,6 +14,9 @@ public:
 	VertexInfo();
 	virtual ~VertexInfo();
 
+
+	void init();
+
 	//..::SAVE FUNCTIONS::..//
 	void SavePosition(FbxNode* pNode);
 	void SaveUV(FbxNode* pNode);
@@ -22,7 +25,7 @@ public:
 	void SaveBiTangent (FbxNode* pNode);
 
 	//..::GET FUNCTIONS::..//
-	std::vector<glm::vec3> GetPosition() const;
+	std::vector<glm::vec3> GetPos() const;
 	std::vector<glm::vec2> GetUV() const;
 	std::vector<glm::vec3> GetNormal() const;
 	std::vector<glm::vec3> GetTangent() const;
