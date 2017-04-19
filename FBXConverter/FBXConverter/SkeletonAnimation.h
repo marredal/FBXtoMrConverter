@@ -12,16 +12,18 @@ public:
 	void Init();
 	void Shutdown();
 	void GetSkeleton();
+	void Export();
 
 private:
 	FbxAMatrix GeometryTransformation(FbxNode* node);
 	void SkeletonHierachyRecursive(FbxNode* node, int index, int parentIndex);
 	void SkeletonHierachy(FbxNode* node);
 	uint32_t FindJointIndex(const std::string& name);
-	void fixControlPoints(FbxNode* node);
+	void FixControlPoints(FbxNode* node);
 	void SkeletonJointsAndAnimations(FbxNode* node);
-	void checkMesh(FbxNode* node);
+	void CheckMesh(FbxNode* node);
 	void GetAnimation();
+	
 
 
 
@@ -31,6 +33,7 @@ private:
 	FbxImporter* m_Importer;
 	Skeleton m_Skeleton;
 	std::unordered_map<uint32_t, ControlPoint*>m_ControlPoints;
+	bool m_HasAnimation;
 
 };
 

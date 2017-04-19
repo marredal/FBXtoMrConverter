@@ -21,7 +21,7 @@ struct Keyframe
 struct Joint
 {
 	std::string Name;
-	uint32_t ParentIndex;
+	int32_t ParentIndex;
 	FbxAMatrix GlobalBindposeInverse;
 	Keyframe* Animation;
 	FbxNode* Node;

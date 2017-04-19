@@ -377,7 +377,7 @@ int main(int argc, char** argv)
 {
 	SkeletonAnimation* exporter = new SkeletonAnimation();
 	exporter->Init();
-	exporter->GetSkeleton();
+	exporter->Export();
 
 	getchar();
 	exporter->Shutdown();
