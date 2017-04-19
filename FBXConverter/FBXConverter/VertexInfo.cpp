@@ -28,16 +28,16 @@ void VertexInfo::SavePosition(FbxNode* pNode)
 		{
 			glm::vec3 output;
 			output.x = mesh->GetControlPointAt(i).mData[0];
-			output.x = mesh->GetControlPointAt(i).mData[1];
+			output.y = mesh->GetControlPointAt(i).mData[1];
 			output.z = mesh->GetControlPointAt(i).mData[2];
 			m_postion.push_back(output);
 		}
 	}
-	int count = pNode->GetChildCount();
+	/*int count = pNode->GetChildCount();
 	for (int i = 0; i < count; i++)
 	{
 		SavePosition(pNode->GetChild(i));
-	}
+	}*/
 }
 
 void VertexInfo::SaveUV(FbxNode* pNode)
@@ -173,16 +173,23 @@ void VertexInfo::SavetNormal(FbxNode * pNode)
 						if (normalElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
 							normalIndex = normalElement->GetIndexArray().GetAt(indexByPolygonVertex);
 						
+
 						FbxDouble3 normal = normalElement->GetDirectArray().GetAt(normalIndex);
 
-						m_normal.push_back(glm::vec3(normal[i]));
+						m_normal.push_back(glm::vec3(normal[0], normal[1], normal[2]));
+
+						indexByPolygonVertex++;
 					}
 				}
 			}
 		}
 	}
+	int count = pNode->GetChildCount();
+	for (int i = 0; i < count; i++)
+	{
+		this->SaveUV(pNode->GetChild(i));
+	}
 }
-
 std::vector<glm::vec3> VertexInfo::GetPosition() const
 {
 	return m_postion;

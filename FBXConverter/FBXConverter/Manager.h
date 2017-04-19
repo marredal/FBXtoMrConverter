@@ -23,7 +23,9 @@ public:
 	void Init();
 	void Run();
 
-	MeshInfo GetMesh(MeshInfo mesh);
+	void SendInfo();
+	void sendPos()
+
 
 
 

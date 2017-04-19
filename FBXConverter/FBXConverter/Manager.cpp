@@ -14,7 +14,7 @@ Manager::~Manager()
 
 void Manager::Init()
 {
-	const char* m_FilePath = ".\\Assets\\tangentTest.fbx";
+	const char* m_FilePath = ".\\Assets\\t.fbx";
 
 	m_Manager = FbxManager::Create();
 	FbxIOSettings *ios = FbxIOSettings::Create(m_Manager, IOSROOT);
@@ -55,11 +55,7 @@ void Manager::Run()
 	}
 }
 
-MeshInfo Manager::GetMesh(MeshInfo mesh)
+void Manager::SendInfo(std::vector<glm::vec3>)
 {
-	mesh.pos = m_vertexInfo.GetPosition();
-	mesh.nor = m_vertexInfo.GetNormal();
-	mesh.uv = m_vertexInfo.GetUV();
-	
-	return mesh;
 }
+
