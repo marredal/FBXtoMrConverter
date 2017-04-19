@@ -1,16 +1,17 @@
-#ifndef __EXPORTER_H__
-#define __EXPORTER_H__
+#ifndef __SKELETONANIMATION_H__
+#define __SKELETONANIMATION_H__
 #define FBXSDK_SHARED
 
 #include "ExporterStruct.h"
 
-class Exporter
+class SkeletonAnimation
 {
 public:
-	Exporter();
-	virtual ~Exporter();
+	SkeletonAnimation();
+	virtual ~SkeletonAnimation();
 	void Init();
 	void Shutdown();
+	void GetSkeleton();
 
 private:
 	FbxAMatrix GeometryTransformation(FbxNode* node);
@@ -20,6 +21,8 @@ private:
 	void fixControlPoints(FbxNode* node);
 	void SkeletonJointsAndAnimations(FbxNode* node);
 	void checkMesh(FbxNode* node);
+	void GetAnimation();
+
 
 
 private:
@@ -31,4 +34,4 @@ private:
 
 };
 
-#endif // !__EXPORTER_H__
+#endif

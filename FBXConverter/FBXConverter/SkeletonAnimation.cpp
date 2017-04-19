@@ -2,18 +2,18 @@
 
 
 
-Exporter::Exporter()
+SkeletonAnimation::SkeletonAnimation()
 {
 	// Do nothing...
 }
 
 
-Exporter::~Exporter()
+SkeletonAnimation::~SkeletonAnimation()
 {
 	// Do nothing...
 }
 
-void Exporter::Init()
+void SkeletonAnimation::Init()
 {
 	m_Manager = FbxManager::Create();
 	FbxIOSettings* ioSettings = FbxIOSettings::Create(m_Manager, IOSROOT);
@@ -32,7 +32,7 @@ void Exporter::Init()
 	m_Importer->Destroy();
 }
 
-void Exporter::Shutdown()
+void SkeletonAnimation::Shutdown()
 {
 	m_Scene->Destroy();
 	m_Manager->Destroy();
@@ -40,7 +40,7 @@ void Exporter::Shutdown()
 	m_Skeleton.Joints.clear();
 }
 
-void Exporter::GetSkeleton()
+void SkeletonAnimation::GetSkeleton()
 {
 	SkeletonHierachy(m_Scene->GetRootNode());
 
@@ -54,7 +54,7 @@ void Exporter::GetSkeleton()
 
 }
 
-FbxAMatrix Exporter::GeometryTransformation(FbxNode * node)
+FbxAMatrix SkeletonAnimation::GeometryTransformation(FbxNode * node)
 {
 	const FbxVector4 translation = node->GetGeometricTranslation(FbxNode::eSourcePivot);
 	const FbxVector4 rotation = node->GetGeometricRotation(FbxNode::eSourcePivot);
@@ -63,7 +63,7 @@ FbxAMatrix Exporter::GeometryTransformation(FbxNode * node)
 	return FbxAMatrix(translation, rotation, scaling);
 }
 
-void Exporter::SkeletonHierachyRecursive(FbxNode * node, int index, int parentIndex)
+void SkeletonAnimation::SkeletonHierachyRecursive(FbxNode * node, int index, int parentIndex)
 {
 	if (node->GetNodeAttribute() && node->GetNodeAttribute() && node->GetNodeAttribute()->GetAttributeType() == FbxNodeAttribute::eSkeleton)
 	{
@@ -79,7 +79,7 @@ void Exporter::SkeletonHierachyRecursive(FbxNode * node, int index, int parentIn
 	}
 }
 
-void Exporter::SkeletonHierachy(FbxNode * node)
+void SkeletonAnimation::SkeletonHierachy(FbxNode * node)
 {
 	for (int i = 0; i < node->GetChildCount(); i++)
 	{
@@ -88,7 +88,7 @@ void Exporter::SkeletonHierachy(FbxNode * node)
 	}
 }
 
-uint32_t Exporter::FindJointIndex(const std::string & name)
+uint32_t SkeletonAnimation::FindJointIndex(const std::string & name)
 {
 	for (int i = 0; i < m_Skeleton.Joints.size(); i++)
 	{
@@ -99,7 +99,7 @@ uint32_t Exporter::FindJointIndex(const std::string & name)
 	}
 }
 
-void Exporter::fixControlPoints(FbxNode * node)
+void SkeletonAnimation::fixControlPoints(FbxNode * node)
 {
 	FbxMesh* currentMesh = node->GetMesh();
 	uint32_t controlPointCount = currentMesh->GetControlPointsCount();
@@ -115,7 +115,7 @@ void Exporter::fixControlPoints(FbxNode * node)
 	}
 }
 
-void Exporter::SkeletonJointsAndAnimations(FbxNode * node)
+void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 {
 	FbxMesh* currentMesh = node->GetMesh();
 
@@ -202,7 +202,7 @@ void Exporter::SkeletonJointsAndAnimations(FbxNode * node)
 
 
 
-void Exporter::checkMesh(FbxNode * node)
+void SkeletonAnimation::checkMesh(FbxNode * node)
 {
 
 	if (node->GetNodeAttribute())
@@ -222,7 +222,7 @@ void Exporter::checkMesh(FbxNode * node)
 	}
 }
 
-void Exporter::GetAnimation()
+void SkeletonAnimation::GetAnimation()
 {
 	//for (int i = 0; i < m_Skeleton.Joints.size(); i++)
 	//{
@@ -251,9 +251,9 @@ void Exporter::GetAnimation()
 			swag->GlobalTransform.SetR(rotation);
 			FbxMatrix yolo = swag->GlobalTransform;
 			
-			std::cout << swag->GlobalTransform.GetROnly().mData[0] << ", ";
-			std::cout << swag->GlobalTransform.GetROnly().mData[1] << ", ";
-			std::cout << swag->GlobalTransform.GetROnly().mData[2] << std::endl;
+			std::cout << swag->GlobalTransform.GetR().mData[0] << ", ";
+			std::cout << swag->GlobalTransform.GetR().mData[1] << ", ";
+			std::cout << swag->GlobalTransform.GetR().mData[2] << std::endl;
 
 			swag = swag->Next;
 		}

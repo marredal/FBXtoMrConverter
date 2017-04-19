@@ -1,31 +1,31 @@
 #define FBXSDK_SHARED
-#include "Exporter.h"
+#include "SkeletonAnimation.h"
 
 
-void Init()
-{
-	manager = FbxManager::Create();
-
-	FbxIOSettings* ioSettings = FbxIOSettings::Create(manager, IOSROOT);
-	//ioSettings->SetBoolProp(IMP_FBX_MATERIAL, true);
-	//ioSettings->SetBoolProp(IMP_FBX_TEXTURE, true);
-	//ioSettings->SetBoolProp(IMP_FBX_ANIMATION, false);
-
-	manager->SetIOSettings(ioSettings);
-
-	importer = FbxImporter::Create(manager, "");
-	bool importInit = importer->Initialize(".\\Assets\\hej5.fbx", -1, manager->GetIOSettings());
-	if (!importInit)
-	{
-		std::cout << "Error importing file!" << std::endl;
-		getchar();
-		return;
-	}
-
-	scene = FbxScene::Create(manager, "FBX Scene");
-	importer->Import(scene);
-	importer->Destroy();
-}
+//void Init()
+//{
+//	manager = FbxManager::Create();
+//
+//	FbxIOSettings* ioSettings = FbxIOSettings::Create(manager, IOSROOT);
+//	//ioSettings->SetBoolProp(IMP_FBX_MATERIAL, true);
+//	//ioSettings->SetBoolProp(IMP_FBX_TEXTURE, true);
+//	//ioSettings->SetBoolProp(IMP_FBX_ANIMATION, false);
+//
+//	manager->SetIOSettings(ioSettings);
+//
+//	importer = FbxImporter::Create(manager, "");
+//	bool importInit = importer->Initialize(".\\Assets\\hej5.fbx", -1, manager->GetIOSettings());
+//	if (!importInit)
+//	{
+//		std::cout << "Error importing file!" << std::endl;
+//		getchar();
+//		return;
+//	}
+//
+//	scene = FbxScene::Create(manager, "FBX Scene");
+//	importer->Import(scene);
+//	importer->Destroy();
+//}
 
 // Function
 FbxString GetNodeAttributeTypeName(FbxNodeAttribute::EType nodeType)
@@ -375,8 +375,9 @@ void PrintNode(FbxNode* node)
 
 int main(int argc, char** argv)
 {
-	Exporter* exporter = new Exporter();
+	SkeletonAnimation* exporter = new SkeletonAnimation();
 	exporter->Init();
+	exporter->GetSkeleton();
 
 	getchar();
 	exporter->Shutdown();

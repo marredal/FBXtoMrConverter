@@ -148,12 +148,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Exporter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SkeletonAnimation.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Exporter.h" />
+    <ClInclude Include="SkeletonAnimation.h" />
     <ClInclude Include="ExporterStruct.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
