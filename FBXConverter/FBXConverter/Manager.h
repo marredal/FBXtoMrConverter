@@ -8,12 +8,6 @@
 #include "glm.hpp"
 #include <iostream>
 
-struct MeshInfo {
-	std::vector<glm::vec3> pos;
-	std::vector<glm::vec3> nor;
-	std::vector<glm::vec2> uv;
-
-};
 
 class Manager
 {
@@ -21,7 +15,7 @@ public:
 	Manager();
 	virtual ~Manager();
 	void Init();
-	void Run();
+	void Run(VertexInfo &target);
 
 
 	//..::GET FUNCTIONS::..//
@@ -37,7 +31,7 @@ private:
 
 	FbxNode*		m_root;
 	
-	VertexInfo		m_vertexInfo;
+	//VertexInfo		m_vertexInfo;
 };
 
 

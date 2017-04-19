@@ -9,8 +9,10 @@
 
 #if DLLEXPORT
 #define DLL __declspec(dllexport)
-#else
+#elif DLLIMPORT
 #define DLL __declspec(dllimport)
+#else
+#error "NONE IS DEFINED"
 #endif
 
 
@@ -55,7 +57,7 @@ namespace mr
 
 	private:
 		//::.. HELP FUNCTIONS ..:://
-		__declspec(dllexport) void Init();
+		DLL void Init();
 
 	private:
 		const char *		m_name;

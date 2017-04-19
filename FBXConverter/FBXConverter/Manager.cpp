@@ -41,15 +41,15 @@ void Manager::Init()
 }
 
 
-void Manager::Run()
+void Manager::Run(VertexInfo &target)
 {
 	if (m_root)
 	{
 		for (int i = 0; i < m_root->GetChildCount(); i++)
 		{
-			m_vertexInfo.SavePosition(m_root->GetChild(i));
-			m_vertexInfo.SaveUV(m_root->GetChild(i));
-			m_vertexInfo.SavetNormal(m_root->GetChild(i));
+			target.SavePosition(m_root->GetChild(i));
+			target.SaveUV(m_root->GetChild(i));
+			target.SavetNormal(m_root->GetChild(i));
 
 		}
 	}
