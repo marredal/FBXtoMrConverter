@@ -2,7 +2,7 @@
 
 
 
-namespace MR
+namespace mr
 {
 	MrMeshHandler::MrMeshHandler()
 	{

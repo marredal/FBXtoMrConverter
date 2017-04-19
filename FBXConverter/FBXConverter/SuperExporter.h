@@ -23,7 +23,7 @@ public:
 	void Export();
 
 private:
-	MR::MrAnimHandler * m_animHandler;
+	mr::MrAnimHandler * m_animHandler;
 	
 };
 
