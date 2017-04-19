@@ -149,12 +149,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraInfo.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="SuperExporter.cpp" />
     <ClCompile Include="VertexInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraInfo.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="SuperExporter.h" />
     <ClInclude Include="VertexInfo.h" />

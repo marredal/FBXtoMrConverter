@@ -34,7 +34,6 @@ private:
 
 	FbxNode*		m_root;
 	
-	
 	VertexInfo		m_vertexInfo;
 };
 
