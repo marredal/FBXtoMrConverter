@@ -183,6 +183,7 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 					FbxAMatrix currentTransformOffset = node->EvaluateGlobalTransform(currentTime) * identityMatrix;
 					(*currentAnimation)->GlobalTransform = currentTransformOffset.Inverse() * currentCluster->GetLink()->EvaluateGlobalTransform(currentTime);
 					currentAnimation = &((*currentAnimation)->Next);
+					
 				}
 			}
 		}
@@ -251,9 +252,9 @@ void SkeletonAnimation::GetAnimation()
 			swag->GlobalTransform.SetR(rotation);
 			FbxMatrix yolo = swag->GlobalTransform;
 			
-			std::cout << swag->GlobalTransform.GetR().mData[0] << ", ";
-			std::cout << swag->GlobalTransform.GetR().mData[1] << ", ";
-			std::cout << swag->GlobalTransform.GetR().mData[2] << std::endl;
+			//std::cout << swag->GlobalTransform.GetR().mData[0] << ", ";
+			//std::cout << swag->GlobalTransform.GetR().mData[1] << ", ";
+			//std::cout << swag->GlobalTransform.GetR().mData[2] << std::endl;
 
 			swag = swag->Next;
 		}
