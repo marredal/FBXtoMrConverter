@@ -148,12 +148,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SkeletonAnimation.cpp" />
+    <ClCompile Include="Exporter.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SkeletonAnimation.h" />
-    <ClInclude Include="SkeletonStruct.h" />
+    <ClInclude Include="Exporter.h" />
+    <ClInclude Include="ExporterStruct.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -24,15 +24,15 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SkeletonAnimation.cpp">
+    <ClCompile Include="Exporter.cpp">
       <Filter>Source Files\Export</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SkeletonAnimation.h">
+    <ClInclude Include="Exporter.h">
       <Filter>Source Files\Export</Filter>
     </ClInclude>
-    <ClInclude Include="SkeletonStruct.h">
+    <ClInclude Include="ExporterStruct.h">
       <Filter>Source Files\Struct</Filter>
     </ClInclude>
   </ItemGroup>
