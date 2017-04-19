@@ -100,7 +100,7 @@ public:
 			eNTSCDropFrame,
 			eNTSCFullFrame,
 			ePAL,
-			eFrames,
+			eFrames24,
 			eFrames1000,
 			eFilmFullFrame,
 			eCustom,
