@@ -133,9 +133,26 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 			FbxAMatrix transformLinkMat;
 			FbxAMatrix globalBindposeInverseMat;
 
+
+			//first.g
 			currentCluster->GetTransformMatrix(transformMat);
 			currentCluster->GetTransformLinkMatrix(transformLinkMat);
 			globalBindposeInverseMat = transformLinkMat.Inverse() * transformMat * identityMatrix;
+
+			std::cout << "<mat>" << static_cast<float>(globalBindposeInverseMat.Get(0, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 3)) << "," << std::endl;
+				std::cout<<static_cast<float>(globalBindposeInverseMat.Get(1, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 3)) << "," << std::endl;
+				std::cout<<static_cast<float>(globalBindposeInverseMat.Get(2, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 3)) << "," << std::endl;
+				std::cout<<static_cast<float>(globalBindposeInverseMat.Get(3, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 3)) << "</mat>\n";
+
+			//Convert to mat4
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 4; j++) {
+					float first = globalBindposeInverseMat[i][j];
+					m_globalBindPoseMat[i][j] = first;
+				}
+			}
+			glm::inverse(m_globalBindPoseMat);
+
 
 			// Update skeleton
 			m_Skeleton.Joints[currentJointIndex].GlobalBindposeInverse = globalBindposeInverseMat;
@@ -148,10 +165,6 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 				currentBlendingIndexWeightPair.BlendingIndex = currentJointIndex;
 				currentBlendingIndexWeightPair.BlendingWeight = currentCluster->GetControlPointWeights()[indiceIndex];
 				m_ControlPoints[currentCluster->GetControlPointIndices()[indiceIndex]]->BlendingInfo.push_back(currentBlendingIndexWeightPair);
-
-				std::cout << "BlendingIndex: " << currentBlendingIndexWeightPair.BlendingIndex << std::endl;
-				std::cout << "BlendingWeight: " << currentBlendingIndexWeightPair.BlendingWeight << std::endl;
-				std::cout << "INDICE: " << indiceIndex << std::endl;
 			}
 
 			FbxAnimStack* currentAnimStack = m_Scene->GetSrcObject<FbxAnimStack>(0);
@@ -164,6 +177,9 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 			FbxLongLong animationLength = end.GetFrameCount(FbxTime::eFrames24) - start.GetFrameCount(FbxTime::eFrames24) + 1;
 			m_firstFrame = start.GetFrameCount(FbxTime::eFrames24);
 			m_lastFrame = end.GetFrameCount(FbxTime::eFrames24);
+
+			std::cout << m_firstFrame << std::endl;
+			std::cout << m_lastFrame << std::endl;
 			Keyframe** currentAnimation = &m_Skeleton.Joints[currentJointIndex].Animation;
 
 
@@ -185,17 +201,6 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 				currentAnimation = &((*currentAnimation)->Next);
 
 			}
-		}
-	}
-
-	BlendingIndexWeightPair currBlendingIndexWeightPair;
-	currBlendingIndexWeightPair.BlendingIndex = 0;
-	currBlendingIndexWeightPair.BlendingWeight = 0;
-	for (auto itr = m_ControlPoints.begin(); itr != m_ControlPoints.end(); ++itr)
-	{
-		for (unsigned int i = itr->second->BlendingInfo.size(); i <= 4; ++i)
-		{
-			itr->second->BlendingInfo.push_back(currBlendingIndexWeightPair);
 		}
 	}
 }
@@ -274,12 +279,36 @@ const char* SkeletonAnimation::GetName() {
 
 		std::cout << "current index: " << m_index.at(index) << std::endl;
 		std::cout << "current parent index: " << m_parentIndex.at(index) << std::endl;
+		std::cout << "__________________________" << std::endl;
 
 	}
 	return "hello";
 }
 
 int32_t SkeletonAnimation::GetFirstKeyFrame() {
+	
+	return m_firstFrame;
+}
 
-	return 1;
+int32_t SkeletonAnimation::GetLastKeyFrame() {
+
+	return m_lastFrame;
+}
+
+
+void SkeletonAnimation::SetBindPose(int32_t &bindPoseJointID, glm::mat4 &BindPoseMatrix) {
+
+	bindPoseJointID = m_index.at(0);
+	BindPoseMatrix = m_globalBindPoseMat;
+
+}
+
+std::vector<int32_t> SkeletonAnimation::GetJointID() {
+
+	return  m_index;
+}
+
+std::vector<int32_t> SkeletonAnimation::GetParentID() {
+
+	return  m_parentIndex;
 }
