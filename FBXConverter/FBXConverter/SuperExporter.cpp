@@ -76,7 +76,7 @@ void SuperExporter::AddMesh(VertexInfo &target)
 	glm::vec4 hejj[1] = { glm::vec4(0.0f) };
 
 	uint32_t t = 8;
-	m_mesh->SetNumVerts(1);
+	m_mesh->SetNumVerts(9);
 	m_mesh->SetPositions(&target.GetPos()[0]);
 	m_mesh->SetNormals(&target.GetNormal()[0]);
 	m_mesh->SetTexCoords(&target.GetUV()[0]);
@@ -85,7 +85,7 @@ void SuperExporter::AddMesh(VertexInfo &target)
 	m_mesh->SetSkinWeights(&hejj[0]);
 	m_mesh->SetJointIDs(&hejj[0]);
 
-	m_mesh->Export("hej.mr");
+	m_mesh->Export("T.mr");
 }
 
 void SuperExporter::AddSkeleton()
