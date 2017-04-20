@@ -59,7 +59,7 @@ namespace mr
 		bool			m_isLoaded;
 
 		const char *	m_fileName;
-		uint64_t		m_numVerts;
+		uint32_t		m_numVerts;
 
 		glm::vec3 *		m_postions;
 		glm::vec2 *		m_texCoords;

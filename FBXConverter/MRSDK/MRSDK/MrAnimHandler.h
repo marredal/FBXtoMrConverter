@@ -9,10 +9,8 @@
 
 #if DLLEXPORT
 #define DLL __declspec(dllexport)
-#elif DLLIMPORT
-#define DLL __declspec(dllimport)
 #else
-#error "NONE IS DEFINED"
+#define DLL __declspec(dllimport)
 #endif
 
 
