@@ -5,7 +5,7 @@
 SkeletonAnimation::SkeletonAnimation()
 {
 	m_HasAnimation = true;
-	
+
 }
 
 
@@ -50,7 +50,7 @@ void SkeletonAnimation::SkeletonHierachyRecursive(FbxNode * node, int index, int
 		currentJoint.Name = node->GetName();
 		m_index.push_back(index);
 		m_parentIndex.push_back(parentIndex);
-		
+
 		m_Skeleton.Joints.push_back(currentJoint);
 		//std::cout << m_Skeleton.Joints[index].Name.c_str() << std::endl;
 
@@ -148,6 +148,10 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 				currentBlendingIndexWeightPair.BlendingIndex = currentJointIndex;
 				currentBlendingIndexWeightPair.BlendingWeight = currentCluster->GetControlPointWeights()[indiceIndex];
 				m_ControlPoints[currentCluster->GetControlPointIndices()[indiceIndex]]->BlendingInfo.push_back(currentBlendingIndexWeightPair);
+
+				std::cout << "BlendingIndex: " << currentBlendingIndexWeightPair.BlendingIndex << std::endl;
+				std::cout << "BlendingWeight: " << currentBlendingIndexWeightPair.BlendingWeight << std::endl;
+				std::cout << "INDICE: " << indiceIndex << std::endl;
 			}
 
 			FbxAnimStack* currentAnimStack = m_Scene->GetSrcObject<FbxAnimStack>(0);
@@ -160,12 +164,9 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 			FbxLongLong animationLength = end.GetFrameCount(FbxTime::eFrames24) - start.GetFrameCount(FbxTime::eFrames24) + 1;
 			m_firstFrame = start.GetFrameCount(FbxTime::eFrames24);
 			m_lastFrame = end.GetFrameCount(FbxTime::eFrames24);
-			
-			std::cout << m_firstFrame << std::endl;
-			std::cout << m_lastFrame << std::endl;
 			Keyframe** currentAnimation = &m_Skeleton.Joints[currentJointIndex].Animation;
 
-			
+
 
 			for (FbxLongLong i = start.GetFrameCount(FbxTime::eFrames24); i <= end.GetFrameCount(FbxTime::eFrames24); i++)
 			{
@@ -175,7 +176,7 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 				(*currentAnimation)->FrameNum = i;
 				FbxAMatrix currentTransformOffset = node->EvaluateLocalTransform(currentTime) * identityMatrix;
 				(*currentAnimation)->GlobalTransform = currentTransformOffset.Inverse() * currentCluster->GetLink()->EvaluateLocalTransform(currentTime);
-			
+
 				//std::cout << "Node name: " << node->GetName() << std::endl;
 				//std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[0] << ", ";
 				//std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[1] << ", ";
@@ -186,6 +187,17 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 			}
 		}
 	}
+
+	BlendingIndexWeightPair currBlendingIndexWeightPair;
+	currBlendingIndexWeightPair.BlendingIndex = 0;
+	currBlendingIndexWeightPair.BlendingWeight = 0;
+	for (auto itr = m_ControlPoints.begin(); itr != m_ControlPoints.end(); ++itr)
+	{
+		for (unsigned int i = itr->second->BlendingInfo.size(); i <= 4; ++i)
+		{
+			itr->second->BlendingInfo.push_back(currBlendingIndexWeightPair);
+		}
+	}
 }
 
 
@@ -193,11 +205,11 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 void SkeletonAnimation::CheckMesh(FbxNode * node)
 {
 
-  	if (node->GetNodeAttribute())
+	if (node->GetNodeAttribute())
 	{
 		switch (node->GetNodeAttribute()->GetAttributeType())
 		{
-		std::cout << node->GetName() << std::endl;
+			std::cout << node->GetName() << std::endl;
 		case FbxNodeAttribute::eMesh:
 			FixControlPoints(node);
 			if (m_HasAnimation)
@@ -218,10 +230,10 @@ void SkeletonAnimation::CheckMesh(FbxNode * node)
 
 void SkeletonAnimation::GetAnimation()
 {
-	
+
 	for (int i = 0; i < m_Skeleton.Joints.size(); i++)
 	{
-		
+
 		FbxVector4 translation = m_Skeleton.Joints[i].GlobalBindposeInverse.GetT();
 		FbxVector4 rotation = m_Skeleton.Joints[i].GlobalBindposeInverse.GetR();
 		translation.Set(translation.mData[0], translation.mData[1], translation.mData[2]);
@@ -230,8 +242,8 @@ void SkeletonAnimation::GetAnimation()
 		m_Skeleton.Joints[i].GlobalBindposeInverse.SetR(rotation);
 		FbxMatrix finalMat = m_Skeleton.Joints[i].GlobalBindposeInverse;
 		finalMat = finalMat.Transpose();
-		
-	}	
+
+	}
 }
 
 void SkeletonAnimation::Export()
@@ -256,13 +268,13 @@ void SkeletonAnimation::SetScene(FbxScene * scene)
 }
 
 const char* SkeletonAnimation::GetName() {
-	
+
 
 	for (int index = 0; index < m_Skeleton.Joints.size(); index++) {
-	
-		std::cout <<"current index: "<< m_index.at(index) << std::endl;
-		std::cout <<"current parent index: "<< m_parentIndex.at(index) << std::endl;
-		
+
+		std::cout << "current index: " << m_index.at(index) << std::endl;
+		std::cout << "current parent index: " << m_parentIndex.at(index) << std::endl;
+
 	}
 	return "hello";
 }
