@@ -62,13 +62,7 @@ FbxAMatrix SkeletonAnimation::GeometryTransformation(FbxNode * node)
 	const FbxVector4 scaling = node->GetGeometricScaling(FbxNode::eSourcePivot);
 
 	FbxAMatrix temp(translation, rotation, scaling);
-	/*std::cout << "<mat>" << static_cast<float>(temp.Get(0, 0)) << "," << static_cast<float>(temp.Get(0, 1)) << "," << static_cast<float>(temp.Get(0, 2)) << "," << static_cast<float>(temp.Get(0, 3)) << ","
 
-		<< static_cast<float>(temp.Get(1, 0)) << "," << static_cast<float>(temp.Get(1, 1)) << "," << static_cast<float>(temp.Get(1, 2)) << "," << static_cast<float>(temp.Get(1, 3)) << ","
-
-		<< static_cast<float>(temp.Get(2, 0)) << "," << static_cast<float>(temp.Get(2, 1)) << "," << static_cast<float>(temp.Get(2, 2)) << "," << static_cast<float>(temp.Get(2, 3)) << ","
-
-		<< static_cast<float>(temp.Get(3, 0)) << "," << static_cast<float>(temp.Get(3, 1)) << "," << static_cast<float>(temp.Get(3, 2)) << "," << static_cast<float>(temp.Get(3, 3)) << "</mat>\n";;*/
 
 	return temp;
 }
@@ -80,10 +74,9 @@ void SkeletonAnimation::SkeletonHierachyRecursive(FbxNode * node, int index, int
 		Joint currentJoint;
 		currentJoint.ParentIndex = parentIndex;
 		currentJoint.Name = node->GetName();
-		//std::cout << "parent index " << parentIndex << std::endl;
-		std::cout << "current node: " << node->GetName();
+		
 		m_Skeleton.Joints.push_back(currentJoint);
-		std::cout << ", child count " << node->GetChildCount(0) << std::endl;
+
 
 	}
 
@@ -190,8 +183,7 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 			FbxLongLong animationLength = end.GetFrameCount(FbxTime::eFrames24) - start.GetFrameCount(FbxTime::eFrames24) + 1;
 			Keyframe** currentAnimation = &m_Skeleton.Joints[currentJointIndex].Animation;
 
-			/*	std::cout << "____________________________________________________________" << std::endl;
-				std::cout << m_Skeleton.Joints[currentJointIndex].Name.c_str() << std::endl;*/
+		
 
 			for (FbxLongLong i = start.GetFrameCount(FbxTime::eFrames24); i <= end.GetFrameCount(FbxTime::eFrames24); i++)
 			{
@@ -212,16 +204,7 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 		}
 	}
 
-	/*BlendingIndexWeightPair currBlendingIndexWeightPair;
-	currBlendingIndexWeightPair.BlendingIndex = 0;
-	currBlendingIndexWeightPair.BlendingWeight = 0;
-	for (auto itr = m_ControlPoints.begin(); itr != m_ControlPoints.end(); ++itr)
-	{
-		for (unsigned int i = itr->second->BlendingInfo.size(); i <= 4; ++i)
-		{
-			itr->second->BlendingInfo.push_back(currBlendingIndexWeightPair);
-		}
-	}*/
+
 
 }
 
@@ -254,10 +237,10 @@ void SkeletonAnimation::CheckMesh(FbxNode * node)
 
 void SkeletonAnimation::GetAnimation()
 {
-	//std::cout << m_Skeleton.Joints.size() << std::endl;
+	
 	for (int i = 0; i < m_Skeleton.Joints.size(); i++)
 	{
-		//std::cout << m_Skeleton.Joints[i].Node->GetName() << std::endl;
+		
 		FbxVector4 translation = m_Skeleton.Joints[i].GlobalBindposeInverse.GetT();
 		FbxVector4 rotation = m_Skeleton.Joints[i].GlobalBindposeInverse.GetR();
 		translation.Set(translation.mData[0], translation.mData[1], translation.mData[2]);
@@ -266,43 +249,10 @@ void SkeletonAnimation::GetAnimation()
 		m_Skeleton.Joints[i].GlobalBindposeInverse.SetR(rotation);
 		FbxMatrix finalMat = m_Skeleton.Joints[i].GlobalBindposeInverse;
 		finalMat = finalMat.Transpose();
-		/*std::cout << "<mat>" << static_cast<float>(finalMat.Get(0, 0)) << "," << static_cast<float>(finalMat.Get(0, 1)) << "," << static_cast<float>(finalMat.Get(0, 2)) << "," << static_cast<float>(finalMat.Get(0, 3)) << ","
-
-			<< static_cast<float>(finalMat.Get(1, 0)) << "," << static_cast<float>(finalMat.Get(1, 1)) << "," << static_cast<float>(finalMat.Get(1, 2)) << "," << static_cast<float>(finalMat.Get(1, 3)) << ","
-
-			<< static_cast<float>(finalMat.Get(2, 0)) << "," << static_cast<float>(finalMat.Get(2, 1)) << "," << static_cast<float>(finalMat.Get(2, 2)) << "," << static_cast<float>(finalMat.Get(2, 3)) << ","
-
-			<< static_cast<float>(finalMat.Get(3, 0)) << "," << static_cast<float>(finalMat.Get(3, 1)) << "," << static_cast<float>(finalMat.Get(3, 2)) << "," << static_cast<float>(finalMat.Get(3, 3)) << "</mat>\n";*/
-
-			//std::cout << m_Skeleton.Joints[i].GlobalBindposeInverse.GetR().mData[0] << ", ";
-			//std::cout << m_Skeleton.Joints[i].GlobalBindposeInverse.GetR().mData[1] << ", ";
-			//std::cout << m_Skeleton.Joints[i].GlobalBindposeInverse.GetR().mData[2] << std::endl;
-
-			//
+		
 	}
 
-	//for (int i = 0; i < m_Skeleton.Joints.size(); i++)
-	//{
-	//	std::cout << m_Skeleton.Joints[i].Name.c_str() << std::endl;
-
-	//	Keyframe* swag = m_Skeleton.Joints[i].Animation;
-	//	while (swag)
-	//	{
-	//		FbxVector4 translation = swag->GlobalTransform.GetT();
-	//		FbxVector4 rotation = swag->GlobalTransform.GetR();
-	//		translation.Set(translation.mData[0], translation.mData[1], translation.mData[2]);
-	//		rotation.Set(rotation.mData[0], rotation.mData[1], rotation.mData[2]);
-	//		swag->GlobalTransform.SetT(translation);
-	//		swag->GlobalTransform.SetR(rotation);
-	//		FbxMatrix yolo = swag->GlobalTransform;
-
-	//		//std::cout << rotation.mData[0] << ", ";
-	//		//std::cout << rotation.mData[1] << ", ";
-	//		//std::cout << rotation.mData[2] << std::endl;
-
-	//		swag = swag->Next;
-		//}
-	//}
+	
 }
 
 void SkeletonAnimation::Export()
