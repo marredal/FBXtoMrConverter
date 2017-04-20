@@ -167,6 +167,7 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 			uint32_t numIndice = currentCluster->GetControlPointIndicesCount();
 			for (int indiceIndex = 0; indiceIndex < numIndice; indiceIndex++)
 			{
+				std::cout << indiceIndex << std::endl;
 				BlendingIndexWeightPair currentBlendingIndexWeightPair;
 				currentBlendingIndexWeightPair.BlendingIndex = currentJointIndex;
 				currentBlendingIndexWeightPair.BlendingWeight = currentCluster->GetControlPointWeights()[indiceIndex];
