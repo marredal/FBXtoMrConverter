@@ -116,6 +116,7 @@ namespace mr
 			file.write(reinterpret_cast<char*>(&m_postions[i].y), sizeof(float));
 			file.write(reinterpret_cast<char*>(&m_postions[i].z), sizeof(float));
 
+
 			// Texture coords.
 			file.write(reinterpret_cast<char*>(&m_texCoords[i].x), sizeof(float));
 			file.write(reinterpret_cast<char*>(&m_texCoords[i].y), sizeof(float));
