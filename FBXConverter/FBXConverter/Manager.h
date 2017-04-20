@@ -1,7 +1,7 @@
 #ifndef __MANAGER_H__
 #define __MANAGER_H__
 
-#include "fbxsdk.h"
+#include <fbxsdk.h>
 #include <vector>
 #include <iostream>
 #include "VertexInfo.h"

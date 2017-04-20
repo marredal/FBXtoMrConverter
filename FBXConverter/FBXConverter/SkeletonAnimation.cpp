@@ -254,10 +254,9 @@ void SkeletonAnimation::CheckMesh(FbxNode * node)
 
 void SkeletonAnimation::GetAnimation()
 {
-	//std::cout << m_Skeleton.Joints.size() << std::endl;
+
 	for (int i = 0; i < m_Skeleton.Joints.size(); i++)
 	{
-		//std::cout << m_Skeleton.Joints[i].Node->GetName() << std::endl;
 		FbxVector4 translation = m_Skeleton.Joints[i].GlobalBindposeInverse.GetT();
 		FbxVector4 rotation = m_Skeleton.Joints[i].GlobalBindposeInverse.GetR();
 		translation.Set(translation.mData[0], translation.mData[1], translation.mData[2]);
@@ -266,19 +265,7 @@ void SkeletonAnimation::GetAnimation()
 		m_Skeleton.Joints[i].GlobalBindposeInverse.SetR(rotation);
 		FbxMatrix finalMat = m_Skeleton.Joints[i].GlobalBindposeInverse;
 		finalMat = finalMat.Transpose();
-		/*std::cout << "<mat>" << static_cast<float>(finalMat.Get(0, 0)) << "," << static_cast<float>(finalMat.Get(0, 1)) << "," << static_cast<float>(finalMat.Get(0, 2)) << "," << static_cast<float>(finalMat.Get(0, 3)) << ","
-
-			<< static_cast<float>(finalMat.Get(1, 0)) << "," << static_cast<float>(finalMat.Get(1, 1)) << "," << static_cast<float>(finalMat.Get(1, 2)) << "," << static_cast<float>(finalMat.Get(1, 3)) << ","
-
-			<< static_cast<float>(finalMat.Get(2, 0)) << "," << static_cast<float>(finalMat.Get(2, 1)) << "," << static_cast<float>(finalMat.Get(2, 2)) << "," << static_cast<float>(finalMat.Get(2, 3)) << ","
-
-			<< static_cast<float>(finalMat.Get(3, 0)) << "," << static_cast<float>(finalMat.Get(3, 1)) << "," << static_cast<float>(finalMat.Get(3, 2)) << "," << static_cast<float>(finalMat.Get(3, 3)) << "</mat>\n";*/
-
-			//std::cout << m_Skeleton.Joints[i].GlobalBindposeInverse.GetR().mData[0] << ", ";
-			//std::cout << m_Skeleton.Joints[i].GlobalBindposeInverse.GetR().mData[1] << ", ";
-			//std::cout << m_Skeleton.Joints[i].GlobalBindposeInverse.GetR().mData[2] << std::endl;
-
-			//
+	
 	}
 
 	//for (int i = 0; i < m_Skeleton.Joints.size(); i++)

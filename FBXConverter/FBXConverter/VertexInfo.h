@@ -2,7 +2,7 @@
 #define __VERTEXINFO_H__
 
 
-#include "fbxsdk.h"
+#include <fbxsdk.h>
 #include <vector>
 #include <iostream>
 #include <glm.hpp>
