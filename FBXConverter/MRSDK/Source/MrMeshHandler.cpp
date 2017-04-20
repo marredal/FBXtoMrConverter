@@ -30,8 +30,13 @@ namespace mr
 			return false;
 		}
 
-		file.read(reinterpret_cast<char*>(&m_numVerts), sizeof(uint32_t));
+		float x;
+		float y;
+		float z;
+		float w;
 
+		file.read(reinterpret_cast<char*>(&m_numVerts), sizeof(uint32_t));
+	
 		m_postions = new glm::vec3[m_numVerts];
 		m_texCoords = new glm::vec2[m_numVerts];
 		m_normals = new glm::vec3[m_numVerts];
@@ -40,13 +45,44 @@ namespace mr
 		m_skinWeights = new glm::vec4[m_numVerts];
 		m_jointIDs = new glm::vec4[m_numVerts];
 
-		file.read(reinterpret_cast<char*>(m_postions), sizeof(glm::vec3) * m_numVerts);
-		file.read(reinterpret_cast<char*>(m_texCoords), sizeof(glm::vec2) * m_numVerts);
-		file.read(reinterpret_cast<char*>(m_normals), sizeof(glm::vec3) * m_numVerts);
-		file.read(reinterpret_cast<char*>(m_tangents), sizeof(glm::vec3) * m_numVerts);
-		file.read(reinterpret_cast<char*>(m_bitangents), sizeof(glm::vec3) * m_numVerts);
-		file.read(reinterpret_cast<char*>(m_skinWeights), sizeof(glm::vec4) * m_numVerts);
-		file.read(reinterpret_cast<char*>(m_jointIDs), sizeof(glm::vec4) * m_numVerts);
+		for (uint32_t i = 0; i < m_numVerts; i++)
+		{
+			// Positions.
+			file.read(reinterpret_cast<char*>(&m_postions[i].x), sizeof(float));
+			file.read(reinterpret_cast<char*>(&m_postions[i].y), sizeof(float));
+			file.read(reinterpret_cast<char*>(&m_postions[i].z), sizeof(float));
+
+			// Texture coords.
+			file.read(reinterpret_cast<char*>(&m_texCoords[i].x), sizeof(float));
+			file.read(reinterpret_cast<char*>(&m_texCoords[i].y), sizeof(float));
+
+			// Normals.
+			file.read(reinterpret_cast<char*>(&m_normals[i].x), sizeof(float));
+			file.read(reinterpret_cast<char*>(&m_normals[i].y), sizeof(float));
+			file.read(reinterpret_cast<char*>(&m_normals[i].z), sizeof(float));
+
+			// Tangents.
+			file.read(reinterpret_cast<char*>(&m_tangents[i].x), sizeof(float));
+			file.read(reinterpret_cast<char*>(&m_tangents[i].y), sizeof(float));
+			file.read(reinterpret_cast<char*>(&m_tangents[i].z), sizeof(float));
+
+			// Bitangents.
+			file.read(reinterpret_cast<char*>(&m_bitangents[i].x), sizeof(float));
+			file.read(reinterpret_cast<char*>(&m_bitangents[i].y), sizeof(float));
+			file.read(reinterpret_cast<char*>(&m_bitangents[i].z), sizeof(float));
+
+			// Skin weights.
+			file.read(reinterpret_cast<char*>(&m_skinWeights[i].x), sizeof(float));
+			file.read(reinterpret_cast<char*>(&m_skinWeights[i].y), sizeof(float));
+			file.read(reinterpret_cast<char*>(&m_skinWeights[i].z), sizeof(float));
+			file.read(reinterpret_cast<char*>(&m_skinWeights[i].w), sizeof(float));
+
+			// Joint weights.
+			file.read(reinterpret_cast<char*>(&m_jointIDs[i].x), sizeof(float));
+			file.read(reinterpret_cast<char*>(&m_jointIDs[i].y), sizeof(float));
+			file.read(reinterpret_cast<char*>(&m_jointIDs[i].z), sizeof(float));
+			file.read(reinterpret_cast<char*>(&m_jointIDs[i].w), sizeof(float));
+		}
 
 		file.close();
 
@@ -63,14 +99,51 @@ namespace mr
 			return false;
 		}
 
+		float x;
+		float y;
+		float z;
+		float w;
+
 		file.write(reinterpret_cast<char*>(&m_numVerts), sizeof(uint32_t));
-		file.write(reinterpret_cast<char*>(m_postions), sizeof(glm::vec3) * m_numVerts);
-		file.write(reinterpret_cast<char*>(m_texCoords), sizeof(glm::vec2) * m_numVerts);
-		file.write(reinterpret_cast<char*>(m_normals), sizeof(glm::vec3) * m_numVerts);
-		file.write(reinterpret_cast<char*>(m_tangents), sizeof(glm::vec3) * m_numVerts);
-		file.write(reinterpret_cast<char*>(m_bitangents), sizeof(glm::vec3) * m_numVerts);
-		file.write(reinterpret_cast<char*>(m_skinWeights), sizeof(glm::vec4) * m_numVerts);
-		file.write(reinterpret_cast<char*>(m_jointIDs), sizeof(glm::vec4) * m_numVerts);
+		
+		for (uint32_t i = 0; i < m_numVerts; i++)
+		{
+			// Positions.
+			file.write(reinterpret_cast<char*>(&m_postions[i].x), sizeof(float));
+			file.write(reinterpret_cast<char*>(&m_postions[i].y), sizeof(float));
+			file.write(reinterpret_cast<char*>(&m_postions[i].z), sizeof(float));
+
+			// Texture coords.
+			file.write(reinterpret_cast<char*>(&m_texCoords[i].x), sizeof(float));
+			file.write(reinterpret_cast<char*>(&m_texCoords[i].y), sizeof(float));
+
+			// Normals.
+			file.write(reinterpret_cast<char*>(&m_normals[i].x), sizeof(float));
+			file.write(reinterpret_cast<char*>(&m_normals[i].y), sizeof(float));
+			file.write(reinterpret_cast<char*>(&m_normals[i].z), sizeof(float));
+
+			// Tangents.
+			file.write(reinterpret_cast<char*>(&m_tangents[i].x), sizeof(float));
+			file.write(reinterpret_cast<char*>(&m_tangents[i].y), sizeof(float));
+			file.write(reinterpret_cast<char*>(&m_tangents[i].z), sizeof(float));
+
+			// Bitangents.
+			file.write(reinterpret_cast<char*>(&m_bitangents[i].x), sizeof(float));
+			file.write(reinterpret_cast<char*>(&m_bitangents[i].y), sizeof(float));
+			file.write(reinterpret_cast<char*>(&m_bitangents[i].z), sizeof(float));
+
+			// Skin weights.
+			file.write(reinterpret_cast<char*>(&m_skinWeights[i].x), sizeof(float));
+			file.write(reinterpret_cast<char*>(&m_skinWeights[i].y), sizeof(float));
+			file.write(reinterpret_cast<char*>(&m_skinWeights[i].z), sizeof(float));
+			file.write(reinterpret_cast<char*>(&m_skinWeights[i].w), sizeof(float));
+
+			// Joint weights.
+			file.write(reinterpret_cast<char*>(&m_jointIDs[i].x), sizeof(float));
+			file.write(reinterpret_cast<char*>(&m_jointIDs[i].y), sizeof(float));
+			file.write(reinterpret_cast<char*>(&m_jointIDs[i].z), sizeof(float));
+			file.write(reinterpret_cast<char*>(&m_jointIDs[i].w), sizeof(float));
+		}
 
 		file.close();
 
