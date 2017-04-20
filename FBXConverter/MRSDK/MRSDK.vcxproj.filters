@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="MRSDK">
+      <UniqueIdentifier>{0e1d58b2-2f60-4b38-ac10-9db808b9720e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{0d1cc4a4-ca4b-4dee-ab2b-a22afbfa3e37}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MRSDK\MrAnimHandler.h">
+      <Filter>MRSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="MRSDK\MrHandler.h">
+      <Filter>MRSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="MRSDK\MrMatHandler.h">
+      <Filter>MRSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="MRSDK\MrMeshHandler.h">
+      <Filter>MRSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="MRSDK\MrSkelHandler.h">
+      <Filter>MRSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="MRSDK\MrUtility.h">
+      <Filter>MRSDK</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\MrAnimHandler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MrHandler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MrMatHandler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MrMeshHandler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MrSkelHandler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

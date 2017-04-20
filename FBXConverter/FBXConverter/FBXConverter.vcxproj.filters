@@ -13,27 +13,30 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Export">
-      <UniqueIdentifier>{e3e4e37b-e071-491b-a385-d79975978d4f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Struct">
-      <UniqueIdentifier>{aad8d1a4-ed59-421c-8721-1e0595d341f0}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SkeletonAnimation.cpp">
-      <Filter>Source Files\Export</Filter>
+    <ClCompile Include="Manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SuperExporter.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ExporterStruct.h">
-      <Filter>Source Files\Struct</Filter>
+    <ClInclude Include="Manager.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="SkeletonAnimation.h">
-      <Filter>Source Files\Export</Filter>
+    <ClInclude Include="VertexInfo.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SuperExporter.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
