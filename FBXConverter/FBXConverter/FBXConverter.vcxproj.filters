@@ -21,10 +21,13 @@
     <ClCompile Include="Manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VertexInfo.cpp">
+    <ClCompile Include="SuperExporter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SuperExporter.cpp">
+    <ClCompile Include="SkeletonAnimation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,11 +35,17 @@
     <ClInclude Include="Manager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="VertexInfo.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="SuperExporter.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonAnimation.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExporterStruct.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

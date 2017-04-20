@@ -1,6 +1,6 @@
 #ifndef __VERTEXINFO_H__
 #define __VERTEXINFO_H__
-
+#define FBXSDK_SHARED
 
 #include "fbxsdk.h"
 #include <vector>
@@ -43,4 +43,4 @@ private:
 
 };
 
-#endif // !__VERTEXINFO_H__
+#endif __VERTEXINFO_H__

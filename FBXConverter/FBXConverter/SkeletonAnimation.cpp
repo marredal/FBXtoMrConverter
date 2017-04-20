@@ -1,43 +1,16 @@
 #include "SkeletonAnimation.h"
 
 
+
 SkeletonAnimation::SkeletonAnimation()
 {
-	// Do nothing...
+	m_HasAnimation = true;
 }
 
 
 SkeletonAnimation::~SkeletonAnimation()
 {
 	// Do nothing...
-}
-
-void SkeletonAnimation::Init()
-{
-	m_Manager = FbxManager::Create();
-	FbxIOSettings* ioSettings = FbxIOSettings::Create(m_Manager, IOSROOT);
-	m_Manager->SetIOSettings(ioSettings);
-	m_Importer = FbxImporter::Create(m_Manager, "");
-	bool importInit = m_Importer->Initialize(".\\Assets\\tjena7.fbx", -1, m_Manager->GetIOSettings());
-	if (!importInit)
-	{
-		std::cout << "Error importing file!" << std::endl;
-		getchar();
-		return;
-	}
-
-	m_Scene = FbxScene::Create(m_Manager, "FBX Scene");
-	m_Importer->Import(m_Scene);
-	m_Importer->Destroy();
-	m_HasAnimation = true;
-}
-
-void SkeletonAnimation::Shutdown()
-{
-	m_Scene->Destroy();
-	m_Manager->Destroy();
-
-	m_Skeleton.Joints.clear();
 }
 
 void SkeletonAnimation::GetSkeleton()
@@ -76,6 +49,7 @@ void SkeletonAnimation::SkeletonHierachyRecursive(FbxNode * node, int index, int
 		currentJoint.Name = node->GetName();
 		
 		m_Skeleton.Joints.push_back(currentJoint);
+		std::cout << m_Skeleton.Joints[index].Name.c_str() << std::endl;
 
 
 	}
@@ -183,7 +157,7 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 			FbxLongLong animationLength = end.GetFrameCount(FbxTime::eFrames24) - start.GetFrameCount(FbxTime::eFrames24) + 1;
 			Keyframe** currentAnimation = &m_Skeleton.Joints[currentJointIndex].Animation;
 
-		
+			
 
 			for (FbxLongLong i = start.GetFrameCount(FbxTime::eFrames24); i <= end.GetFrameCount(FbxTime::eFrames24); i++)
 			{
@@ -193,19 +167,17 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 				(*currentAnimation)->FrameNum = i;
 				FbxAMatrix currentTransformOffset = node->EvaluateLocalTransform(currentTime) * identityMatrix;
 				(*currentAnimation)->GlobalTransform = currentTransformOffset.Inverse() * currentCluster->GetLink()->EvaluateLocalTransform(currentTime);
-				//	std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[0] << ", ";
-				//	std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[1] << ", ";
-				//	std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[2] << std::endl;
+			
+				//std::cout << "Node name: " << node->GetName() << std::endl;
+				//std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[0] << ", ";
+				//std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[1] << ", ";
+				//std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[2] << std::endl;
 
 				currentAnimation = &((*currentAnimation)->Next);
-
 
 			}
 		}
 	}
-
-
-
 }
 
 
@@ -213,10 +185,11 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 void SkeletonAnimation::CheckMesh(FbxNode * node)
 {
 
-	if (node->GetNodeAttribute())
+  	if (node->GetNodeAttribute())
 	{
 		switch (node->GetNodeAttribute()->GetAttributeType())
 		{
+		std::cout << node->GetName() << std::endl;
 		case FbxNodeAttribute::eMesh:
 			FixControlPoints(node);
 			if (m_HasAnimation)
@@ -269,5 +242,9 @@ void SkeletonAnimation::Export()
 	{
 		GetAnimation();
 	}
+}
 
+void SkeletonAnimation::SetScene(FbxScene * scene)
+{
+	m_Scene = scene;
 }

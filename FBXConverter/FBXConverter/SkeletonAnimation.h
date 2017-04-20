@@ -9,10 +9,9 @@ class SkeletonAnimation
 public:
 	SkeletonAnimation();
 	virtual ~SkeletonAnimation();
-	void Init();
-	void Shutdown();
 	void GetSkeleton();
 	void Export();
+	void SetScene(FbxScene* scene);
 
 private:
 	FbxAMatrix GeometryTransformation(FbxNode* node);
@@ -23,15 +22,12 @@ private:
 	void SkeletonJointsAndAnimations(FbxNode* node);
 	void CheckMesh(FbxNode* node);
 	void GetAnimation();
-	
 
 
 
 private:
-	FbxManager* m_Manager;
-	FbxScene* m_Scene;
-	FbxImporter* m_Importer;
 	Skeleton m_Skeleton;
+	FbxScene* m_Scene;
 	std::unordered_map<uint32_t, ControlPoint*>m_ControlPoints;
 	bool m_HasAnimation;
 

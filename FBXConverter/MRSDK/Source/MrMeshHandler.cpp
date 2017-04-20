@@ -35,8 +35,7 @@ namespace mr
 		float z;
 		float w;
 
-		file.read(reinterpret_cast<char*>(
-			), sizeof(uint32_t));
+		file.read(reinterpret_cast<char*>(&m_numVerts), sizeof(uint32_t));
 	
 		m_postions = new glm::vec3[m_numVerts];
 		m_texCoords = new glm::vec2[m_numVerts];
