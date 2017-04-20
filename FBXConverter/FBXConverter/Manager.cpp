@@ -12,7 +12,7 @@ Manager::~Manager()
 
 void Manager::Init()
 {
-	const char* m_FilePath = ".\\Assets\\tjena5.fbx";
+	const char* m_FilePath = ".\\Assets\\kranen.fbx";
 
 	m_Manager = FbxManager::Create();
 	FbxIOSettings *ios = FbxIOSettings::Create(m_Manager, IOSROOT);
@@ -57,6 +57,7 @@ void Manager::Run(SkeletonAnimation & target)
 {
 	target.SetScene(m_Scene);
 	target.Export();
+
 }
 
 //std::vector<glm::vec3> Manager::GetPos()

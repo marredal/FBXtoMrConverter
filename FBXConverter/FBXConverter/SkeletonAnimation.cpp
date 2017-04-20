@@ -5,6 +5,7 @@
 SkeletonAnimation::SkeletonAnimation()
 {
 	m_HasAnimation = true;
+	
 }
 
 
@@ -47,9 +48,11 @@ void SkeletonAnimation::SkeletonHierachyRecursive(FbxNode * node, int index, int
 		Joint currentJoint;
 		currentJoint.ParentIndex = parentIndex;
 		currentJoint.Name = node->GetName();
+		m_index.push_back(index);
+		m_parentIndex.push_back(parentIndex);
 		
 		m_Skeleton.Joints.push_back(currentJoint);
-		std::cout << m_Skeleton.Joints[index].Name.c_str() << std::endl;
+		//std::cout << m_Skeleton.Joints[index].Name.c_str() << std::endl;
 
 
 	}
@@ -155,6 +158,11 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 
 			FbxTime end = takeInfo->mLocalTimeSpan.GetStop();
 			FbxLongLong animationLength = end.GetFrameCount(FbxTime::eFrames24) - start.GetFrameCount(FbxTime::eFrames24) + 1;
+			m_firstFrame = start.GetFrameCount(FbxTime::eFrames24);
+			m_lastFrame = end.GetFrameCount(FbxTime::eFrames24);
+			
+			std::cout << m_firstFrame << std::endl;
+			std::cout << m_lastFrame << std::endl;
 			Keyframe** currentAnimation = &m_Skeleton.Joints[currentJointIndex].Animation;
 
 			
@@ -223,9 +231,7 @@ void SkeletonAnimation::GetAnimation()
 		FbxMatrix finalMat = m_Skeleton.Joints[i].GlobalBindposeInverse;
 		finalMat = finalMat.Transpose();
 		
-	}
-
-	
+	}	
 }
 
 void SkeletonAnimation::Export()
@@ -247,4 +253,21 @@ void SkeletonAnimation::Export()
 void SkeletonAnimation::SetScene(FbxScene * scene)
 {
 	m_Scene = scene;
+}
+
+const char* SkeletonAnimation::GetName() {
+	
+
+	for (int index = 0; index < m_Skeleton.Joints.size(); index++) {
+	
+		std::cout <<"current index: "<< m_index.at(index) << std::endl;
+		std::cout <<"current parent index: "<< m_parentIndex.at(index) << std::endl;
+		
+	}
+	return "hello";
+}
+
+int32_t SkeletonAnimation::GetFirstKeyFrame() {
+
+	return 1;
 }
