@@ -15,6 +15,8 @@ public:
 	int32_t SkeletonAnimation::GetFirstKeyFrame();
 	void SetScene(FbxScene* scene);
 	void SetBindPose(int32_t &bindPoseJointID, glm::mat4 &BindPoseMatrix);
+	int32_t GetFirstKeyFrame();
+	int32_t GetLastKeyFrame();
 
 private:
 	FbxAMatrix GeometryTransformation(FbxNode* node);

@@ -286,10 +286,15 @@ const char* SkeletonAnimation::GetName() {
 }
 
 int32_t SkeletonAnimation::GetFirstKeyFrame() {
-	m_firstFrame;
-
-	return 1;
+	
+	return m_firstFrame;
 }
+
+int32_t SkeletonAnimation::GetLastKeyFrame() {
+
+	return m_lastFrame;
+}
+
 
 void SkeletonAnimation::SetBindPose(int32_t &bindPoseJointID, glm::mat4 &BindPoseMatrix) {
 
