@@ -21,7 +21,7 @@ void SuperExporter::Run()
 	{
 		int input = 0;
 
-		system("CLS");
+//		system("CLS");
 
 		std::cout << "HELLO AND WELCOME TO THE FBX TO MR CONVERT." << std::endl;
 		std::cout << "My name is mr Edwar Scully and I am here to assist you." << std::endl;
@@ -49,7 +49,7 @@ void SuperExporter::Convert()
 {
 	int input = 0;
 
-	system("CLS");
+//	system("CLS");
 
 	std::cout << "I HOPE YOU HAVE BUT ALL THE FBX FILES IN THE FBX FOLDER" << std::endl;
 	std::cout << std::endl << std::endl;
@@ -72,20 +72,42 @@ void SuperExporter::AddMesh(VertexInfo &target)
 	m_mesh = new mr::MrMeshHandler;
 	//target = new VertexInfo;
 
-	glm::vec3 hej[1] = { glm::vec3(0.0f) };
-	glm::vec4 hejj[1] = { glm::vec4(0.0f) };
+	glm::vec3 * pos = new glm::vec3[8];
+	glm::vec3 * nor = new glm::vec3[8];
+	glm::vec2 * uv = new glm::vec2[8];
+	glm::vec3 * tan = new glm::vec3[8];
+	glm::vec3 * bi = new glm::vec3[8];
+	glm::vec4 * id = new glm::vec4[8];
+	glm::vec4 * we = new glm::vec4[8];;
 
-	uint32_t t = 8;
-	m_mesh->SetNumVerts(1);
-	m_mesh->SetPositions(&target.GetPos()[0]);
-	m_mesh->SetNormals(&target.GetNormal()[0]);
-	m_mesh->SetTexCoords(&target.GetUV()[0]);
-	m_mesh->SetBiTangents(&hej[0]);
-	m_mesh->SetTangents(&hej[0]);
-	m_mesh->SetSkinWeights(&hejj[0]);
-	m_mesh->SetJointIDs(&hejj[0]);
+	for (uint32_t i = 0; i < 8; i++)
+	{
+		pos[i] = glm::vec3(2.0f);
+		nor[i] =  glm::vec3(1.0f);
+		uv[i] = glm::vec2(1.0f);
+		tan[i] = glm::vec3(1.0f);
+		bi[i] = glm::vec3(1.0f);
+		id[i] = glm::vec4(1.0f);
+		we[i] = glm::vec4(1.0f);
+	}
+
+	m_mesh->SetNumVerts(8);
+	m_mesh->SetPositions(&pos[0]);
+	m_mesh->SetNormals(&nor[0]);
+	m_mesh->SetTexCoords(&uv[0]);
+	m_mesh->SetTangents(&tan[0]);
+	m_mesh->SetBiTangents(&bi[0]);
+	m_mesh->SetSkinWeights(&id[0]);
+	m_mesh->SetJointIDs(&we[0]);
 
 	m_mesh->Export("hej.mr");
+
+	mr::MrMeshHandler in;
+	in.Import("hej.mr");
+
+	std::cout << "hej.mr" << in.GetPositions()[0].x << std::endl;
+
+	getchar();
 }
 
 void SuperExporter::AddSkeleton()

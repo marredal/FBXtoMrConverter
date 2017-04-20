@@ -159,6 +159,10 @@
     <ClInclude Include="SuperExporter.h" />
     <ClInclude Include="VertexInfo.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="hej.mr" />
+    <None Include="test.Mr" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
