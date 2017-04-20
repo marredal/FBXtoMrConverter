@@ -27,6 +27,9 @@
     <ClCompile Include="SuperExporter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SkeletonAnimation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Manager.h">
@@ -36,6 +39,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="SuperExporter.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExporterStruct.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonAnimation.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
