@@ -24,6 +24,7 @@ namespace mr
 	};
 
 
+
 	struct MrTexture
 	{
 		uint32_t	textureFlag;

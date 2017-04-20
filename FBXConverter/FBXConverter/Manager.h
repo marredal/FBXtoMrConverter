@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include "VertexInfo.h"
+#include "SkeletonAnimation.h"
 #include "glm.hpp"
 #include <iostream>
 
@@ -16,11 +17,11 @@ public:
 	virtual ~Manager();
 	void Init();
 	void Run(VertexInfo &target);
+	void Run(SkeletonAnimation &target);
 
 
 	//..::GET FUNCTIONS::..//
 	//std::vector<glm::vec3> GetPos();
-
 
 
 
