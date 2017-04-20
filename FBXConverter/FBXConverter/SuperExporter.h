@@ -17,13 +17,17 @@ public:
 
 	void Run();
 	void Convert();
-	void AddMesh();
+	void AddMesh(VertexInfo &target);
 	void AddSkeleton();
 	void AddAnimation();
 	void Export();
 
 private:
+	//VertexInfo * m_target;
+
+
 	mr::MrAnimHandler * m_animHandler;
+	mr::MrMeshHandler * m_mesh;
 	
 };
 

@@ -1,6 +1,7 @@
 #include "SuperExporter.h"
 
-
+#include <MrHandler.h>
+#include "VertexInfo.h"
 
 SuperExporter::SuperExporter()
 {
@@ -66,9 +67,25 @@ void SuperExporter::Convert()
 
 }
 
-void SuperExporter::AddMesh()
+void SuperExporter::AddMesh(VertexInfo &target)
 {
+	m_mesh = new mr::MrMeshHandler;
+	//target = new VertexInfo;
 
+	glm::vec3 hej[1] = { glm::vec3(0.0f) };
+	glm::vec4 hejj[1] = { glm::vec4(0.0f) };
+
+	uint32_t t = 8;
+	m_mesh->SetNumVerts(1);
+	m_mesh->SetPositions(&target.GetPos()[0]);
+	m_mesh->SetNormals(&target.GetNormal()[0]);
+	m_mesh->SetTexCoords(&target.GetUV()[0]);
+	m_mesh->SetBiTangents(&hej[0]);
+	m_mesh->SetTangents(&hej[0]);
+	m_mesh->SetSkinWeights(&hejj[0]);
+	m_mesh->SetJointIDs(&hejj[0]);
+
+	m_mesh->Export("hej.mr");
 }
 
 void SuperExporter::AddSkeleton()
