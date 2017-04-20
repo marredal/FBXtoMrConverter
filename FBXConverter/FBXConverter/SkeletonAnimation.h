@@ -17,6 +17,9 @@ public:
 	void SetBindPose(int32_t &bindPoseJointID, glm::mat4 &BindPoseMatrix);
 	int32_t GetFirstKeyFrame();
 	int32_t GetLastKeyFrame();
+	std::vector<int32_t>GetJointID();
+	std::vector<int32_t>GetParentID();
+
 
 private:
 	FbxAMatrix GeometryTransformation(FbxNode* node);

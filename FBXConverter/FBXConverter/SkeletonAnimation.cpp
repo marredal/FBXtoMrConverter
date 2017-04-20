@@ -302,3 +302,13 @@ void SkeletonAnimation::SetBindPose(int32_t &bindPoseJointID, glm::mat4 &BindPos
 	BindPoseMatrix = m_globalBindPoseMat;
 
 }
+
+std::vector<int32_t> SkeletonAnimation::GetJointID() {
+
+	return  m_index;
+}
+
+std::vector<int32_t> SkeletonAnimation::GetParentID() {
+
+	return  m_parentIndex;
+}
