@@ -72,6 +72,8 @@ void SuperExporter::AddMesh(VertexInfo &target)
 	m_mesh = new mr::MrMeshHandler;
 	//target = new VertexInfo;
 
+	&target.GetNormal();
+
 	glm::vec3 * pos = new glm::vec3[8];
 	glm::vec3 * nor = new glm::vec3[8];
 	glm::vec2 * uv = new glm::vec2[8];

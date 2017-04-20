@@ -34,7 +34,7 @@ public:
 
 private:
 
-	std::vector <glm::vec3>		m_postion;
+	std::vector <glm::vec3>		m_position;
 	std::vector <glm::vec2>		m_uv;
 	std::vector <glm::vec3>		m_normal;
 	std::vector <glm::vec3>		m_tangent;
