@@ -35,7 +35,7 @@ void VertexInfo::SavePosition(FbxNode* pNode)
 			output.x = mesh->GetControlPointAt(i).mData[0];
 			output.y = mesh->GetControlPointAt(i).mData[1];
 			output.z = mesh->GetControlPointAt(i).mData[2];
-			m_postion.push_back(output);
+			m_position.push_back(output);
 		}
 	}
 	/*int count = pNode->GetChildCount();
@@ -197,7 +197,7 @@ void VertexInfo::SavetNormal(FbxNode * pNode)
 }
 std::vector<glm::vec3> VertexInfo::GetPos() const
 {
-	return m_postion;
+	return m_position;
 }
 
 std::vector<glm::vec2> VertexInfo::GetUV() const

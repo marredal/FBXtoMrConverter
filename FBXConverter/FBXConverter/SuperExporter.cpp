@@ -72,6 +72,8 @@ void SuperExporter::AddMesh(VertexInfo &target)
 	m_mesh = new mr::MrMeshHandler;
 	//target = new VertexInfo;
 
+	&target.GetNormal();
+
 	glm::vec3 * pos = new glm::vec3[8];
 	glm::vec3 * nor = new glm::vec3[8];
 	glm::vec2 * uv = new glm::vec2[8];
@@ -80,11 +82,15 @@ void SuperExporter::AddMesh(VertexInfo &target)
 	glm::vec4 * id = new glm::vec4[8];
 	glm::vec4 * we = new glm::vec4[8];;
 
+
+	uint32_t numVerts = target.GetPos().size();
+
+
 	for (uint32_t i = 0; i < 8; i++)
 	{
-		pos[i] = glm::vec3(2.0f);
-		nor[i] =  glm::vec3(1.0f);
-		uv[i] = glm::vec2(1.0f);
+		pos[i] = glm::vec3(target.GetPos()[i].x, target.GetPos()[i].y, target.GetPos()[i].z);
+		nor[i] =  glm::vec3(target.GetNormal()[i].x, target.GetNormal()[i].y, target.GetNormal()[i].z);
+		uv[i] = glm::vec2(target.GetUV()[i].x, target.GetUV()[i].y);
 		tan[i] = glm::vec3(1.0f);
 		bi[i] = glm::vec3(1.0f);
 		id[i] = glm::vec4(1.0f);
