@@ -61,7 +61,7 @@ namespace mr
 
 			for (uint32_t j = 0; j < strLenght; j++)
 			{
-				file.read(reinterpret_cast<char*>(path[j]), sizeof(char));
+				file.read(reinterpret_cast<char*>(&path[j]), sizeof(char));
 			}
 
 			m_meshFilePaths[i] = path;
@@ -73,7 +73,7 @@ namespace mr
 
 		m_animFilePaths = new const char*;
 
-		for (uint32_t i = 0; i < m_numMeshHandlers; i++)
+		for (uint32_t i = 0; i < m_numSkelHandlers; i++)
 		{
 			uint32_t strLenght;
 			file.read(reinterpret_cast<char*>(&strLenght), sizeof(uint32_t));
@@ -84,7 +84,7 @@ namespace mr
 
 			for (uint32_t j = 0; j < strLenght; j++)
 			{
-				file.read(reinterpret_cast<char*>(path[j]), sizeof(char));
+				file.read(reinterpret_cast<char*>(&path[j]), sizeof(char));
 			}
 
 			m_skelHandler->Import(path);
@@ -98,7 +98,7 @@ namespace mr
 
 		m_animFilePaths = new const char*;
 
-		for (uint32_t i = 0; i < m_numMeshHandlers; i++)
+		for (uint32_t i = 0; i < m_numAnimHandlers; i++)
 		{
 			uint32_t strLenght;
 			file.read(reinterpret_cast<char*>(&strLenght), sizeof(uint32_t));
@@ -107,7 +107,7 @@ namespace mr
 
 			for (uint32_t j = 0; j < strLenght; j++)
 			{
-				file.read(reinterpret_cast<char*>(path[j]), sizeof(char));
+				file.read(reinterpret_cast<char*>(&path[j]), sizeof(char));
 			}
 
 			m_animFilePaths[i] = path;
@@ -121,15 +121,10 @@ namespace mr
 
 	bool MrHandler::Export()
 	{
-		if (!m_isLoaded)
-		{
-			return false;
-		}
-
 		// Project folder structure.
 		std::string filepath		= ".\\Assets\\Prefabs\\";
 		std::string filepathMeshes	= ".\\Assets\\Meshes\\";
-		std::string filepathSkel	= ".\\Assets\\Skeltons\\";
+		std::string filepathSkel	= ".\\Assets\\Skeletons\\";
 		std::string filepathAnim	= ".\\Assets\\Animations\\";
 
 		filepath.append(m_name);
@@ -162,7 +157,7 @@ namespace mr
 
 			for (uint32_t j = 0; j < strLenght; j++)
 			{
-				file.write(reinterpret_cast<char*>(path[j]), sizeof(char));
+				file.write(reinterpret_cast<char*>(&path[j]), sizeof(char));
 			}
 
 			m_meshHandler->Export(path.c_str());
@@ -172,7 +167,7 @@ namespace mr
 		// Skeletons.
 		file.write(reinterpret_cast<char*>(&m_numSkelHandlers), sizeof(uint32_t));
 
-		for (uint32_t i = 0; i < m_numMeshHandlers; i++)
+		for (uint32_t i = 0; i < m_numSkelHandlers; i++)
 		{
 			// GET NAME
 			std::string path = filepathSkel + m_name + ".mrskel";
@@ -183,7 +178,7 @@ namespace mr
 
 			for (uint32_t j = 0; j < strLenght; j++)
 			{
-				file.write(reinterpret_cast<char*>(path[j]), sizeof(char));
+				file.write(reinterpret_cast<char*>(&path[j]), sizeof(char));
 			}
 
 			m_skelHandler->Export(path.c_str());
@@ -193,9 +188,9 @@ namespace mr
 		// Animations.
 		file.write(reinterpret_cast<char*>(&m_numAnimHandlers), sizeof(uint32_t));
 
-		for (uint32_t i = 0; i < m_numMeshHandlers; i++)
+		for (uint32_t i = 0; i < m_numAnimHandlers; i++)
 		{
-			std::string path = filepathSkel + m_name + "@" + m_animHandler[i].GetName() + ".mranim";
+			std::string path = filepathAnim + m_name + "@" + m_animHandler[i].GetName() + ".mranim";
 
 			uint32_t strLenght = path.length();
 
@@ -203,7 +198,7 @@ namespace mr
 
 			for (uint32_t j = 0; j < strLenght; j++)
 			{
-				file.write(reinterpret_cast<char*>(path[j]), sizeof(char));
+				file.write(reinterpret_cast<char*>(&path[j]), sizeof(char));
 			}
 
 			m_animHandler->Export(path.c_str());
@@ -223,9 +218,9 @@ namespace mr
 			return;
 		}
 
-		delete[] m_meshHandler;
-		delete[] m_skelHandler;
-		delete[] m_animHandler;
+//		delete[] m_meshHandler;
+//		delete[] m_skelHandler;
+//		delete[] m_animHandler;
 
 		Init();
 	}
@@ -273,17 +268,17 @@ namespace mr
 		return m_animHandler;
 	}
 
-	DLL const char ** MrHandler::GetMeshFilePaths()
+	const char ** MrHandler::GetMeshFilePaths()
 	{
 		return m_meshFilePaths;
 	}
 
-	DLL const char ** MrHandler::GetSkelFilePaths()
+	const char ** MrHandler::GetSkelFilePaths()
 	{
 		return m_skelFilePaths;
 	}
 
-	DLL const char ** MrHandler::GetAnimFilePaths()
+	const char ** MrHandler::GetAnimFilePaths()
 	{
 		return m_animFilePaths;
 	}

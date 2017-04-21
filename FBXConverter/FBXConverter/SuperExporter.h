@@ -4,7 +4,9 @@
 #include "Manager.h"
 #include "MrHandler.h"
 #include "SkeletonAnimation.h"
+#include "glm\gtx\transform.hpp"
 
+#include <vector>
 #include <iostream>
 #include "Manager.h"
 
@@ -24,8 +26,9 @@ public:
 
 private:
 	//VertexInfo * m_target;
-	Manager m_manager;
+	//Manager m_manager;
 
+	mr::MrSkelHandler * m_skel;
 	mr::MrAnimHandler * m_animHandler;
 	mr::MrMeshHandler * m_mesh;
 	

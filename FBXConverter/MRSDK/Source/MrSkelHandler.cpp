@@ -65,8 +65,6 @@ namespace mr
 		file.close();
 
 		return true;
-
-		return false;
 	}
 
 	void MrSkelHandler::Free()
@@ -118,24 +116,28 @@ namespace mr
 	void MrSkelHandler::SetNumJoints(uint32_t numJoints)
 	{
 		m_numJoints = numJoints;
+		m_isLoaded = true;
 	}
 
 
 	void MrSkelHandler::SetMatrix(glm::mat4 * mat)
 	{
 		m_matrix = mat;
+		m_isLoaded = true;
 	}
 
 
 	void MrSkelHandler::SetParentIDs(uint32_t * parentIDs)
 	{
 		m_parentIDs = parentIDs;
+		m_isLoaded = true;
 	}
 
 
 	void MrSkelHandler::SetIDs(uint32_t * ids)
 	{
 		m_ids = ids;
+		m_isLoaded = true;
 	}
 
 

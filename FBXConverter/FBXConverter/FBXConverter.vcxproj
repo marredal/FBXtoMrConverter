@@ -163,6 +163,8 @@
     <ClInclude Include="VertexInfo.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Prefabs\HEJ.mr" />
+    <None Include="Assets\Skeletons\HEJ.mrskel" />
     <None Include="hej.mr" />
     <None Include="test.Mr" />
   </ItemGroup>
