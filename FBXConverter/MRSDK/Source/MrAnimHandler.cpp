@@ -1,7 +1,7 @@
 #include "MrAnimHandler.h"
 
 
-namespace MR
+namespace mr
 {
 	//::.. CONSTRUCTORS ..:://
 	MrAnimHandler::MrAnimHandler()

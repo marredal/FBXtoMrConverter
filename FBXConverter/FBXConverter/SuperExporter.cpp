@@ -1,6 +1,7 @@
 #include "SuperExporter.h"
 
-
+#include <MrHandler.h>
+#include "VertexInfo.h"
 
 SuperExporter::SuperExporter()
 {
@@ -20,7 +21,7 @@ void SuperExporter::Run()
 	{
 		int input = 0;
 
-		system("CLS");
+//		system("CLS");
 
 		std::cout << "HELLO AND WELCOME TO THE FBX TO MR CONVERT." << std::endl;
 		std::cout << "My name is mr Edwar Scully and I am here to assist you." << std::endl;
@@ -31,6 +32,7 @@ void SuperExporter::Run()
 		std::cout << "(0) EXIT" << std::endl;
 		std::cout << "INPUT :: ";
 		std::cin >> input;
+		std::cin.ignore();
 		switch (input)
 		{
 		case 1:
@@ -48,7 +50,7 @@ void SuperExporter::Convert()
 {
 	int input = 0;
 
-	system("CLS");
+//	system("CLS");
 
 	std::cout << "I HOPE YOU HAVE BUT ALL THE FBX FILES IN THE FBX FOLDER" << std::endl;
 	std::cout << std::endl << std::endl;
@@ -61,24 +63,90 @@ void SuperExporter::Convert()
 	std::cout << "(0) EXIT" << std::endl;
 	std::cout << "INPUT :: ";
 	std::cin >> input;
+	std::cin.ignore();
 
 
 
 }
 
-void SuperExporter::AddMesh()
+void SuperExporter::AddMesh(VertexInfo &target)
 {
+	std::cout << "Input scene to import: " << std::endl;
+	std::cout << "INPUT :: ";
 
+
+
+
+
+	m_mesh = new mr::MrMeshHandler;
+	//target = new VertexInfo
+
+
+	&target.GetNormal();
+
+	glm::vec3 * pos = new glm::vec3[8];
+	glm::vec3 * nor = new glm::vec3[8];
+	glm::vec2 * uv = new glm::vec2[8];
+	glm::vec3 * tan = new glm::vec3[8];
+	glm::vec3 * bi = new glm::vec3[8];
+	glm::vec4 * id = new glm::vec4[8];
+	glm::vec4 * we = new glm::vec4[8];;
+
+
+	uint32_t numVerts = target.GetPos().size();
+
+
+	for (uint32_t i = 0; i < 8; i++)
+	{
+		pos[i] = glm::vec3(target.GetPos()[i].x, target.GetPos()[i].y, target.GetPos()[i].z);
+		nor[i] =  glm::vec3(target.GetNormal()[i].x, target.GetNormal()[i].y, target.GetNormal()[i].z);
+		uv[i] = glm::vec2(target.GetUV()[i].x, target.GetUV()[i].y);
+		tan[i] = glm::vec3(1.0f);
+		bi[i] = glm::vec3(1.0f);
+		id[i] = glm::vec4(1.0f);
+		we[i] = glm::vec4(1.0f);
+	}
+
+	m_mesh->SetNumVerts(8);
+	m_mesh->SetPositions(&pos[0]);
+	m_mesh->SetNormals(&nor[0]);
+	m_mesh->SetTexCoords(&uv[0]);
+	m_mesh->SetTangents(&tan[0]);
+	m_mesh->SetBiTangents(&bi[0]);
+	m_mesh->SetSkinWeights(&id[0]);
+	m_mesh->SetJointIDs(&we[0]);
+
+	m_mesh->Export("hej.mr");
+
+	mr::MrMeshHandler in;
+	in.Import("hej.mr");
+
+	std::cout << "hej.mr" << in.GetPositions()[0].x << std::endl;
+
+	getchar();
+
+	// CLEAR SCENE
 }
 
 void SuperExporter::AddSkeleton()
 {
+	Manager manager;
+
+	std::cout << "Scene with skeleton: " << std::endl;
+	std::cout << "INPUT :: .\\FBX\\";
+
 
 }
 
 void SuperExporter::AddAnimation()
 {
-	
+
+	m_manager.Init(".\\Assets\\kranen.fbx");
+	SkeletonAnimation skel;
+//	skel.SetBindPose(joint, matrix);
+
+
+
 }
 
 void SuperExporter::Export()

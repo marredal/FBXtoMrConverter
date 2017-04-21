@@ -1,41 +1,48 @@
 #ifndef __MRSKELHANDLER_H__
 #define __MRSKELHANDLER_H__
 
-
+#include <MrUtility.h>
 #include <fstream>
 #include <glm.hpp>
 
 
-namespace MR
+#if DLLEXPORT
+#define DLL __declspec(dllexport)
+#else
+#define DLL __declspec(dllimport)
+#endif
+
+
+namespace mr
 {
 	class MrSkelHandler
 	{
 	public:
 		//::.. CONSTURCTORS ..:://
-		__declspec(dllexport) MrSkelHandler();
-		__declspec(dllexport) virtual ~MrSkelHandler();
+		DLL MrSkelHandler();
+		DLL virtual ~MrSkelHandler();
 
 		//::.. IMPORT/EXPORT ..:://
-		__declspec(dllexport) bool Import(const char * filepath);
-		__declspec(dllexport) bool Export(const char * filepath);
+		DLL bool Import(const char * filepath);
+		DLL bool Export(const char * filepath);
 
-		__declspec(dllexport) void Free();
+		DLL void Free();
 
 		//::.. GET FUNCTIONS ..:://
-		__declspec(dllexport) uint32_t GetNumJoints();
-		__declspec(dllexport) glm::mat4 * GetMatrix();
-		__declspec(dllexport) uint32_t * GetParentIDs();
-		__declspec(dllexport) uint32_t * GetIDs();
+		DLL uint32_t GetNumJoints();
+		DLL glm::mat4 * GetMatrix();
+		DLL uint32_t * GetParentIDs();
+		DLL uint32_t * GetIDs();
 
 		//::.. SET FUNCTIONS ..:://
-		__declspec(dllexport) void SetNumJoints(uint32_t numJoints);
-		__declspec(dllexport) void SetMatrix(glm::mat4 * mat);
-		__declspec(dllexport) void SetParentIDs(uint32_t * parentIDs);
-		__declspec(dllexport) void SetIDs(uint32_t * ids);
+		DLL void SetNumJoints(uint32_t numJoints);
+		DLL void SetMatrix(glm::mat4 * mat);
+		DLL void SetParentIDs(uint32_t * parentIDs);
+		DLL void SetIDs(uint32_t * ids);
 
 	private:
 		//::.. HELP FUNCTIONS ..:://
-		__declspec(dllexport) void Init();
+		DLL void Init();
 
 	private:
 		bool			m_isLoaded;

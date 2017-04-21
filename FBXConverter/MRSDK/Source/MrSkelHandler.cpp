@@ -1,6 +1,6 @@
 #include "MrSkelHandler.h"
 
-namespace MR
+namespace mr
 {
 	MrSkelHandler::MrSkelHandler()
 	{

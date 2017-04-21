@@ -1,9 +1,9 @@
 #ifndef __SUPEREXPORTER_H__
 #define __SUPEREXPORTER_H__
 
-
+#include "Manager.h"
 #include "MrHandler.h"
-
+#include "SkeletonAnimation.h"
 
 #include <iostream>
 #include "Manager.h"
@@ -17,13 +17,17 @@ public:
 
 	void Run();
 	void Convert();
-	void AddMesh();
+	void AddMesh(VertexInfo &target);
 	void AddSkeleton();
 	void AddAnimation();
 	void Export();
 
 private:
-	MR::MrAnimHandler * m_animHandler;
+	//VertexInfo * m_target;
+	Manager m_manager;
+
+	mr::MrAnimHandler * m_animHandler;
+	mr::MrMeshHandler * m_mesh;
 	
 };
 

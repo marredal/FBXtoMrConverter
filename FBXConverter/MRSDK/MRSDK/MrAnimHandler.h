@@ -7,7 +7,14 @@
 #include <glm.hpp>
 
 
-namespace MR
+#if DLLEXPORT
+#define DLL __declspec(dllexport)
+#else
+#define DLL __declspec(dllimport)
+#endif
+
+
+namespace mr
 {
 	struct MrKeyFramedJoint
 	{
@@ -22,33 +29,33 @@ namespace MR
 	{
 	public:
 		//::.. CONSTRUCTORS ..:://
-		__declspec(dllexport) MrAnimHandler();
-		__declspec(dllexport) virtual ~MrAnimHandler();
+		DLL MrAnimHandler();
+		DLL virtual ~MrAnimHandler();
 
 		//::.. IMPORT/EXPORT ..:://
-		__declspec(dllexport) bool Import(const char * filepath);
-		__declspec(dllexport) bool Export(const char * filepath);
+		DLL bool Import(const char * filepath);
+		DLL bool Export(const char * filepath);
 
-		__declspec(dllexport) void Free();
+		DLL void Free();
 
 		//::.. SET FUNCTIONS ..:://
-		__declspec(dllexport) void SetName(const char * name);
-		__declspec(dllexport) void SetFirstKeyFrame(int32_t firstKeyFrame);
-		__declspec(dllexport) void SetLastKeyFrame(int32_t lastKeyFrame);
-		__declspec(dllexport) void SetNumKeyFramedJoints(uint32_t numKeyFramedJoints);
-		__declspec(dllexport) void SetKeyframedJoint(MrKeyFramedJoint * keyFramedJoints);
+		DLL void SetName(const char * name);
+		DLL void SetFirstKeyFrame(int32_t firstKeyFrame);
+		DLL void SetLastKeyFrame(int32_t lastKeyFrame);
+		DLL void SetNumKeyFramedJoints(uint32_t numKeyFramedJoints);
+		DLL void SetKeyframedJoint(MrKeyFramedJoint * keyFramedJoints);
 
 		//::.. GET FUNCTIONS ..:://
-		__declspec(dllexport) const char * GetName();
-		__declspec(dllexport) int32_t GetFirstKeyFrame();
-		__declspec(dllexport) int32_t GetLastKeyFrame();
-		__declspec(dllexport) uint32_t GetNumKeyFramedJoints();
-		__declspec(dllexport) MrKeyFramedJoint * GetKeyFramedJoints();
+		DLL const char * GetName();
+		DLL int32_t GetFirstKeyFrame();
+		DLL int32_t GetLastKeyFrame();
+		DLL uint32_t GetNumKeyFramedJoints();
+		DLL MrKeyFramedJoint * GetKeyFramedJoints();
 
 
 	private:
 		//::.. HELP FUNCTIONS ..:://
-		__declspec(dllexport) void Init();
+		DLL void Init();
 
 	private:
 		const char *		m_name;

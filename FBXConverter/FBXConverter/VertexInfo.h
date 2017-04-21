@@ -1,6 +1,6 @@
 #ifndef __VERTEXINFO_H__
 #define __VERTEXINFO_H__
-
+#define FBXSDK_SHARED
 
 #include "fbxsdk.h"
 #include <vector>
@@ -14,6 +14,9 @@ public:
 	VertexInfo();
 	virtual ~VertexInfo();
 
+
+	void init();
+
 	//..::SAVE FUNCTIONS::..//
 	void SavePosition(FbxNode* pNode);
 	void SaveUV(FbxNode* pNode);
@@ -22,7 +25,7 @@ public:
 	void SaveBiTangent (FbxNode* pNode);
 
 	//..::GET FUNCTIONS::..//
-	std::vector<glm::vec3> GetPosition() const;
+	std::vector<glm::vec3> GetPos() const;
 	std::vector<glm::vec2> GetUV() const;
 	std::vector<glm::vec3> GetNormal() const;
 	std::vector<glm::vec3> GetTangent() const;
@@ -31,7 +34,7 @@ public:
 
 private:
 
-	std::vector <glm::vec3>		m_postion;
+	std::vector <glm::vec3>		m_position;
 	std::vector <glm::vec2>		m_uv;
 	std::vector <glm::vec3>		m_normal;
 	std::vector <glm::vec3>		m_tangent;
@@ -40,4 +43,4 @@ private:
 
 };
 
-#endif // !__VERTEXINFO_H__
+#endif __VERTEXINFO_H__

@@ -21,16 +21,13 @@
     <ClCompile Include="Manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VertexInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SuperExporter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CameraInfo.cpp">
+    <ClCompile Include="SkeletonAnimation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
+    <ClCompile Include="VertexInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,17 +35,21 @@
     <ClInclude Include="Manager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="VertexInfo.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="SuperExporter.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="CameraInfo.h">
+    <ClInclude Include="SkeletonAnimation.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="VertexInfo.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ExporterStruct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test.Mr" />
+    <None Include="hej.mr" />
   </ItemGroup>
 </Project>

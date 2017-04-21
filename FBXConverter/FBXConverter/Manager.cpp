@@ -1,7 +1,5 @@
 #include "Manager.h"
 
-
-
 Manager::Manager()
 {
 }
@@ -12,9 +10,9 @@ Manager::~Manager()
 }
 
 
-void Manager::Init()
+void Manager::Init(const char* filepath)
 {
-	const char* m_FilePath = ".\\Assets\\tangentTest.fbx";
+	const char* m_FilePath = filepath;
 
 	m_Manager = FbxManager::Create();
 	FbxIOSettings *ios = FbxIOSettings::Create(m_Manager, IOSROOT);
@@ -41,25 +39,29 @@ void Manager::Init()
 }
 
 
-void Manager::Run()
+void Manager::Run(VertexInfo &target)
 {
 	if (m_root)
 	{
 		for (int i = 0; i < m_root->GetChildCount(); i++)
 		{
-			m_vertexInfo.SavePosition(m_root->GetChild(i));
-			m_vertexInfo.SaveUV(m_root->GetChild(i));
-			m_vertexInfo.SavetNormal(m_root->GetChild(i));
+			target.SavePosition(m_root->GetChild(i));
+			target.SaveUV(m_root->GetChild(i));
+			target.SavetNormal(m_root->GetChild(i));
 
 		}
 	}
 }
 
-MeshInfo Manager::GetMesh(MeshInfo mesh)
+void Manager::Run(SkeletonAnimation & target)
 {
-	mesh.pos = m_vertexInfo.GetPosition();
-	mesh.nor = m_vertexInfo.GetNormal();
-	mesh.uv = m_vertexInfo.GetUV();
-	
-	return mesh;
+	target.SetScene(m_Scene);
+	target.Export();
+
 }
+
+//std::vector<glm::vec3> Manager::GetPos()
+//{
+//	return m_vertexInfo.GetPos();
+//}
+
