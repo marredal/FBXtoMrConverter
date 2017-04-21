@@ -48,6 +48,8 @@ void Manager::Run(VertexInfo &target)
 			target.SavePosition(m_root->GetChild(i));
 			target.SaveUV(m_root->GetChild(i));
 			target.SavetNormal(m_root->GetChild(i));
+			target.SaveTangent(m_root->GetChild(i));
+			target.SaveBiTangent(m_root->GetChild(i));
 
 		}
 	}

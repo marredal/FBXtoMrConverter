@@ -25,6 +25,7 @@ public:
 	void SaveBiTangent (FbxNode* pNode);
 
 	//..::GET FUNCTIONS::..//
+	uint32_t getCount()const;
 	std::vector<glm::vec3> GetPos() const;
 	std::vector<glm::vec2> GetUV() const;
 	std::vector<glm::vec3> GetNormal() const;
@@ -33,7 +34,7 @@ public:
 
 
 private:
-
+	uint32_t m_numVerts;
 	std::vector <glm::vec3>		m_position;
 	std::vector <glm::vec2>		m_uv;
 	std::vector <glm::vec3>		m_normal;

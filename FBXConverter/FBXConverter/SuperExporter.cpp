@@ -51,7 +51,6 @@ void SuperExporter::Run()
 void SuperExporter::Convert()
 {
 	int input = 0;
-
 //	system("CLS");
 
 	bool isRunning = true;
@@ -97,47 +96,85 @@ void SuperExporter::Convert()
 
 	}
 
-}
-
-void SuperExporter::AddMesh(VertexInfo &target)
+void SuperExporter::AddMesh()
 {
 	std::cout << "Input scene to import: " << std::endl;
 	std::cout << "INPUT :: ";
+	VertexInfo target;
 
-
-
+	m_manager.Init(".\\Assets\\kub_fbx.fbx");
+	m_manager.Run(target);
+	SkeletonAnimation skel;
+	m_manager.Run(skel);
+	skel.GetJointID();
 
 
 	m_mesh = new mr::MrMeshHandler;
-	//target = new VertexInfo
+
+	uint32_t numVerts = target.getCount();
+
+	glm::vec3 * pos = new glm::vec3[numVerts];
+	glm::vec3 * nor = new glm::vec3[numVerts];
+	glm::vec2 * uv = new glm::vec2[numVerts];
+	glm::vec3 * tan = new glm::vec3[numVerts];
+	glm::vec3 * bi = new glm::vec3[numVerts];
+	glm::vec4 * id = new glm::vec4[numVerts];
+	glm::vec4 * we = new glm::vec4[skel.GetWeights().size()];
+
+	int temp = skel.GetJointID().size();
 
 
-	&target.GetNormal();
 
-	glm::vec3 * pos = new glm::vec3[8];
-	glm::vec3 * nor = new glm::vec3[8];
-	glm::vec2 * uv = new glm::vec2[8];
-	glm::vec3 * tan = new glm::vec3[8];
-	glm::vec3 * bi = new glm::vec3[8];
-	glm::vec4 * id = new glm::vec4[8];
-	glm::vec4 * we = new glm::vec4[8];;
-
-
-	uint32_t numVerts = target.GetPos().size();
-
-
-	for (uint32_t i = 0; i < 8; i++)
+	for (uint32_t i = 0; i < numVerts; i++)
 	{
 		pos[i] = glm::vec3(target.GetPos()[i].x, target.GetPos()[i].y, target.GetPos()[i].z);
 		nor[i] =  glm::vec3(target.GetNormal()[i].x, target.GetNormal()[i].y, target.GetNormal()[i].z);
 		uv[i] = glm::vec2(target.GetUV()[i].x, target.GetUV()[i].y);
-		tan[i] = glm::vec3(1.0f);
-		bi[i] = glm::vec3(1.0f);
-		id[i] = glm::vec4(1.0f);
-		we[i] = glm::vec4(1.0f);
+		//tan[i] = glm::vec3(target.GetTangent()[i].x, target.GetTangent()[i].y,target.GetTangent()[i].z);
+		//bi[i] = glm::vec3(target.GetBiTangent()[i].x, target.GetBiTangent()[i].y, target.GetBiTangent()[i].z);
+	}
+	for (uint32_t i = 0; i < skel.GetJointID().size(); i++)
+	{
+		id[i] = glm::vec4(skel.GetJointID()[i]);
+	//	std::cout << id[i].x << " y " << id[i].y << " z " << id[i].z << std::endl;
 	}
 
-	m_mesh->SetNumVerts(8);
+
+		int t = 0;
+
+	int skinSize = skel.GetWeights().size() / 4;
+	for (uint32_t i = 0; i < skinSize; i++)
+	{
+		we[t].x = skel.GetWeights()[i].BlendingWeight;
+		t++;
+	}
+	t = 0;
+	for (uint32_t i = skinSize; i < skinSize * 2; i++)
+	{
+		we[t].y = skel.GetWeights()[i].BlendingWeight;
+		t++;
+	}
+	t = 0;
+	for (uint32_t i = skinSize * 2; i < skinSize * 3; i++)
+	{
+		we[t].z = skel.GetWeights()[i].BlendingWeight;
+		t++;
+	}
+	t = 0;
+	for (uint32_t i = skinSize * 3; i < skinSize * 4; i++)
+	{
+		we[t].w = skel.GetWeights()[i].BlendingWeight;
+		t++;
+	}
+
+
+	for (uint32_t i = 0; i < skel.GetWeights().size(); i++)
+	{
+		std::cout << we[i].x << " Y " << we[i].y << " Z " << we[i].z << " w "<<we[i].w<<std::endl;
+	}
+
+
+	m_mesh->SetNumVerts(numVerts);
 	m_mesh->SetPositions(&pos[0]);
 	m_mesh->SetNormals(&nor[0]);
 	m_mesh->SetTexCoords(&uv[0]);
@@ -146,14 +183,7 @@ void SuperExporter::AddMesh(VertexInfo &target)
 	m_mesh->SetSkinWeights(&id[0]);
 	m_mesh->SetJointIDs(&we[0]);
 
-	m_mesh->Export("hej.mr");
-
-	mr::MrMeshHandler in;
-	in.Import("hej.mr");
-
-	std::cout << "hej.mr" << in.GetPositions()[0].x << std::endl;
-
-	getchar();
+	m_mesh->Export("Dudu.mr");
 
 	// CLEAR SCENE
 }
