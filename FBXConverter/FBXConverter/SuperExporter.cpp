@@ -17,10 +17,12 @@ SuperExporter::~SuperExporter()
 
 void SuperExporter::Run()
 {
+	system("CLS");
 	bool isRunning = true;
 
 	while (isRunning)
 	{
+		system("CLS");
 		int input = 0;
 
 //		system("CLS");
@@ -50,14 +52,15 @@ void SuperExporter::Run()
 
 void SuperExporter::Convert()
 {
+	system("CLS");
 	int input = 0;
-//	system("CLS");
+	//	system("CLS");
 
 	bool isRunning = true;
 
 	while (isRunning)
 	{
-
+		system("CLS");
 		std::cout << "I HOPE YOU HAVE BUT ALL THE FBX FILES IN THE FBX FOLDER" << std::endl;
 		std::cout << std::endl << std::endl;
 
@@ -74,6 +77,7 @@ void SuperExporter::Convert()
 		switch (input)
 		{
 		case 1:
+			AddMesh();
 			break;
 		case 2:
 			AddSkeleton();
@@ -95,14 +99,26 @@ void SuperExporter::Convert()
 		}
 
 	}
+}
 
 void SuperExporter::AddMesh()
 {
+	system("CLS");
+
+	std::string fullpath = ".\\FBX\\";
+	std::string path;
+
+	std::cout << "Scene with skeleton: " << std::endl;
+	std::cout << "INPUT :: .\\FBX\\";
+	std::getline(std::cin, path);
+	fullpath.append(path);
+
 	std::cout << "Input scene to import: " << std::endl;
 	std::cout << "INPUT :: ";
 	VertexInfo target;
+	Manager m_manager;
 
-	m_manager.Init(".\\Assets\\kub_fbx.fbx");
+	m_manager.Init(fullpath.c_str());
 	m_manager.Run(target);
 	SkeletonAnimation skel;
 	m_manager.Run(skel);
@@ -133,14 +149,23 @@ void SuperExporter::AddMesh()
 		//tan[i] = glm::vec3(target.GetTangent()[i].x, target.GetTangent()[i].y,target.GetTangent()[i].z);
 		//bi[i] = glm::vec3(target.GetBiTangent()[i].x, target.GetBiTangent()[i].y, target.GetBiTangent()[i].z);
 	}
-	for (uint32_t i = 0; i < skel.GetJointID().size(); i++)
-	{
-		id[i] = glm::vec4(skel.GetJointID()[i]);
-	//	std::cout << id[i].x << " y " << id[i].y << " z " << id[i].z << std::endl;
-	}
 
 
-		int t = 0;
+//	uint32_t naa = 0;
+//	for (uint32_t i = 0; i < numVerts; i++)
+//	{
+//		for (uint32_t j = 0; j < 4; j++)
+//		{
+//			id[i][j] = skel.GetWeights()[naa].BlendingIndex;
+//			naa++;
+//		}
+//	//	std::cout << id[i].x << " y " << id[i].y << " z " << id[i].z << std::endl;
+//	}
+
+
+
+
+	int t = 0;
 
 	int skinSize = skel.GetWeights().size() / 4;
 	for (uint32_t i = 0; i < skinSize; i++)
@@ -168,6 +193,32 @@ void SuperExporter::AddMesh()
 	}
 
 
+	t = 0;
+	for (uint32_t i = 0; i < skinSize; i++)
+	{
+		id[t].x = skel.GetWeights()[i].BlendingIndex;
+		t++;
+	}
+	t = 0;
+	for (uint32_t i = skinSize; i < skinSize * 2; i++)
+	{
+		id[t].y = skel.GetWeights()[i].BlendingIndex;
+		t++;
+	}
+	t = 0;
+	for (uint32_t i = skinSize * 2; i < skinSize * 3; i++)
+	{
+		id[t].z = skel.GetWeights()[i].BlendingIndex;
+		t++;
+	}
+	t = 0;
+	for (uint32_t i = skinSize * 3; i < skinSize * 4; i++)
+	{
+		id[t].w = skel.GetWeights()[i].BlendingIndex;
+		t++;
+	}
+
+
 	for (uint32_t i = 0; i < skel.GetWeights().size(); i++)
 	{
 		std::cout << we[i].x << " Y " << we[i].y << " Z " << we[i].z << " w "<<we[i].w<<std::endl;
@@ -182,8 +233,6 @@ void SuperExporter::AddMesh()
 	m_mesh->SetBiTangents(&bi[0]);
 	m_mesh->SetSkinWeights(&id[0]);
 	m_mesh->SetJointIDs(&we[0]);
-
-	m_mesh->Export("Dudu.mr");
 
 	// CLEAR SCENE
 }
@@ -207,9 +256,6 @@ void SuperExporter::AddSkeleton()
 		std::getline(std::cin, path);
 		fullpath.append(path);
 
-		std::cout << "Name the animation: " << std::endl;
-		std::cout << "INPUT ::";
-		std::getline(std::cin, name);
 
 
 		int input = 0;
@@ -286,11 +332,11 @@ void SuperExporter::AddSkeleton()
 
 void SuperExporter::AddAnimation()
 {
-
+	system("CLS");
 //	m_manager.Init(".\\Assets\\kranen.fbx");
 	SkeletonAnimation skel;
 //	skel.SetBindPose(joint, matrix);
-
+	system("CLS");
 
 	Manager manager;
 
@@ -375,7 +421,7 @@ void SuperExporter::AddAnimation()
 
 			}
 
-			m_animHandler->SetName("HEJ");
+			m_animHandler->SetName("animation");
 			
 			m_animHandler->SetKeyframedJoint(key);
 			m_animHandler->SetNumKeyFramedJoints(numKeys);
@@ -397,13 +443,24 @@ void SuperExporter::AddAnimation()
 
 void SuperExporter::Export()
 {
+	system("CLS");
+
+	std::string name;
+
+	std::cout << "Name the file: " << std::endl;
+	std::cout << "INPUT ::";
+	std::getline(std::cin, name);
+
+
 	mr::MrHandler * handler = new mr::MrHandler;
 
-	handler->SetName("HEJ");
-	handler->SetMeshHandlers(nullptr, 0);
+	handler->SetName(name.c_str());
+	handler->SetMeshHandlers(m_mesh, 1);
 	handler->SetSkelHandlers(m_skel, 1);
 	handler->SetAnimHandlers(m_animHandler, 1);
 
 
 	handler->Export();
+	
+	
 }

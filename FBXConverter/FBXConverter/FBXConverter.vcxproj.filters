@@ -53,5 +53,6 @@
     <None Include="hej.mr" />
     <None Include="Assets\Prefabs\HEJ.mr" />
     <None Include="Assets\Skeletons\HEJ.mrskel" />
+    <None Include="Assets\Animations\HEJ%40HEJ.mranim" />
   </ItemGroup>
 </Project>
