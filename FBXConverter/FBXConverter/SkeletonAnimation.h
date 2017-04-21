@@ -11,7 +11,6 @@ public:
 	virtual ~SkeletonAnimation();
 	void GetSkeleton();
 	void Export();
-	const char* GetName();
 	int32_t SkeletonAnimation::GetFirstKeyFrame();
 	void SetScene(FbxScene* scene);
 	void SetBindPose(int32_t &bindPoseJointID, glm::mat4 &BindPoseMatrix);
@@ -19,7 +18,9 @@ public:
 	int32_t GetLastKeyFrame();
 	std::vector<int32_t>GetJointID();
 	std::vector<int32_t>GetParentID();
-
+	std::vector<glm::vec3>GetTransformationMatrices();
+	std::vector<glm::vec3>GetRotationMatrices();
+	std::vector<glm::vec3>GetScalingMatrices();
 
 private:
 	FbxAMatrix GeometryTransformation(FbxNode* node);
@@ -30,6 +31,7 @@ private:
 	void SkeletonJointsAndAnimations(FbxNode* node);
 	void CheckMesh(FbxNode* node);
 	void GetAnimation();
+	
 
 
 private:
@@ -37,6 +39,9 @@ private:
 	int32_t m_firstFrame;
 	int32_t m_lastFrame;
 	glm::mat4 m_globalBindPoseMat;
+	std::vector<glm::vec3> m_localTransformMat;
+	std::vector<glm::vec3> m_localRotationMat;
+	std::vector<glm::vec3> m_localScaleMat;
 	FbxScene* m_Scene;
 	std::unordered_map<uint32_t, ControlPoint*>m_ControlPoints;
 	bool m_HasAnimation;

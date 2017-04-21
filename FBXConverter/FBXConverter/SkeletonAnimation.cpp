@@ -191,13 +191,34 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 				*currentAnimation = new Keyframe();
 				(*currentAnimation)->FrameNum = i;
 				FbxAMatrix currentTransformOffset = node->EvaluateLocalTransform(currentTime) * identityMatrix;
-				(*currentAnimation)->GlobalTransform = currentTransformOffset.Inverse() * currentCluster->GetLink()->EvaluateLocalTransform(currentTime);
+				(*currentAnimation)->LocalTransform = currentTransformOffset.Inverse() * currentCluster->GetLink()->EvaluateLocalTransform(currentTime);
 
 				//std::cout << "Node name: " << node->GetName() << std::endl;
-				//std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[0] << ", ";
+				std::cout << (*currentAnimation)->LocalTransform.GetT().mData[0] << ", ";
 				//std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[1] << ", ";
 				//std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[2] << std::endl;
 
+
+				glm::vec3 tempTransform, tempRotation, tempScale;
+
+				//Transformation information
+				tempTransform.x = (*currentAnimation)->LocalTransform.GetT().mData[0];
+				tempTransform.y = (*currentAnimation)->LocalTransform.GetT().mData[1];
+				tempTransform.z = (*currentAnimation)->LocalTransform.GetT().mData[2];
+				m_localTransformMat.push_back(tempTransform);
+
+				//Rotation information
+				tempRotation.x = (*currentAnimation)->LocalTransform.GetR().mData[0];
+				tempRotation.y = (*currentAnimation)->LocalTransform.GetR().mData[1];
+				tempRotation.z = (*currentAnimation)->LocalTransform.GetR().mData[2];
+				m_localRotationMat.push_back(tempRotation);
+
+				//Scaling information
+				tempScale.x = (*currentAnimation)->LocalTransform.GetS().mData[0];
+				tempScale.y = (*currentAnimation)->LocalTransform.GetS().mData[1];
+				tempScale.z = (*currentAnimation)->LocalTransform.GetS().mData[2];
+				m_localScaleMat.push_back(tempScale);
+			
 				currentAnimation = &((*currentAnimation)->Next);
 
 			}
@@ -272,18 +293,7 @@ void SkeletonAnimation::SetScene(FbxScene * scene)
 	m_Scene = scene;
 }
 
-const char* SkeletonAnimation::GetName() {
 
-
-	for (int index = 0; index < m_Skeleton.Joints.size(); index++) {
-
-		std::cout << "current index: " << m_index.at(index) << std::endl;
-		std::cout << "current parent index: " << m_parentIndex.at(index) << std::endl;
-		std::cout << "__________________________" << std::endl;
-
-	}
-	return "hello";
-}
 
 int32_t SkeletonAnimation::GetFirstKeyFrame() {
 	
@@ -311,4 +321,14 @@ std::vector<int32_t> SkeletonAnimation::GetJointID() {
 std::vector<int32_t> SkeletonAnimation::GetParentID() {
 
 	return  m_parentIndex;
+}
+
+std::vector<glm::vec3>SkeletonAnimation::GetTransformationMatrices(){
+	return m_localTransformMat;
+}
+std::vector<glm::vec3>SkeletonAnimation::GetRotationMatrices(){
+	return m_localRotationMat;
+}
+std::vector<glm::vec3>SkeletonAnimation::GetScalingMatrices(){
+	return m_localScaleMat;
 }

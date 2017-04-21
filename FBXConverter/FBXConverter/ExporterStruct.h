@@ -14,7 +14,7 @@
 struct Keyframe
 {
 	FbxLongLong FrameNum;
-	FbxAMatrix GlobalTransform;
+	FbxAMatrix LocalTransform;
 	Keyframe* Next;
 };
 
