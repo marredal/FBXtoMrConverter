@@ -10,9 +10,9 @@ Manager::~Manager()
 }
 
 
-void Manager::Init()
+void Manager::Init(const char* filepath)
 {
-	const char* m_FilePath = ".\\Assets\\kranen.fbx";
+	const char* m_FilePath = filepath;
 
 	m_Manager = FbxManager::Create();
 	FbxIOSettings *ios = FbxIOSettings::Create(m_Manager, IOSROOT);

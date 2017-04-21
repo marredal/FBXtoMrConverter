@@ -86,7 +86,7 @@ namespace mr
 
 		file.close();
 
-
+		m_isLoaded = true;
 
 		return true;
 	}
@@ -150,7 +150,6 @@ namespace mr
 
 		file.close();
 
-		m_isLoaded = true;
 		return true;
 	}
 

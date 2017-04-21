@@ -15,7 +15,7 @@ class Manager
 public:
 	Manager();
 	virtual ~Manager();
-	void Init();
+	void Init(const char* filepath);
 	void Run(VertexInfo &target);
 	void Run(SkeletonAnimation &target);
 

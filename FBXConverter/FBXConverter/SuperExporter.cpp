@@ -32,6 +32,7 @@ void SuperExporter::Run()
 		std::cout << "(0) EXIT" << std::endl;
 		std::cout << "INPUT :: ";
 		std::cin >> input;
+		std::cin.ignore();
 		switch (input)
 		{
 		case 1:
@@ -62,6 +63,7 @@ void SuperExporter::Convert()
 	std::cout << "(0) EXIT" << std::endl;
 	std::cout << "INPUT :: ";
 	std::cin >> input;
+	std::cin.ignore();
 
 
 
@@ -69,8 +71,16 @@ void SuperExporter::Convert()
 
 void SuperExporter::AddMesh(VertexInfo &target)
 {
+	std::cout << "Input scene to import: " << std::endl;
+	std::cout << "INPUT :: ";
+
+
+
+
+
 	m_mesh = new mr::MrMeshHandler;
-	//target = new VertexInfo;
+	//target = new VertexInfo
+
 
 	&target.GetNormal();
 
@@ -114,16 +124,29 @@ void SuperExporter::AddMesh(VertexInfo &target)
 	std::cout << "hej.mr" << in.GetPositions()[0].x << std::endl;
 
 	getchar();
+
+	// CLEAR SCENE
 }
 
 void SuperExporter::AddSkeleton()
 {
+	Manager manager;
+
+	std::cout << "Scene with skeleton: " << std::endl;
+	std::cout << "INPUT :: .\\FBX\\";
+
 
 }
 
 void SuperExporter::AddAnimation()
 {
-	
+
+	m_manager.Init(".\\Assets\\kranen.fbx");
+	SkeletonAnimation skel;
+//	skel.SetBindPose(joint, matrix);
+
+
+
 }
 
 void SuperExporter::Export()

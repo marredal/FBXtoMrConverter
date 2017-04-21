@@ -44,6 +44,9 @@ namespace mr
 		DLL MrMeshHandler * GetMeshHandlers();
 		DLL MrSkelHandler * GetSkelHandlers();
 		DLL MrAnimHandler * GetAnimHandlers();
+		DLL const char ** GetMeshFilePaths();
+		DLL const char ** GetSkelFilePaths();
+		DLL const char ** GetAnimFilePaths();
 
 		//::.. SET FUNCTIONS ..:://
 		DLL void SetName(const char * name);
@@ -59,6 +62,10 @@ namespace mr
 		bool			m_isLoaded;
 
 		const char *	m_name;
+
+		const char **	m_meshFilePaths;
+		const char **	m_skelFilePaths;
+		const char **	m_animFilePaths;
 
 		uint32_t		m_numMeshHandlers;
 		uint32_t		m_numSkelHandlers;
