@@ -11,16 +11,17 @@ public:
 	virtual ~SkeletonAnimation();
 	void GetSkeleton();
 	void Export();
-	int32_t SkeletonAnimation::GetFirstKeyFrame();
+	//int32_t SkeletonAnimation::GetFirstKeyFrame();
 	void SetScene(FbxScene* scene);
 	void SetBindPose(int32_t &bindPoseJointID, glm::mat4 &BindPoseMatrix);
-	int32_t GetFirstKeyFrame();
-	int32_t GetLastKeyFrame();
 	std::vector<int32_t>GetJointID();
 	std::vector<int32_t>GetParentID();
 	std::vector<glm::vec3>GetTransformationMatrices();
 	std::vector<glm::vec3>GetRotationMatrices();
 	std::vector<glm::vec3>GetScalingMatrices();
+	int32_t GetFirstKeyFrame();
+	int32_t GetLastKeyFrame();
+	std::vector<BlendingIndexWeightPair> GetWeights()const;
 
 private:
 	FbxAMatrix GeometryTransformation(FbxNode* node);
@@ -47,6 +48,7 @@ private:
 	bool m_HasAnimation;
 	std::vector<int32_t> m_index;
 	std::vector<int32_t> m_parentIndex;
+	std::vector<BlendingIndexWeightPair> m_skinWeights;
 };
 
 #endif

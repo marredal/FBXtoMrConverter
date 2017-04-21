@@ -51,5 +51,8 @@
   <ItemGroup>
     <None Include="test.Mr" />
     <None Include="hej.mr" />
+    <None Include="Dudu.mr">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

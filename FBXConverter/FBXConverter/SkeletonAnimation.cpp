@@ -158,6 +158,7 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 			m_Skeleton.Joints[currentJointIndex].GlobalBindposeInverse = globalBindposeInverseMat;
 			m_Skeleton.Joints[currentJointIndex].Node = currentCluster->GetLink();
 
+				
 			uint32_t numIndice = currentCluster->GetControlPointIndicesCount();
 			for (int indiceIndex = 0; indiceIndex < numIndice; indiceIndex++)
 			{
@@ -165,6 +166,9 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 				currentBlendingIndexWeightPair.BlendingIndex = currentJointIndex;
 				currentBlendingIndexWeightPair.BlendingWeight = currentCluster->GetControlPointWeights()[indiceIndex];
 				m_ControlPoints[currentCluster->GetControlPointIndices()[indiceIndex]]->BlendingInfo.push_back(currentBlendingIndexWeightPair);
+				
+				m_skinWeights.push_back(currentBlendingIndexWeightPair);
+
 			}
 
 			FbxAnimStack* currentAnimStack = m_Scene->GetSrcObject<FbxAnimStack>(0);
@@ -270,6 +274,11 @@ void SkeletonAnimation::GetAnimation()
 		finalMat = finalMat.Transpose();
 
 	}
+}
+
+std::vector<BlendingIndexWeightPair> SkeletonAnimation::GetWeights()const
+{
+	return m_skinWeights;
 }
 
 void SkeletonAnimation::Export()

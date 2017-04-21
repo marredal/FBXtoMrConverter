@@ -163,6 +163,7 @@
     <ClInclude Include="VertexInfo.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Dudu.mr" />
     <None Include="hej.mr" />
     <None Include="test.Mr" />
   </ItemGroup>

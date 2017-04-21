@@ -17,7 +17,7 @@ public:
 
 	void Run();
 	void Convert();
-	void AddMesh(VertexInfo &target);
+	void AddMesh();
 	void AddSkeleton();
 	void AddAnimation();
 	void Export();
