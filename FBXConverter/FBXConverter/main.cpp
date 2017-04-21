@@ -1,5 +1,6 @@
 #include "Manager.h"
 #include "SuperExporter.h"
+#include "SkeletonAnimation.h"
 #include <iostream>
 #pragma comment(lib, "libfbxsdk.lib")
 
