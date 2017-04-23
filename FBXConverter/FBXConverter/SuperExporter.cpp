@@ -2,12 +2,13 @@
 
 #include <MrHandler.h>
 #include "VertexInfo.h"
+#include <string>
 
 SuperExporter::SuperExporter()
 {
-	m_skel = new mr::MrSkelHandler;
-	m_mesh = new mr::MrMeshHandler;
-	m_animHandler = new mr::MrAnimHandler;
+	m_skel = new MrSkelHandler;
+	m_mesh = new MrMeshHandler;
+	m_animHandler = new MrAnimHandler;
 }
 
 
@@ -125,9 +126,11 @@ void SuperExporter::AddMesh()
 	skel.GetJointID();
 
 
-	m_mesh = new mr::MrMeshHandler;
+	m_mesh = new MrMeshHandler;
 
-	uint32_t numVerts = target.getCount();
+	int indSize = target.GetIndices().size();
+	uint32_t numVerts = indSize; //target.getCount();
+	std::vector<int> ind = target.GetIndices();
 
 	glm::vec3 * pos = new glm::vec3[numVerts];
 	glm::vec3 * nor = new glm::vec3[numVerts];
@@ -135,7 +138,7 @@ void SuperExporter::AddMesh()
 	glm::vec3 * tan = new glm::vec3[numVerts];
 	glm::vec3 * bi = new glm::vec3[numVerts];
 	glm::vec4 * id = new glm::vec4[numVerts];
-	glm::vec4 * we = new glm::vec4[skel.GetWeights().size()];
+	glm::vec4 * we = new glm::vec4[numVerts];
 
 	int temp = skel.GetJointID().size();
 
@@ -143,9 +146,9 @@ void SuperExporter::AddMesh()
 
 	for (uint32_t i = 0; i < numVerts; i++)
 	{
-		pos[i] = glm::vec3(target.GetPos()[i].x, target.GetPos()[i].y, target.GetPos()[i].z);
-		nor[i] =  glm::vec3(target.GetNormal()[i].x, target.GetNormal()[i].y, target.GetNormal()[i].z);
-		uv[i] = glm::vec2(target.GetUV()[i].x, target.GetUV()[i].y);
+		pos[i] = glm::vec3(target.GetPos()[ind[i]].x, target.GetPos()[ind[i]].y, target.GetPos()[ind[i]].z);
+		nor[i] =  glm::vec3(target.GetNormal()[ind[i]].x, target.GetNormal()[ind[i]].y, target.GetNormal()[ind[i]].z);
+		uv[i] = glm::vec2(target.GetUV()[ind[i]].x, target.GetUV()[ind[i]].y);
 		//tan[i] = glm::vec3(target.GetTangent()[i].x, target.GetTangent()[i].y,target.GetTangent()[i].z);
 		//bi[i] = glm::vec3(target.GetBiTangent()[i].x, target.GetBiTangent()[i].y, target.GetBiTangent()[i].z);
 	}
@@ -218,10 +221,13 @@ void SuperExporter::AddMesh()
 		t++;
 	}
 
+	glm::vec4 * id2 = new glm::vec4[numVerts];
+	glm::vec4 * we2 = new glm::vec4[numVerts];
 
-	for (uint32_t i = 0; i < skel.GetWeights().size(); i++)
+	for (int i = 0; i < numVerts; i++)
 	{
-		std::cout << we[i].x << " Y " << we[i].y << " Z " << we[i].z << " w "<<we[i].w<<std::endl;
+		id2[i] = id[ind[i]];
+		we2[i] = we[ind[i]];
 	}
 
 
@@ -287,7 +293,10 @@ void SuperExporter::AddSkeleton()
 
 			for (int i = 0; i < size; i++)
 			{
+				glm::vec3 p(1, 1, 1);
+
 				glm::mat4 posMat = glm::translate(skel.GetTransformationMatrices()[i]);
+				//glm::mat4 posMat = glm::translate(p);
 
 				glm::mat4 xRot = glm::rotate(skel.GetRotationMatrices()[i].x, glm::vec3(1.0, 0.0, 0.0));
 				glm::mat4 yRot = glm::rotate(skel.GetRotationMatrices()[i].y, glm::vec3(0.0, 1.0, 0.0));
@@ -300,8 +309,11 @@ void SuperExporter::AddSkeleton()
 				glm::mat4 mat = posMat * rotMat * scaleMat;
 
 				localMat[i] = mat;
-				ids[i] = skel.GetJointID()[0];
-				parIDs[i] = skel.GetParentID()[0];
+				ids[i] = skel.GetJointID()[i];
+				parIDs[i] = skel.GetParentID()[i];
+
+				std::cout << std::endl;
+				std::cout <<"ID " << ids[i] << std::endl;
 			}
 			
 			// I GUESS THIS IS IT // MJ
@@ -380,12 +392,12 @@ void SuperExporter::AddAnimation()
 			SkeletonAnimation skel;
 			manager.Run(info);
 			manager.Run(skel);
-			mr::MrAnimHandler * animHandler = new mr::MrAnimHandler;
+			MrAnimHandler * animHandler = new MrAnimHandler;
 			
 			int numJoints = skel.GetParentID().size();
 			int numKeys = skel.GetTransformationMatrices().size() / skel.GetParentID().size();
 
-			mr::MrKeyFramedJoint * key = new mr::MrKeyFramedJoint[numKeys];
+			MrKeyFramedJoint * key = new MrKeyFramedJoint[numKeys];
 			
 			for (int i = 0; i < numKeys; i++)
 			{
@@ -452,7 +464,7 @@ void SuperExporter::Export()
 	std::getline(std::cin, name);
 
 
-	mr::MrHandler * handler = new mr::MrHandler;
+	MrHandler * handler = new MrHandler;
 
 	handler->SetName(name.c_str());
 	handler->SetMeshHandlers(m_mesh, 1);

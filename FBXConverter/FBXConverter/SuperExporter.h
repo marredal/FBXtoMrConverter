@@ -28,9 +28,9 @@ private:
 	//VertexInfo * m_target;
 	//Manager m_manager;
 
-	mr::MrSkelHandler * m_skel;
-	mr::MrAnimHandler * m_animHandler;
-	mr::MrMeshHandler * m_mesh;
+	MrSkelHandler * m_skel;
+	MrAnimHandler * m_animHandler;
+	MrMeshHandler * m_mesh;
 	
 };
 

@@ -110,7 +110,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir);$(MSBuildProjectDirectory)\lib\vs2015\x64\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libfbxsdk.lib;MRSDK.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -163,11 +163,7 @@
     <ClInclude Include="VertexInfo.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Animations\HEJ%40HEJ.mranim" />
-    <None Include="Assets\Prefabs\HEJ.mr" />
-    <None Include="Assets\Skeletons\HEJ.mrskel" />
-    <None Include="hej.mr" />
-    <None Include="test.Mr" />
+    <None Include="Assets\Skeletons\super.mrskel" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

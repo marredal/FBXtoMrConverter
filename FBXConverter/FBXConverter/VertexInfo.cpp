@@ -123,7 +123,9 @@ void VertexInfo::SaveUV(FbxNode* pNode)
 			}
 		}
 	}
+
 	int count = pNode->GetChildCount();
+	
 	for (int i = 0; i < count; i++)
 	{
 		this->SaveUV(pNode->GetChild(i));
@@ -309,6 +311,19 @@ void VertexInfo::SaveBiTangent(FbxNode * pNode)
 	}
 }
 
+void VertexInfo::SaveIndices(FbxNode * pNode)
+{
+	FbxMesh* mesh = pNode->GetMesh();
+	if (mesh)
+	{
+		for (size_t i = 0; i < mesh->GetPolygonVertexCount(); i++)
+		{
+			m_indices.push_back(mesh->GetPolygonVertices()[i]);
+
+		}
+	}
+}
+
 
 
 //..::GET FUNCTIONS::..//
@@ -339,4 +354,9 @@ std::vector<glm::vec3> VertexInfo::GetTangent() const
 std::vector<glm::vec3> VertexInfo::GetBiTangent() const
 {
 	return m_bitangent;
+}
+
+std::vector<int> VertexInfo::GetIndices() const
+{
+	return m_indices;
 }

@@ -23,6 +23,7 @@ public:
 	void SavetNormal(FbxNode* pNode);
 	void SaveTangent(FbxNode* pNode);
 	void SaveBiTangent (FbxNode* pNode);
+	void SaveIndices(FbxNode* pNode);
 
 	//..::GET FUNCTIONS::..//
 	uint32_t getCount()const;
@@ -31,6 +32,7 @@ public:
 	std::vector<glm::vec3> GetNormal() const;
 	std::vector<glm::vec3> GetTangent() const;
 	std::vector<glm::vec3> GetBiTangent() const;
+	std::vector<int> GetIndices() const;
 
 
 private:
@@ -40,6 +42,7 @@ private:
 	std::vector <glm::vec3>		m_normal;
 	std::vector <glm::vec3>		m_tangent;
 	std::vector <glm::vec3>		m_bitangent;
+	std::vector <int>		m_indices;
 
 
 };

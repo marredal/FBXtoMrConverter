@@ -50,7 +50,7 @@ void Manager::Run(VertexInfo &target)
 			target.SavetNormal(m_root->GetChild(i));
 			target.SaveTangent(m_root->GetChild(i));
 			target.SaveBiTangent(m_root->GetChild(i));
-
+			target.SaveIndices(m_root->GetChild(i));
 		}
 	}
 }
