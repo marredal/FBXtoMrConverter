@@ -3,6 +3,7 @@
 #include <MrHandler.h>
 #include "VertexInfo.h"
 #include <string>
+#include <iomanip>
 
 SuperExporter::SuperExporter()
 {
@@ -153,73 +154,20 @@ void SuperExporter::AddMesh()
 		//bi[i] = glm::vec3(target.GetBiTangent()[i].x, target.GetBiTangent()[i].y, target.GetBiTangent()[i].z);
 	}
 
-
-//	uint32_t naa = 0;
-//	for (uint32_t i = 0; i < numVerts; i++)
-//	{
-//		for (uint32_t j = 0; j < 4; j++)
-//		{
-//			id[i][j] = skel.GetWeights()[naa].BlendingIndex;
-//			naa++;
-//		}
-//	//	std::cout << id[i].x << " y " << id[i].y << " z " << id[i].z << std::endl;
-//	}
-
-
-
-
-	int t = 0;
-
-	int skinSize = skel.GetWeights().size() / 4;
-	for (uint32_t i = 0; i < skinSize; i++)
+	for (uint32_t i = 0; i < target.getCount(); i++)
 	{
-		we[t].x = skel.GetWeights()[i].BlendingWeight;
-		t++;
-	}
-	t = 0;
-	for (uint32_t i = skinSize; i < skinSize * 2; i++)
-	{
-		we[t].y = skel.GetWeights()[i].BlendingWeight;
-		t++;
-	}
-	t = 0;
-	for (uint32_t i = skinSize * 2; i < skinSize * 3; i++)
-	{
-		we[t].z = skel.GetWeights()[i].BlendingWeight;
-		t++;
-	}
-	t = 0;
-	for (uint32_t i = skinSize * 3; i < skinSize * 4; i++)
-	{
-		we[t].w = skel.GetWeights()[i].BlendingWeight;
-		t++;
+		int t = 0;
+		for (uint32_t j = 0; j < skel.GetWeights().size(); j++)
+		{
+			if (i == skel.GetWeights()[j].VertIndex)
+			{
+				id[i][t] = (float)skel.GetWeights()[j].BlendingIndex;
+				we[i][t] = (float)skel.GetWeights()[j].BlendingWeight;
+				t++;
+			}
+		}
 	}
 
-
-	t = 0;
-	for (uint32_t i = 0; i < skinSize; i++)
-	{
-		id[t].x = skel.GetWeights()[i].BlendingIndex;
-		t++;
-	}
-	t = 0;
-	for (uint32_t i = skinSize; i < skinSize * 2; i++)
-	{
-		id[t].y = skel.GetWeights()[i].BlendingIndex;
-		t++;
-	}
-	t = 0;
-	for (uint32_t i = skinSize * 2; i < skinSize * 3; i++)
-	{
-		id[t].z = skel.GetWeights()[i].BlendingIndex;
-		t++;
-	}
-	t = 0;
-	for (uint32_t i = skinSize * 3; i < skinSize * 4; i++)
-	{
-		id[t].w = skel.GetWeights()[i].BlendingIndex;
-		t++;
-	}
 
 	glm::vec4 * id2 = new glm::vec4[numVerts];
 	glm::vec4 * we2 = new glm::vec4[numVerts];
@@ -228,7 +176,11 @@ void SuperExporter::AddMesh()
 	{
 		id2[i] = id[ind[i]];
 		we2[i] = we[ind[i]];
+	
+		float total = we2[i].x + we2[i].y + we2[i].z + we2[i].w;
+		std::cout << total << std::endl;
 	}
+
 
 
 	m_mesh->SetNumVerts(numVerts);
@@ -237,8 +189,8 @@ void SuperExporter::AddMesh()
 	m_mesh->SetTexCoords(&uv[0]);
 	m_mesh->SetTangents(&tan[0]);
 	m_mesh->SetBiTangents(&bi[0]);
-	m_mesh->SetSkinWeights(&id[0]);
-	m_mesh->SetJointIDs(&we[0]);
+	m_mesh->SetSkinWeights(&we2[0]);
+	m_mesh->SetJointIDs(&id2[0]);
 
 	// CLEAR SCENE
 }
@@ -291,20 +243,22 @@ void SuperExporter::AddSkeleton()
 			uint32_t * ids = new uint32_t[size];
 			uint32_t * parIDs = new uint32_t[size];
 
+			int offset = skel.GetRotationMatrices().size() / skel.GetJointID().size();
+
 			for (int i = 0; i < size; i++)
 			{
 				glm::vec3 p(1, 1, 1);
 
-				glm::mat4 posMat = glm::translate(skel.GetTransformationMatrices()[i]);
+				glm::mat4 posMat = glm::translate(skel.GetTransformationMatrices()[i * offset]);
 				//glm::mat4 posMat = glm::translate(p);
 
-				glm::mat4 xRot = glm::rotate(skel.GetRotationMatrices()[i].x, glm::vec3(1.0, 0.0, 0.0));
-				glm::mat4 yRot = glm::rotate(skel.GetRotationMatrices()[i].y, glm::vec3(0.0, 1.0, 0.0));
-				glm::mat4 zRot = glm::rotate(skel.GetRotationMatrices()[i].z, glm::vec3(0.0, 0.0, 1.0));
+				glm::mat4 xRot = glm::rotate(glm::radians(skel.GetRotationMatrices()[i * offset].x), glm::vec3(1.0, 0.0, 0.0));
+				glm::mat4 yRot = glm::rotate(glm::radians(skel.GetRotationMatrices()[i * offset].y), glm::vec3(0.0, 1.0, 0.0));
+				glm::mat4 zRot = glm::rotate(glm::radians(skel.GetRotationMatrices()[i * offset].z), glm::vec3(0.0, 0.0, 1.0));
 
 				glm::mat4 rotMat = zRot * yRot * xRot;
 
-				glm::mat4 scaleMat = glm::scale(skel.GetScalingMatrices()[i]);
+				glm::mat4 scaleMat = glm::scale(skel.GetScalingMatrices()[i * offset]);
 
 				glm::mat4 mat = posMat * rotMat * scaleMat;
 
@@ -398,39 +352,37 @@ void SuperExporter::AddAnimation()
 			int numKeys = skel.GetTransformationMatrices().size() / skel.GetParentID().size();
 
 			MrKeyFramedJoint * key = new MrKeyFramedJoint[numKeys];
-			
+		
+
 			for (int i = 0; i < numKeys; i++)
 			{
-				glm::mat4 * localMat = new glm::mat4[numJoints];
-				
-				int32_t * ids = new int32_t[numJoints];
-			//	int32_t * parIDs = new int32_t[numJoints];
+				key[i].matrix = new glm::mat4[numJoints];
+				key[i].keyFrames = new int32_t[numJoints];
+			}
 
-				for (int i = 0; i < numJoints; i++)
+			int count = 0;
+			for (int i = 0; i < numJoints; i++)
+			{
+				for (int j = 0; j < numKeys; j++)
 				{
-					glm::mat4 posMat = glm::translate(skel.GetTransformationMatrices()[i]);
+					glm::mat4 posMat = glm::translate(skel.GetTransformationMatrices()[count]);
 
-					glm::mat4 xRot = glm::rotate(skel.GetRotationMatrices()[i].x, glm::vec3(1.0, 0.0, 0.0));
-					glm::mat4 yRot = glm::rotate(skel.GetRotationMatrices()[i].y, glm::vec3(0.0, 1.0, 0.0));
-					glm::mat4 zRot = glm::rotate(skel.GetRotationMatrices()[i].z, glm::vec3(0.0, 0.0, 1.0));
+					glm::mat4 xRot = glm::rotate(glm::radians(skel.GetRotationMatrices()[count].x), glm::vec3(1.0, 0.0, 0.0));
+					glm::mat4 yRot = glm::rotate(glm::radians(skel.GetRotationMatrices()[count].y), glm::vec3(0.0, 1.0, 0.0));
+					glm::mat4 zRot = glm::rotate(glm::radians(skel.GetRotationMatrices()[count].z), glm::vec3(0.0, 0.0, 1.0));
 
 					glm::mat4 rotMat = zRot * yRot * xRot;
 
-					glm::mat4 scaleMat = glm::scale(skel.GetScalingMatrices()[i]);
+					glm::mat4 scaleMat = glm::scale(skel.GetScalingMatrices()[count]);
 
 					glm::mat4 mat = posMat * rotMat * scaleMat;
 
-					ids[i] = 0;
-					localMat[i] = mat;
-
+					key[j].keyFrames[i] = 0;
+					key[j].matrix[i] = mat;
+					key[j].jointID = 0;
+					key[j].numKeyframes = numJoints;
+					count++;
 				}
-
-				key[i].keyFrames = ids;
-				key[i].jointID = 0;
-				key[i].numKeyframes = numJoints;
-				key[i].matrix = localMat;
-
-
 			}
 
 			m_animHandler->SetName("animation");

@@ -22,6 +22,7 @@ public:
 	int32_t GetFirstKeyFrame();
 	int32_t GetLastKeyFrame();
 	std::vector<BlendingIndexWeightPair> GetWeights()const;
+	std::vector<int *> GetClusterInd();
 
 private:
 	FbxAMatrix GeometryTransformation(FbxNode* node);
@@ -49,6 +50,7 @@ private:
 	std::vector<int32_t> m_index;
 	std::vector<int32_t> m_parentIndex;
 	std::vector<BlendingIndexWeightPair> m_skinWeights;
+	std::vector<int*>	m_clusterInd;
 };
 
 #endif
