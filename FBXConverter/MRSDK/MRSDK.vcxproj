@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MrMatHandler.h" />
     <ClInclude Include="MRSDK\MrAnimHandler.h" />
     <ClInclude Include="MRSDK\MrHandler.h" />
-    <ClInclude Include="MRSDK\MrMatHandler.h" />
     <ClInclude Include="MRSDK\MrMeshHandler.h" />
     <ClInclude Include="MRSDK\MrSkelHandler.h" />
     <ClInclude Include="MRSDK\MrUtility.h" />

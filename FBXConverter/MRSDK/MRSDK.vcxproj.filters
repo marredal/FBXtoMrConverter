@@ -15,9 +15,6 @@
     <ClInclude Include="MRSDK\MrHandler.h">
       <Filter>MRSDK</Filter>
     </ClInclude>
-    <ClInclude Include="MRSDK\MrMatHandler.h">
-      <Filter>MRSDK</Filter>
-    </ClInclude>
     <ClInclude Include="MRSDK\MrMeshHandler.h">
       <Filter>MRSDK</Filter>
     </ClInclude>
@@ -25,6 +22,9 @@
       <Filter>MRSDK</Filter>
     </ClInclude>
     <ClInclude Include="MRSDK\MrUtility.h">
+      <Filter>MRSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="MrMatHandler.h">
       <Filter>MRSDK</Filter>
     </ClInclude>
   </ItemGroup>

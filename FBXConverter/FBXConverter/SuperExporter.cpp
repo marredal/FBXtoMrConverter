@@ -161,9 +161,12 @@ void SuperExporter::AddMesh()
 		{
 			if (i == skel.GetWeights()[j].VertIndex)
 			{
-				id[i][t] = (float)skel.GetWeights()[j].BlendingIndex;
-				we[i][t] = (float)skel.GetWeights()[j].BlendingWeight;
-				t++;
+				if(t < 4)
+				{ 
+					id[i][t] = (float)skel.GetWeights()[j].BlendingIndex;
+					we[i][t] = (float)skel.GetWeights()[j].BlendingWeight;
+					t++;
+				}
 			}
 		}
 	}
