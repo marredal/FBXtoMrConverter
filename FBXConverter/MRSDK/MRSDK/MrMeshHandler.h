@@ -53,7 +53,7 @@ public:
 
 private:
 	//::.. HELP FUNCTIONS .:://
-	  void Init();
+	void Init();
 
 private:
 	bool			m_isLoaded;

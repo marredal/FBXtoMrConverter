@@ -3,13 +3,13 @@
 
 #include "Manager.h"
 #include "MrHandler.h"
+#include "MrMatHandler.h"
 #include "SkeletonAnimation.h"
 #include "glm\gtx\transform.hpp"
 
 #include <vector>
 #include <iostream>
 #include "Manager.h"
-
 
 class SuperExporter
 {
@@ -22,6 +22,7 @@ public:
 	void AddMesh();
 	void AddSkeleton();
 	void AddAnimation();
+	void AddMaterial();
 	void Export();
 
 private:
@@ -31,6 +32,7 @@ private:
 	MrSkelHandler * m_skel;
 	MrAnimHandler * m_animHandler;
 	MrMeshHandler * m_mesh;
+	MrMatHandler  * m_mat;
 	
 };
 

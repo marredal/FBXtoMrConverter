@@ -5,6 +5,10 @@
 #include <string>
 #include <iomanip>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
+
 SuperExporter::SuperExporter()
 {
 	m_skel = new MrSkelHandler;
@@ -70,7 +74,8 @@ void SuperExporter::Convert()
 		std::cout << "(1) ADD MESH" << std::endl;
 		std::cout << "(2) ADD SKELETON" << std::endl;
 		std::cout << "(3) ADD ANIMATION" << std::endl;
-		std::cout << "(4) EXPORT" << std::endl;
+		std::cout << "(4) MATERIAL" << std::endl;
+		std::cout << "(9) EXPORT" << std::endl;
 		std::cout << "(0) EXIT" << std::endl;
 		std::cout << "INPUT :: ";
 		std::cin >> input;
@@ -87,7 +92,11 @@ void SuperExporter::Convert()
 		case 3:
 			AddAnimation();
 			break;
+
 		case 4:
+			AddMaterial();
+			break;
+		case 9:
 		{
 			Export();
 
@@ -406,6 +415,46 @@ void SuperExporter::AddAnimation()
 		
 		}
 	}
+}
+
+void SuperExporter::AddMaterial()
+{
+
+	int nrOfTextures = 1;
+
+	MrTexture * textures = new MrTexture[nrOfTextures];
+	
+	for (int i = 0; i < nrOfTextures; i++)
+	{
+		int width, height, numComponents;
+		unsigned char * imageData = stbi_load(".\\FBX\\character_albedo.png", &width, &height, &numComponents, STBI_rgb_alpha);
+
+		textures[i].type = ALBEDO_MAP;
+		textures[i].width = (uint32_t)width;
+		textures[i].height = (uint32_t)height;
+		textures[i].numComponents = numComponents;
+		textures[i].dataLength = width * height * numComponents; //sizeof(imageData) / sizeof(imageData[1]);
+
+		textures[i].data = new unsigned char[textures[i].dataLength];
+
+		for (int j = 0; j < numComponents * width * height; j++)
+		{
+			textures[i].data[j] = imageData[j];
+		}
+
+
+		if (imageData == nullptr)
+		{
+			return;
+		}
+
+		textures[i].data = imageData;
+	}
+
+	m_mat = new MrMatHandler;
+	m_mat->SetTextures(textures, nrOfTextures);
+	
+	m_mat->Export(".\\Assets\\Materials\\super.mrmat");
 }
 
 void SuperExporter::Export()
