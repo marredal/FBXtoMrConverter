@@ -49,7 +49,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="test.Mr" />
-    <None Include="hej.mr" />
+    <None Include="Assets\Skeletons\super.mrskel" />
   </ItemGroup>
 </Project>

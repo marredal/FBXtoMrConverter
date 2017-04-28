@@ -3,11 +3,13 @@
 
 #include "Manager.h"
 #include "MrHandler.h"
+#include "MrMatHandler.h"
 #include "SkeletonAnimation.h"
+#include "glm\gtx\transform.hpp"
 
+#include <vector>
 #include <iostream>
 #include "Manager.h"
-
 
 class SuperExporter
 {
@@ -17,17 +19,20 @@ public:
 
 	void Run();
 	void Convert();
-	void AddMesh(VertexInfo &target);
+	void AddMesh();
 	void AddSkeleton();
 	void AddAnimation();
+	void AddMaterial();
 	void Export();
 
 private:
 	//VertexInfo * m_target;
-	Manager m_manager;
+	//Manager m_manager;
 
-	mr::MrAnimHandler * m_animHandler;
-	mr::MrMeshHandler * m_mesh;
+	MrSkelHandler * m_skel;
+	MrAnimHandler * m_animHandler;
+	MrMeshHandler * m_mesh;
+	MrMatHandler  * m_mat;
 	
 };
 

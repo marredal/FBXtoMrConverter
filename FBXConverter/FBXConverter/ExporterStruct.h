@@ -52,6 +52,7 @@ struct Skeleton
 
 struct BlendingIndexWeightPair
 {
+	uint32_t VertIndex;
 	uint32_t BlendingIndex;
 	float BlendingWeight;
 };
