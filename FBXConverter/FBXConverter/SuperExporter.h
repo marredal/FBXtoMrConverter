@@ -24,6 +24,7 @@ public:
 	void AddAnimation();
 	void AddMaterial();
 	void Export();
+	void CalculateTangents(VertexInfo & vertInfo, std::vector<glm::vec3> & tangents, std::vector<glm::vec3> & biTangents);
 
 private:
 	//VertexInfo * m_target;
