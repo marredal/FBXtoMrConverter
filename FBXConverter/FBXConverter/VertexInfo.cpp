@@ -195,6 +195,28 @@ void VertexInfo::SavetNormal(FbxNode * pNode)
 		this->SaveUV(pNode->GetChild(i));
 	}
 }
+void VertexInfo::SaveTangent(FbxNode * pNode)
+{
+	if (!pNode)
+		return;
+
+	FbxMesh* mesh = pNode->GetMesh();
+
+	if (mesh)
+	{
+		FbxGeometryElementTangent* tangentElement = mesh->GetElementTangent();
+
+		if (tangentElement)
+		{
+			if (tangentElement->GetMappingMode() == FbxGeometryElement::eTangent)
+			{
+
+			}
+		}
+
+	}
+
+}
 std::vector<glm::vec3> VertexInfo::GetPos() const
 {
 	return m_position;
