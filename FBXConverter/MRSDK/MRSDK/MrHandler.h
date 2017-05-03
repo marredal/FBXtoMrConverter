@@ -158,7 +158,7 @@ inline bool MrHandler::Export()
 
 	for (uint32_t i = 0; i < m_numAnimHandlers; i++)
 	{
-		std::string path = filepathAnim + m_name + "@" + m_animHandler[i].GetName() + ".mranim";
+		std::string path = filepathAnim + m_name + "@" + ".mranim";
 
 		uint32_t strLenght = path.length();
 

@@ -116,6 +116,8 @@ void SuperExporter::AddMesh()
 {
 	system("CLS");
 
+	int hasSkinWeights = 0;
+
 	std::string fullpath = ".\\FBX\\";
 	std::string path;
 
@@ -124,19 +126,35 @@ void SuperExporter::AddMesh()
 	std::getline(std::cin, path);
 	fullpath.append(path);
 
-	std::cout << "Input scene to import: " << std::endl;
+	std::cout << "Export skin weights: " << std::endl;
+	std::cout << "(1) YES" << std::endl;
+	std::cout << "(2) NO" << std::endl;
 	std::cout << "INPUT :: ";
+	std::cin >> hasSkinWeights;
+	std::cin.ignore();
+
 	VertexInfo target;
 	Manager m_manager;
+	SkeletonAnimation skel;
+	m_mesh = new MrMeshHandler;
+
+	if (hasSkinWeights == 1)
+	{
+		m_manager.Run(skel);
+		m_mesh->SetHasSkinWeights(true);
+	}
+	else
+	{
+		m_mesh->SetHasSkinWeights(false);
+	}
+
+
 
 	m_manager.Init(fullpath.c_str());
 	m_manager.Run(target);
-	SkeletonAnimation skel;
-	m_manager.Run(skel);
 	skel.GetJointID();
 
 
-	m_mesh = new MrMeshHandler;
 
 	int indSize = target.GetIndices().size();
 	uint32_t numVerts = indSize; //target.getCount();
@@ -147,10 +165,20 @@ void SuperExporter::AddMesh()
 	glm::vec2 * uv = new glm::vec2[numVerts];
 	glm::vec3 * tan = new glm::vec3[numVerts];
 	glm::vec3 * bi = new glm::vec3[numVerts];
-	glm::vec4 * id = new glm::vec4[numVerts];
-	glm::vec4 * we = new glm::vec4[numVerts];
 
-	int temp = skel.GetJointID().size();
+	int temp = 0;
+	glm::vec4 * id;
+	glm::vec4 * we;
+	glm::vec4 * id2;
+	glm::vec4 * we2;
+	if (hasSkinWeights == 1)
+	{
+
+		id = new glm::vec4[numVerts];
+		we = new glm::vec4[numVerts];
+		skel.GetJointID().size();
+	}
+
 
 
 
@@ -158,41 +186,42 @@ void SuperExporter::AddMesh()
 	{
 		pos[i] = glm::vec3(target.GetPos()[ind[i]].x, target.GetPos()[ind[i]].y, target.GetPos()[ind[i]].z);
 		nor[i] =  glm::vec3(target.GetNormal()[ind[i]].x, target.GetNormal()[ind[i]].y, target.GetNormal()[ind[i]].z);
-		uv[i] = glm::vec2(target.GetUV()[ind[i]].x, target.GetUV()[ind[i]].y);
+		uv[i] = glm::vec2(target.GetUV()[i].x, target.GetUV()[i].y);
 		//tan[i] = glm::vec3(target.GetTangent()[i].x, target.GetTangent()[i].y,target.GetTangent()[i].z);
 		//bi[i] = glm::vec3(target.GetBiTangent()[i].x, target.GetBiTangent()[i].y, target.GetBiTangent()[i].z);
 	}
 
-	for (uint32_t i = 0; i < target.getCount(); i++)
+	if (hasSkinWeights == 1)
 	{
-		int t = 0;
-		for (uint32_t j = 0; j < skel.GetWeights().size(); j++)
+		for (uint32_t i = 0; i < target.getCount(); i++)
 		{
-			if (i == skel.GetWeights()[j].VertIndex)
+			int t = 0;
+			for (uint32_t j = 0; j < skel.GetWeights().size(); j++)
 			{
-				if(t < 4)
-				{ 
-					id[i][t] = (float)skel.GetWeights()[j].BlendingIndex;
-					we[i][t] = (float)skel.GetWeights()[j].BlendingWeight;
-					t++;
+				if (i == skel.GetWeights()[j].VertIndex)
+				{
+					if (t < 4)
+					{
+						id[i][t] = (float)skel.GetWeights()[j].BlendingIndex;
+						we[i][t] = (float)skel.GetWeights()[j].BlendingWeight;
+						t++;
+					}
 				}
 			}
 		}
+
+		glm::vec4 * id2 = new glm::vec4[numVerts];
+		glm::vec4 * we2 = new glm::vec4[numVerts];
+
+		for (int i = 0; i < numVerts; i++)
+		{
+			id2[i] = id[ind[i]];
+			we2[i] = we[ind[i]];
+
+			float total = we2[i].x + we2[i].y + we2[i].z + we2[i].w;
+			std::cout << total << std::endl;
+		}
 	}
-
-
-	glm::vec4 * id2 = new glm::vec4[numVerts];
-	glm::vec4 * we2 = new glm::vec4[numVerts];
-
-	for (int i = 0; i < numVerts; i++)
-	{
-		id2[i] = id[ind[i]];
-		we2[i] = we[ind[i]];
-	
-		float total = we2[i].x + we2[i].y + we2[i].z + we2[i].w;
-		std::cout << total << std::endl;
-	}
-
 
 
 	m_mesh->SetNumVerts(numVerts);
@@ -201,8 +230,12 @@ void SuperExporter::AddMesh()
 	m_mesh->SetTexCoords(&uv[0]);
 	m_mesh->SetTangents(&tan[0]);
 	m_mesh->SetBiTangents(&bi[0]);
-	m_mesh->SetSkinWeights(&we2[0]);
-	m_mesh->SetJointIDs(&id2[0]);
+
+	if (hasSkinWeights == 1)
+	{
+		m_mesh->SetSkinWeights(&we2[0]);
+		m_mesh->SetJointIDs(&id2[0]);
+	}
 
 	// CLEAR SCENE
 }
@@ -363,13 +396,13 @@ void SuperExporter::AddAnimation()
 			int numJoints = skel.GetParentID().size();
 			int numKeys = skel.GetTransformationMatrices().size() / skel.GetParentID().size();
 
-			MrKeyFramedJoint * key = new MrKeyFramedJoint[numKeys];
+			MrKeyFramedJoint * key = new MrKeyFramedJoint[numJoints];
 		
 
-			for (int i = 0; i < numKeys; i++)
+			for (int i = 0; i < numJoints; i++)
 			{
-				key[i].matrix = new glm::mat4[numJoints];
-				key[i].keyFrames = new int32_t[numJoints];
+				key[i].matrix = new glm::mat4[numKeys];
+				key[i].keyFrames = new int32_t[numKeys];
 			}
 
 			int count = 0;
@@ -389,18 +422,18 @@ void SuperExporter::AddAnimation()
 
 					glm::mat4 mat = posMat * rotMat * scaleMat;
 
-					key[j].keyFrames[i] = 0;
-					key[j].matrix[i] = mat;
-					key[j].jointID = 0;
-					key[j].numKeyframes = numJoints;
+					key[i].keyFrames[j] = 0;
+					key[i].matrix[j] = mat;
+					key[i].jointID = 0;
+					key[i].numKeyframes = numKeys;
 					count++;
 				}
 			}
 
-			m_animHandler->SetName("animation");
+			m_animHandler->SetName(name.c_str());
 			
 			m_animHandler->SetKeyframedJoint(key);
-			m_animHandler->SetNumKeyFramedJoints(numKeys);
+			m_animHandler->SetNumKeyFramedJoints(numJoints);
 			m_animHandler->SetFirstKeyFrame(1);
 			m_animHandler->SetLastKeyFrame(numKeys);
 

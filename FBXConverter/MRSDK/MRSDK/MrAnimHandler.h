@@ -104,14 +104,11 @@ inline bool MrAnimHandler::Import(const char * filepath)
 
 	for (uint32_t i = 0; i < m_numKeyFramedJoints; i++)
 	{
-		file.read(reinterpret_cast<char*>(&m_keyFramedJoints[i].jointID), sizeof(uint32_t));
 		file.read(reinterpret_cast<char*>(&m_keyFramedJoints[i].numKeyframes), sizeof(uint32_t));
 
-		m_keyFramedJoints[i].matrix = new glm::mat4[m_numKeyFramedJoints];
-		m_keyFramedJoints[i].keyFrames = new int32_t[m_numKeyFramedJoints];
+		m_keyFramedJoints[i].matrix = new glm::mat4[m_keyFramedJoints[i].numKeyframes];
 
 		file.read(reinterpret_cast<char*>(m_keyFramedJoints[i].matrix), sizeof(glm::mat4) * m_keyFramedJoints[i].numKeyframes);
-		file.read(reinterpret_cast<char*>(m_keyFramedJoints[i].keyFrames), sizeof(int32_t) * m_keyFramedJoints[i].numKeyframes);
 	}
 
 	file.close();
@@ -133,10 +130,8 @@ inline bool MrAnimHandler::Export(const char * filepath)
 
 	for (uint32_t i = 0; i < m_numKeyFramedJoints; i++)
 	{
-		file.write(reinterpret_cast<char*>(&m_keyFramedJoints[i].jointID), sizeof(uint32_t));
 		file.write(reinterpret_cast<char*>(&m_keyFramedJoints[i].numKeyframes), sizeof(uint32_t));
 		file.write(reinterpret_cast<char*>(m_keyFramedJoints[i].matrix), sizeof(glm::mat4) * m_keyFramedJoints[i].numKeyframes);
-		file.write(reinterpret_cast<char*>(m_keyFramedJoints[i].keyFrames), sizeof(int32_t) * m_keyFramedJoints[i].numKeyframes);
 	}
 
 	file.close();
