@@ -14,7 +14,6 @@ public:
 	VertexInfo();
 	virtual ~VertexInfo();
 
-
 	void init();
 
 	//..::SAVE FUNCTIONS::..//

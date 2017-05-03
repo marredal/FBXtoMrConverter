@@ -39,11 +39,11 @@ void VertexInfo::SavePosition(FbxNode* pNode)
 			m_position.push_back(output);
 		}
 	}
-	/*int count = pNode->GetChildCount();
+	int count = pNode->GetChildCount();
 	for (int i = 0; i < count; i++)
 	{
 		SavePosition(pNode->GetChild(i));
-	}*/
+	}
 }
 void VertexInfo::SaveUV(FbxNode* pNode)
 {
