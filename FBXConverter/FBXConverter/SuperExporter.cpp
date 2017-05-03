@@ -456,21 +456,29 @@ void SuperExporter::AddMaterial()
 	int nrOfTextures = 1;
 
 	MrTexture * textures = new MrTexture[nrOfTextures];
+
+	std::string fullpath = ".\\FBX\\";
+	std::string path;
+
+	std::cout << "Texture path: " << std::endl;
+	std::cout << "INPUT :: .\\FBX\\";
+	std::getline(std::cin, path);
+	fullpath.append(path);
 	
 	for (int i = 0; i < nrOfTextures; i++)
 	{
 		int width, height, numComponents;
-		unsigned char * imageData = stbi_load(".\\FBX\\character_albedo.png", &width, &height, &numComponents, STBI_rgb_alpha);
+		unsigned char * imageData = stbi_load(fullpath.c_str(), &width, &height, &numComponents, STBI_rgb_alpha);
 
 		textures[i].type = ALBEDO_MAP;
 		textures[i].width = (uint32_t)width;
 		textures[i].height = (uint32_t)height;
 		textures[i].numComponents = numComponents;
-		textures[i].dataLength = width * height * numComponents; //sizeof(imageData) / sizeof(imageData[1]);
+		textures[i].dataLength = width * height * (numComponents + 1); //sizeof(imageData) / sizeof(imageData[1]);
 
 		textures[i].data = new unsigned char[textures[i].dataLength];
 
-		for (int j = 0; j < numComponents * width * height; j++)
+		for (int j = 0; j < textures[i].dataLength; j++)
 		{
 			textures[i].data[j] = imageData[j];
 		}
