@@ -117,7 +117,7 @@ inline bool MrMeshHandler::Import(const char * filepath)
 
 
 	// Positions.
-	file.read(reinterpret_cast<char*>(&m_postions), sizeof(glm::vec3) * m_numVerts);
+	file.read(reinterpret_cast<char*>(m_postions), sizeof(glm::vec3) * m_numVerts);
 
 	// Texture coords.
 	file.read(reinterpret_cast<char*>(m_texCoords), sizeof(glm::vec2) * m_numVerts);
@@ -168,50 +168,34 @@ inline bool MrMeshHandler::Export(const char* filepath)
 
 	file.write(reinterpret_cast<char*>(&m_numVerts), sizeof(uint32_t));
 
-	for (uint32_t i = 0; i < m_numVerts; i++)
+
+	// Positions.
+	file.write(reinterpret_cast<char*>(m_postions), sizeof(glm::vec3) * m_numVerts);
+
+	// Texture coords.
+	file.write(reinterpret_cast<char*>(m_texCoords), sizeof(glm::vec2) * m_numVerts);
+
+	// Normals.
+	file.write(reinterpret_cast<char*>(m_normals), sizeof(glm::vec3) * m_numVerts);
+
+	// Tangents.
+	file.write(reinterpret_cast<char*>(m_tangents), sizeof(glm::vec3) * m_numVerts);
+
+	// Bitangents.
+	file.write(reinterpret_cast<char*>(m_bitangents), sizeof(glm::vec3) * m_numVerts);
+
+	// Has skin weights.
+	file.write(reinterpret_cast<char*>(&m_hasSkinWeights), sizeof(bool));
+
+	if (m_hasSkinWeights)
 	{
-		// Positions.
-		file.write(reinterpret_cast<char*>(&m_postions[i].x), sizeof(float));
-		file.write(reinterpret_cast<char*>(&m_postions[i].y), sizeof(float));
-		file.write(reinterpret_cast<char*>(&m_postions[i].z), sizeof(float));
+		// Skin weights.
+		file.write(reinterpret_cast<char*>(m_skinWeights), sizeof(glm::vec4) * m_numVerts);
 
-
-		// Texture coords.
-		file.write(reinterpret_cast<char*>(&m_texCoords[i].x), sizeof(float));
-		file.write(reinterpret_cast<char*>(&m_texCoords[i].y), sizeof(float));
-
-		// Normals.
-		file.write(reinterpret_cast<char*>(&m_normals[i].x), sizeof(float));
-		file.write(reinterpret_cast<char*>(&m_normals[i].y), sizeof(float));
-		file.write(reinterpret_cast<char*>(&m_normals[i].z), sizeof(float));
-
-		// Tangents.
-		file.write(reinterpret_cast<char*>(&m_tangents[i].x), sizeof(float));
-		file.write(reinterpret_cast<char*>(&m_tangents[i].y), sizeof(float));
-		file.write(reinterpret_cast<char*>(&m_tangents[i].z), sizeof(float));
-
-		// Bitangents.
-		file.write(reinterpret_cast<char*>(&m_bitangents[i].x), sizeof(float));
-		file.write(reinterpret_cast<char*>(&m_bitangents[i].y), sizeof(float));
-		file.write(reinterpret_cast<char*>(&m_bitangents[i].z), sizeof(float));
-
-		file.write(reinterpret_cast<char*>(&m_hasSkinWeights), sizeof(bool));
-
-		if (m_hasSkinWeights)
-		{
-			// Skin weights.
-			file.write(reinterpret_cast<char*>(&m_skinWeights[i].x), sizeof(float));
-			file.write(reinterpret_cast<char*>(&m_skinWeights[i].y), sizeof(float));
-			file.write(reinterpret_cast<char*>(&m_skinWeights[i].z), sizeof(float));
-			file.write(reinterpret_cast<char*>(&m_skinWeights[i].w), sizeof(float));
-
-			// Joint weights.
-			file.write(reinterpret_cast<char*>(&m_jointIDs[i].x), sizeof(float));
-			file.write(reinterpret_cast<char*>(&m_jointIDs[i].y), sizeof(float));
-			file.write(reinterpret_cast<char*>(&m_jointIDs[i].z), sizeof(float));
-			file.write(reinterpret_cast<char*>(&m_jointIDs[i].w), sizeof(float));
-		}
+		// Joint weights.
+		file.write(reinterpret_cast<char*>(m_jointIDs), sizeof(glm::vec4) * m_numVerts);
 	}
+	
 
 	file.close();
 
@@ -364,6 +348,7 @@ inline void MrMeshHandler::Init()
 	m_isLoaded = false;
 
 	m_numVerts = 0;
+	m_hasSkinWeights = true;
 
 	m_postions = nullptr;
 	m_texCoords = nullptr;
