@@ -2,29 +2,24 @@
 #include "SuperExporter.h"
 #include "SkeletonAnimation.h"
 #include <iostream>
+#include "MrHandler.h"
+
 #pragma comment(lib, "libfbxsdk.lib")
 
 
 int main(int argc, char** argv) {
-	std::vector<glm::vec3> t;
-	VertexInfo target;
-	SkeletonAnimation skeleludvigefag;
-	Manager m_mananger;
 
-	m_mananger.Init();
-
-	m_mananger.Run(target);
-	m_mananger.Run(skeleludvigefag);
-	skeleludvigefag.GetJointID();
-	SuperExporter hej;
-	hej.AddMesh(target);
-	
-	
+	//MrSkelHandler mrHandler;
+	//mrHandler.Import(".\\Assets\\Skeletons\\super.mrskel");
 
 
+	std::cout << "DONE" << std::endl;
 
-	SuperExporter se;
-	se.Run();
+	getchar();
+
+	SuperExporter super;
+//
+	super.Run();
 
 	return 0;
 }

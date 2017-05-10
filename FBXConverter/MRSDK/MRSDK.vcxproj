@@ -26,13 +26,6 @@
     <ClInclude Include="MRSDK\MrSkelHandler.h" />
     <ClInclude Include="MRSDK\MrUtility.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Source\MrAnimHandler.cpp" />
-    <ClCompile Include="Source\MrHandler.cpp" />
-    <ClCompile Include="Source\MrMatHandler.cpp" />
-    <ClCompile Include="Source\MrMeshHandler.cpp" />
-    <ClCompile Include="Source\MrSkelHandler.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B4FDE871-C896-4CCF-907A-6D76CEC9F66E}</ProjectGuid>
     <RootNamespace>MRSDK</RootNamespace>

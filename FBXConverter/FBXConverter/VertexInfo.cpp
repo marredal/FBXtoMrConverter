@@ -19,7 +19,7 @@ void VertexInfo::init()
 }
 
 
-
+//..::SAVE FUNCTIONS::..//
 void VertexInfo::SavePosition(FbxNode* pNode)
 {
 	if (!pNode)
@@ -29,6 +29,7 @@ void VertexInfo::SavePosition(FbxNode* pNode)
 	FbxMesh* mesh = pNode->GetMesh();
 	if (mesh)
 	{
+		m_numVerts = mesh->GetControlPointsCount();
 		for (int i = 0; i < mesh->GetControlPointsCount(); i++)
 		{
 			glm::vec3 output;
@@ -38,13 +39,12 @@ void VertexInfo::SavePosition(FbxNode* pNode)
 			m_position.push_back(output);
 		}
 	}
-	/*int count = pNode->GetChildCount();
+	int count = pNode->GetChildCount();
 	for (int i = 0; i < count; i++)
 	{
 		SavePosition(pNode->GetChild(i));
-	}*/
+	}
 }
-
 void VertexInfo::SaveUV(FbxNode* pNode)
 {
 
@@ -123,13 +123,14 @@ void VertexInfo::SaveUV(FbxNode* pNode)
 			}
 		}
 	}
+
 	int count = pNode->GetChildCount();
+	
 	for (int i = 0; i < count; i++)
 	{
 		this->SaveUV(pNode->GetChild(i));
 	}
 }
-
 void VertexInfo::SavetNormal(FbxNode * pNode)
 {
 	if (!pNode)
@@ -195,6 +196,141 @@ void VertexInfo::SavetNormal(FbxNode * pNode)
 		this->SaveUV(pNode->GetChild(i));
 	}
 }
+void VertexInfo::SaveTangent(FbxNode * pNode)
+{
+	if (!pNode)
+		return;
+
+	FbxMesh* mesh = pNode->GetMesh();
+	if (mesh)
+	{
+		FbxGeometryElementTangent* tangentElement = mesh->GetElementTangent();
+
+		if (tangentElement)
+		{
+			if (tangentElement->GetMappingMode() == FbxGeometryElement::eByControlPoint)
+			{
+
+				for (int vertexIndex = 0; vertexIndex < mesh->GetControlPointsCount(); vertexIndex++)
+				{
+					int tangentIndex = 0;
+
+					if (tangentElement->GetReferenceMode() == FbxGeometryElement::eDirect)
+						tangentIndex = vertexIndex;
+
+					if (tangentElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+						tangentIndex = tangentElement->GetIndexArray().GetAt(vertexIndex);
+
+					FbxDouble3 tangent = tangentElement->GetDirectArray().GetAt(tangentIndex);
+
+					m_tangent.push_back(glm::vec3(tangent[0], tangent[1], tangent[2]));
+				}
+			}
+			else if (tangentElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+			{
+				int indexByPolygonVertex = 0;
+
+				for (int polygonIndex = 0; polygonIndex < mesh->GetPolygonCount(); polygonIndex++)
+				{
+					int polygonSize = mesh->GetPolygonSize(polygonIndex);
+
+					for (int i = 0; i < polygonSize; i++)
+					{
+						int tangentIndex = 0;
+
+						if (tangentElement->GetReferenceMode() == FbxGeometryElement::eDirect)
+							tangentIndex = indexByPolygonVertex;
+
+						if (tangentElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+							tangentIndex = tangentElement->GetIndexArray().GetAt(indexByPolygonVertex);
+
+						FbxDouble3 tangent = tangentElement->GetDirectArray().GetAt(tangentIndex);
+
+						m_normal.push_back(glm::vec3((float)tangent[i]));
+					}
+				}
+			}
+		}
+	}
+}
+void VertexInfo::SaveBiTangent(FbxNode * pNode)
+{
+	if (!pNode)
+		return;
+
+	FbxMesh* mesh = pNode->GetMesh();
+	if (mesh)
+	{
+		FbxGeometryElementBinormal* BiTangentElement = mesh->GetElementBinormal();
+
+		if (BiTangentElement)
+		{
+			if (BiTangentElement->GetMappingMode() == FbxGeometryElement::eByControlPoint)
+			{
+
+				for (int vertexIndex = 0; vertexIndex < mesh->GetControlPointsCount(); vertexIndex++)
+				{
+					int BITangentIndex = 0;
+
+					if (BiTangentElement->GetReferenceMode() == FbxGeometryElement::eDirect)
+						BITangentIndex = vertexIndex;
+
+					if (BiTangentElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+						BITangentIndex = BiTangentElement->GetIndexArray().GetAt(vertexIndex);
+
+					FbxDouble3 biTangent = BiTangentElement->GetDirectArray().GetAt(BITangentIndex);
+
+					m_bitangent.push_back(glm::vec3(biTangent[0], biTangent[1], biTangent[2]));
+				}
+			}
+			else if (BiTangentElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+			{
+				int indexByPolygonVertex = 0;
+
+				for (int polygonIndex = 0; polygonIndex < mesh->GetPolygonCount(); polygonIndex++)
+				{
+					int polygonSize = mesh->GetPolygonSize(polygonIndex);
+
+					for (int i = 0; i < polygonSize; i++)
+					{
+						int BITangentIndex = 0;
+
+						if (BiTangentElement->GetReferenceMode() == FbxGeometryElement::eDirect)
+							BITangentIndex = indexByPolygonVertex;
+
+						if (BiTangentElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+							BITangentIndex = BiTangentElement->GetIndexArray().GetAt(indexByPolygonVertex);
+
+						FbxDouble3 biTangent = BiTangentElement->GetDirectArray().GetAt(BITangentIndex);
+
+						m_bitangent.push_back(glm::vec3((float)biTangent[i]));
+					}
+				}
+			}
+		}
+	}
+}
+
+void VertexInfo::SaveIndices(FbxNode * pNode)
+{
+	FbxMesh* mesh = pNode->GetMesh();
+	if (mesh)
+	{
+		for (size_t i = 0; i < mesh->GetPolygonVertexCount(); i++)
+		{
+			m_indices.push_back(mesh->GetPolygonVertices()[i]);
+
+		}
+	}
+}
+
+
+
+//..::GET FUNCTIONS::..//
+uint32_t VertexInfo::getCount() const
+{
+	return m_numVerts;
+}
 std::vector<glm::vec3> VertexInfo::GetPos() const
 {
 	return m_position;
@@ -208,4 +344,19 @@ std::vector<glm::vec2> VertexInfo::GetUV() const
 std::vector<glm::vec3> VertexInfo::GetNormal() const
 {
 	return m_normal;
+}
+
+std::vector<glm::vec3> VertexInfo::GetTangent() const
+{
+	return m_tangent;
+}
+
+std::vector<glm::vec3> VertexInfo::GetBiTangent() const
+{
+	return m_bitangent;
+}
+
+std::vector<int> VertexInfo::GetIndices() const
+{
+	return m_indices;
 }

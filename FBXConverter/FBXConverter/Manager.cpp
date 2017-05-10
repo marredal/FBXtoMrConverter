@@ -10,9 +10,9 @@ Manager::~Manager()
 }
 
 
-void Manager::Init()
+void Manager::Init(const char* filepath)
 {
-	const char* m_FilePath = ".\\Assets\\kub_fbx.fbx";
+	const char* m_FilePath = filepath;
 
 	m_Manager = FbxManager::Create();
 	FbxIOSettings *ios = FbxIOSettings::Create(m_Manager, IOSROOT);
@@ -48,7 +48,9 @@ void Manager::Run(VertexInfo &target)
 			target.SavePosition(m_root->GetChild(i));
 			target.SaveUV(m_root->GetChild(i));
 			target.SavetNormal(m_root->GetChild(i));
-
+			target.SaveTangent(m_root->GetChild(i));
+			target.SaveBiTangent(m_root->GetChild(i));
+			target.SaveIndices(m_root->GetChild(i));
 		}
 	}
 }

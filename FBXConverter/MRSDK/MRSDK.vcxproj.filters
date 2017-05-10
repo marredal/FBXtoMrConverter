@@ -15,9 +15,6 @@
     <ClInclude Include="MRSDK\MrHandler.h">
       <Filter>MRSDK</Filter>
     </ClInclude>
-    <ClInclude Include="MRSDK\MrMatHandler.h">
-      <Filter>MRSDK</Filter>
-    </ClInclude>
     <ClInclude Include="MRSDK\MrMeshHandler.h">
       <Filter>MRSDK</Filter>
     </ClInclude>
@@ -27,22 +24,8 @@
     <ClInclude Include="MRSDK\MrUtility.h">
       <Filter>MRSDK</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Source\MrAnimHandler.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MrHandler.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MrMatHandler.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MrMeshHandler.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MrSkelHandler.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
+    <ClInclude Include="MRSDK\MrMatHandler.h">
+      <Filter>MRSDK</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
