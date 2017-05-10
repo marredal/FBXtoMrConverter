@@ -11,7 +11,6 @@ public:
 	virtual ~SkeletonAnimation();
 	void GetSkeleton();
 	void Export();
-	int32_t SkeletonAnimation::GetFirstKeyFrame();
 	void SetScene(FbxScene* scene);
 	void SetBindPose(int32_t &bindPoseJointID, glm::mat4 &BindPoseMatrix);
 	int32_t GetFirstKeyFrame();

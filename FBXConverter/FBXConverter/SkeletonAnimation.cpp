@@ -139,10 +139,10 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 			currentCluster->GetTransformLinkMatrix(transformLinkMat);
 			globalBindposeInverseMat = transformLinkMat.Inverse() * transformMat * identityMatrix;
 
-			std::cout << "<mat>" << static_cast<float>(globalBindposeInverseMat.Get(0, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 3)) << "," << std::endl;
-				std::cout<<static_cast<float>(globalBindposeInverseMat.Get(1, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 3)) << "," << std::endl;
-				std::cout<<static_cast<float>(globalBindposeInverseMat.Get(2, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 3)) << "," << std::endl;
-				std::cout<<static_cast<float>(globalBindposeInverseMat.Get(3, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 3)) << "</mat>\n";
+			//std::cout << "<mat>" << static_cast<float>(globalBindposeInverseMat.Get(0, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 3)) << "," << std::endl;
+			//	std::cout<<static_cast<float>(globalBindposeInverseMat.Get(1, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 3)) << "," << std::endl;
+			//	std::cout<<static_cast<float>(globalBindposeInverseMat.Get(2, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 3)) << "," << std::endl;
+			//	std::cout<<static_cast<float>(globalBindposeInverseMat.Get(3, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 3)) << "</mat>\n";
 
 			//Convert to mat4
 			for (int i = 0; i < 4; i++) {
@@ -178,8 +178,8 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 			m_firstFrame = start.GetFrameCount(FbxTime::eFrames24);
 			m_lastFrame = end.GetFrameCount(FbxTime::eFrames24);
 
-			std::cout << m_firstFrame << std::endl;
-			std::cout << m_lastFrame << std::endl;
+		//	std::cout << m_firstFrame << std::endl;
+			//std::cout << m_lastFrame << std::endl;
 			Keyframe** currentAnimation = &m_Skeleton.Joints[currentJointIndex].Animation;
 
 
@@ -194,7 +194,7 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 				(*currentAnimation)->LocalTransform = currentTransformOffset.Inverse() * currentCluster->GetLink()->EvaluateLocalTransform(currentTime);
 
 				//std::cout << "Node name: " << node->GetName() << std::endl;
-				std::cout << (*currentAnimation)->LocalTransform.GetT().mData[0] << ", ";
+				//std::cout << (*currentAnimation)->LocalTransform.GetT().mData[0] << ", ";
 				//std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[1] << ", ";
 				//std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[2] << std::endl;
 
@@ -219,6 +219,7 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 				tempScale.z = (*currentAnimation)->LocalTransform.GetS().mData[2];
 				m_localScaleMat.push_back(tempScale);
 			
+				std::cout << tempTransform.x << " " << tempTransform.y << " " << tempTransform.z << std::endl;
 				currentAnimation = &((*currentAnimation)->Next);
 
 			}
@@ -235,7 +236,7 @@ void SkeletonAnimation::CheckMesh(FbxNode * node)
 	{
 		switch (node->GetNodeAttribute()->GetAttributeType())
 		{
-			std::cout << node->GetName() << std::endl;
+			//std::cout << node->GetName() << std::endl;
 		case FbxNodeAttribute::eMesh:
 			FixControlPoints(node);
 			if (m_HasAnimation)
@@ -315,6 +316,9 @@ void SkeletonAnimation::SetBindPose(int32_t &bindPoseJointID, glm::mat4 &BindPos
 
 std::vector<int32_t> SkeletonAnimation::GetJointID() {
 
+	for (int i = 0; i < m_index.size(); i++) {
+		std::cout << m_index.at(i) << std::endl;
+	}
 	return  m_index;
 }
 

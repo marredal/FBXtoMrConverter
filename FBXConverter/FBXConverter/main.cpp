@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
 
 	m_mananger.Run(target);
 	m_mananger.Run(skeleludvigefag);
-	skeleludvigefag.GetName();
+	skeleludvigefag.GetJointID();
 	SuperExporter hej;
 	hej.AddMesh(target);
 	
