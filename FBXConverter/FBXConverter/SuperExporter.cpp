@@ -152,15 +152,18 @@ void SuperExporter::AddMesh()
 
 	int temp = skel.GetJointID().size();
 
+	std::vector<glm::vec3> tangents;
+	std::vector<glm::vec3> biTangents;
 
+	CalculateTangents(target, tangents, biTangents);
 
 	for (uint32_t i = 0; i < numVerts; i++)
 	{
 		pos[i] = glm::vec3(target.GetPos()[ind[i]].x, target.GetPos()[ind[i]].y, target.GetPos()[ind[i]].z);
 		nor[i] =  glm::vec3(target.GetNormal()[ind[i]].x, target.GetNormal()[ind[i]].y, target.GetNormal()[ind[i]].z);
-		uv[i] = glm::vec2(target.GetUV()[ind[i]].x, target.GetUV()[ind[i]].y);
-		//tan[i] = glm::vec3(target.GetTangent()[i].x, target.GetTangent()[i].y,target.GetTangent()[i].z);
-		//bi[i] = glm::vec3(target.GetBiTangent()[i].x, target.GetBiTangent()[i].y, target.GetBiTangent()[i].z);
+		uv[i]  = glm::vec2(target.GetUV()[ind[i]].x, target.GetUV()[ind[i]].y);
+		tan[i] = tangents[ind[i]];
+		bi[i]  = biTangents[ind[i]];
 	}
 
 	for (uint32_t i = 0; i < target.getCount(); i++)
@@ -483,7 +486,7 @@ void SuperExporter::Export()
 
 void SuperExporter::CalculateTangents(VertexInfo & vertInfo, std::vector<glm::vec3> & tangents, std::vector<glm::vec3> & biTangents)
 {
-	for (int i = 0; i < vertInfo.GetPos().size(); i++)
+	for (int i = 0; i < vertInfo.GetPos().size(); i+=3)
 	{
 		glm::vec3 v0 = vertInfo.GetPos()[vertInfo.GetIndices()[i]];
 		glm::vec3 v1 = vertInfo.GetPos()[vertInfo.GetIndices()[i] + 1];
@@ -506,7 +509,13 @@ void SuperExporter::CalculateTangents(VertexInfo & vertInfo, std::vector<glm::ve
 		glm::vec3 bitangent = (deltaPos2 * deltaUV1.x - deltaPos1 * deltaUV2.x)*r;
 
 		tangents.push_back(tangent);
+		tangents.push_back(tangent);
+		tangents.push_back(tangent);
+
+		biTangents.push_back(bitangent);
+		biTangents.push_back(bitangent);
 		biTangents.push_back(bitangent);
 
 	}
+
 }
