@@ -6,7 +6,7 @@
 #include <iomanip>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "stb-master\stb_image.h"
 
 
 SuperExporter::SuperExporter()
@@ -58,7 +58,7 @@ void SuperExporter::Run()
 
 void SuperExporter::Convert()
 {
-	system("CLS");
+	//system("CLS");
 	int input = 0;
 	//	system("CLS");
 
@@ -66,7 +66,7 @@ void SuperExporter::Convert()
 
 	while (isRunning)
 	{
-		system("CLS");
+	//	system("CLS");
 		std::cout << "I HOPE YOU HAVE BUT ALL THE FBX FILES IN THE FBX FOLDER" << std::endl;
 		std::cout << std::endl << std::endl;
 
@@ -135,6 +135,7 @@ void SuperExporter::AddMesh()
 
 	VertexInfo target;
 	Manager m_manager;
+
 	SkeletonAnimation skel;
 	m_mesh = new MrMeshHandler;
 

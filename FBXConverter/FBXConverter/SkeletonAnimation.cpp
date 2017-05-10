@@ -240,6 +240,9 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 void SkeletonAnimation::CheckMesh(FbxNode * node)
 {
 
+
+
+
 	if (node->GetNodeAttribute())
 	{
 		switch (node->GetNodeAttribute()->GetAttributeType())
@@ -251,6 +254,7 @@ void SkeletonAnimation::CheckMesh(FbxNode * node)
 			{
 				SkeletonJointsAndAnimations(node);
 			}
+			
 			break;
 		}
 	}

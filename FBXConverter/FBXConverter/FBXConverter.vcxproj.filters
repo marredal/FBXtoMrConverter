@@ -47,6 +47,9 @@
     <ClInclude Include="ExporterStruct.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="stb-master\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Skeletons\super.mrskel" />

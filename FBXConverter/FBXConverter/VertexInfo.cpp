@@ -5,7 +5,6 @@
 VertexInfo::VertexInfo()
 {
 
-
 }
 
 
@@ -125,7 +124,7 @@ void VertexInfo::SaveUV(FbxNode* pNode)
 	}
 
 	int count = pNode->GetChildCount();
-	
+
 	for (int i = 0; i < count; i++)
 	{
 		this->SaveUV(pNode->GetChild(i));
@@ -161,7 +160,7 @@ void VertexInfo::SavetNormal(FbxNode * pNode)
 					m_normal.push_back(glm::vec3(normal[0], normal[1], normal[2]));
 				}
 			}
-			else if(normalElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+			else if (normalElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
 			{
 				int indexByPolygonVertex = 0;
 
@@ -175,10 +174,10 @@ void VertexInfo::SavetNormal(FbxNode * pNode)
 
 						if (normalElement->GetReferenceMode() == FbxGeometryElement::eDirect)
 							normalIndex = indexByPolygonVertex;
-						
+
 						if (normalElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
 							normalIndex = normalElement->GetIndexArray().GetAt(indexByPolygonVertex);
-						
+
 
 						FbxDouble3 normal = normalElement->GetDirectArray().GetAt(normalIndex);
 
@@ -313,6 +312,8 @@ void VertexInfo::SaveBiTangent(FbxNode * pNode)
 
 void VertexInfo::SaveIndices(FbxNode * pNode)
 {
+
+
 	FbxMesh* mesh = pNode->GetMesh();
 	if (mesh)
 	{
@@ -324,6 +325,30 @@ void VertexInfo::SaveIndices(FbxNode * pNode)
 	}
 }
 
+
+void VertexInfo::GetCustomAttribute(FbxNode* pNode) {
+
+	std::cout << "Get Custom Attrib" << std::endl;
+
+	if (!pNode)
+		return;
+
+	//Get Custom Attribute
+	FbxProperty prop = pNode->FindProperty("TestAttrib", false);
+
+
+	if (prop.IsValid())
+	{
+
+		//property name
+		std::cout << "property found: " << prop.GetName() << std::endl;
+
+		//property value
+		std::cout << prop.Get<FbxInt>()<< std::endl;
+
+	}
+
+}
 
 
 //..::GET FUNCTIONS::..//

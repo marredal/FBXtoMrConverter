@@ -40,6 +40,8 @@ private:
 	Skeleton m_Skeleton;
 	int32_t m_firstFrame;
 	int32_t m_lastFrame;
+	int32_t m_customAttributeValue;
+	std::string m_customAttributeName;
 	glm::mat4 m_globalBindPoseMat;
 	std::vector<glm::vec3> m_localTransformMat;
 	std::vector<glm::vec3> m_localRotationMat;

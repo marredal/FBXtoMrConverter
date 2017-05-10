@@ -159,6 +159,7 @@
     <ClInclude Include="ExporterStruct.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="SkeletonAnimation.h" />
+    <ClInclude Include="stb-master\stb_image.h" />
     <ClInclude Include="SuperExporter.h" />
     <ClInclude Include="VertexInfo.h" />
   </ItemGroup>
