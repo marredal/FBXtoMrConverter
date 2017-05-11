@@ -23,7 +23,7 @@ public:
 	void SaveTangent(FbxNode* pNode);
 	void SaveBiTangent (FbxNode* pNode);
 	void SaveIndices(FbxNode* pNode);
-
+	void GetCustomAttribute(FbxNode* pNode);
 	//..::GET FUNCTIONS::..//
 	uint32_t getCount()const;
 	std::vector<glm::vec3> GetPos() const;

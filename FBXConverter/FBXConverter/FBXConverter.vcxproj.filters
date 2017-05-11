@@ -30,9 +30,6 @@
     <ClCompile Include="VertexInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MaterialHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Manager.h">
@@ -50,7 +47,7 @@
     <ClInclude Include="ExporterStruct.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MaterialHandler.h">
+    <ClInclude Include="stb-master\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
