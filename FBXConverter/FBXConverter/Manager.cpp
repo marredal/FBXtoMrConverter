@@ -51,6 +51,8 @@ void Manager::Run(VertexInfo &target)
 			target.SaveTangent(m_root->GetChild(i));
 			target.SaveBiTangent(m_root->GetChild(i));
 			target.SaveIndices(m_root->GetChild(i));
+			target.GetCustomAttribute(m_root->GetChild(i));
+			target.GetGroups(m_root->GetChild(i));
 			m_materialInfo.ImportMaterial(m_root->GetChild(i));
 		}
 
