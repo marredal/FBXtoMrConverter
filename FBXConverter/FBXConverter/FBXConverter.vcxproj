@@ -151,6 +151,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manager.cpp" />
+    <ClCompile Include="MaterialHandler.cpp" />
     <ClCompile Include="SkeletonAnimation.cpp" />
     <ClCompile Include="SuperExporter.cpp" />
     <ClCompile Include="VertexInfo.cpp" />
@@ -158,6 +159,7 @@
   <ItemGroup>
     <ClInclude Include="ExporterStruct.h" />
     <ClInclude Include="Manager.h" />
+    <ClInclude Include="MaterialHandler.h" />
     <ClInclude Include="SkeletonAnimation.h" />
     <ClInclude Include="stb-master\stb_image.h" />
     <ClInclude Include="SuperExporter.h" />

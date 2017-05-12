@@ -8,6 +8,7 @@
 #include "SkeletonAnimation.h"
 #include "glm.hpp"
 #include <iostream>
+#include "MaterialHandler.h"
 
 
 class Manager
@@ -29,8 +30,9 @@ private:
 	FbxManager*		m_Manager;
 	FbxScene*		m_Scene;
 	FbxImporter*	m_Importer;
-
 	FbxNode*		m_root;
+
+	MaterialHandler m_materialInfo;
 	
 	//VertexInfo		m_vertexInfo;
 };
