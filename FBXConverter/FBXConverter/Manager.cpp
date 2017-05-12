@@ -32,6 +32,7 @@ void Manager::Init(const char* filepath)
 	m_Scene = FbxScene::Create(m_Manager, "scene");
 
 	m_Importer->Import(m_Scene);
+	
 
 	m_Importer->Destroy();
 
@@ -52,6 +53,7 @@ void Manager::Run(VertexInfo &target)
 			target.SaveBiTangent(m_root->GetChild(i));
 			target.SaveIndices(m_root->GetChild(i));
 			target.GetCustomAttribute(m_root->GetChild(i));
+			target.GetGroups(m_root->GetChild(i));
 		}
 	}
 }

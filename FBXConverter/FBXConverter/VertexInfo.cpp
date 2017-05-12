@@ -328,26 +328,55 @@ void VertexInfo::SaveIndices(FbxNode * pNode)
 
 void VertexInfo::GetCustomAttribute(FbxNode* pNode) {
 
-	std::cout << "Get Custom Attrib" << std::endl;
-
-	if (!pNode)
-		return;
-
-	//Get Custom Attribute
-	FbxProperty prop = pNode->FindProperty("TestAttrib", false);
 
 
-	if (prop.IsValid())
-	{
+	//If object is a mesh, search for custom attribute
+	if (pNode->GetMesh()) {
 
-		//property name
-		std::cout << "property found: " << prop.GetName() << std::endl;
+		if (!pNode)
+			return;
 
-		//property value
-		std::cout << prop.Get<FbxInt>()<< std::endl;
 
+		//Get Custom Attribute.		(name of the attribute in Maya.)
+		FbxProperty prop = pNode->FindProperty("TestAttrib", false);
+
+
+		if (prop.IsValid())
+		{
+
+			//property name
+			std::cout << "custom attribute found: " << prop.GetName() << std::endl;
+
+			//property value
+			std::cout << prop.Get<FbxInt>() << std::endl;
+
+			m_customAttributeValue = prop.Get<FbxInt>();
+			m_customAttributeName = prop.GetName();
+
+		}
+	}
+}
+void VertexInfo::GetGroups(FbxNode* pNode) {
+
+
+	//If object is not mesh (it is propably a group)
+
+	if (!pNode->GetMesh()) {
+
+		std::cout << "Group name:" << pNode->GetName() << std::endl;
+
+		m_groupInfo.push_back(pNode->GetName());
+
+		for (int i = 0; i < pNode->GetChildCount(); i++) {
+
+			std::cout << "child name: " << pNode->GetChild(i)->GetName() << std::endl;
+			
+			//Save the group name and the name of its children.
+			m_groupInfo.push_back(pNode->GetChild(i)->GetName());
+		}
 	}
 
+	
 }
 
 
