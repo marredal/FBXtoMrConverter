@@ -1,6 +1,8 @@
 #ifndef __MANAGER_H__
 #define __MANAGER_H__
 
+#define FBXSDK_SHARED
+
 #include "fbxsdk.h"
 #include <vector>
 #include <iostream>
@@ -9,6 +11,7 @@
 #include "glm.hpp"
 #include <iostream>
 #include "MaterialHandler.h"
+#include "CameraInfo.h"
 
 
 class Manager
@@ -19,6 +22,7 @@ public:
 	void Init(const char* filepath);
 	void Run(VertexInfo &target);
 	void Run(SkeletonAnimation &target);
+	void Run(CameraInfo &target);
 
 
 	//..::GET FUNCTIONS::..//
@@ -33,6 +37,8 @@ private:
 	FbxNode*		m_root;
 
 	MaterialHandler m_materialInfo;
+
+	CameraInfo		m_camerainfo;
 	
 	//VertexInfo		m_vertexInfo;
 };

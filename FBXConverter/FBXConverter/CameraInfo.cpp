@@ -18,9 +18,11 @@ void CameraInfo::FillNodeArrayWithCamerasRecursive(FbxNode * node)
 	{
 		if (node->GetNodeAttribute())
 		{
-			if (node->GetNodeAttribute()->GetAttributeType() == FbxNodeAttribute::eCamera)
+			FbxCamera* camera = node->GetCamera();
+			if (camera != NULL)
 			{
 				m_nodeArray.Add(node);
+				
 			}
 		}
 
@@ -31,16 +33,16 @@ void CameraInfo::FillNodeArrayWithCamerasRecursive(FbxNode * node)
 	}
 }
 
-void CameraInfo::FillNodeArrayWithCameras(FbxScene * scene)
+void CameraInfo::FillNodeArrayWithCameras(FbxNode * node)
 {
 	m_nodeArray.Clear();
 
-	FillNodeArrayWithCamerasRecursive(scene->GetRootNode());
+	FillNodeArrayWithCamerasRecursive(node);
 }
 
-void CameraInfo::FillCameraArray(FbxScene* scene)
+void CameraInfo::FillCameraArray(FbxNode* node)
 {
-	FillNodeArrayWithCameras(scene);
+	FillNodeArrayWithCameras(node);
 
 	for (int i = 0; i < m_nodeArray.Size(); i++)
 	{
@@ -49,10 +51,25 @@ void CameraInfo::FillCameraArray(FbxScene* scene)
 		Camera cameraTemp(fbxCameraTemp);
 
 		m_cameraArray.push_back(cameraTemp);
+
+		PrintCamera0Info();
 	}
 }
 
 std::vector<Camera> CameraInfo::getCameraArray()
 {
 	return m_cameraArray;
+}
+
+void CameraInfo::PrintCamera0Info()
+{
+	std::cout << "Aspect Ratio: " << m_cameraArray[0].GetAspectRatio().x << m_cameraArray[0].GetAspectRatio().y << std::endl;
+
+	std::cout << "Far Plane: " << m_cameraArray[0].GetFarPlane() << std::endl;
+
+	std::cout << "FOV: " << m_cameraArray[0].GetFOV() << std::endl;
+
+	std::cout << "Look At x: " << m_cameraArray[0].GetLookAt().x << std::endl;
+
+	std::cout << "Near Plane: " << m_cameraArray[0].GetNearPlane() << std::endl;
 }

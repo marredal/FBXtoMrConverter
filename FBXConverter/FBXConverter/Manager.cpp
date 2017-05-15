@@ -55,8 +55,8 @@ void Manager::Run(VertexInfo &target)
 			target.GetGroups(m_root->GetChild(i));
 			m_materialInfo.ImportMaterial(m_root->GetChild(i));
 		}
-
 	}
+
 }
 
 void Manager::Run(SkeletonAnimation & target)
@@ -66,8 +66,15 @@ void Manager::Run(SkeletonAnimation & target)
 
 }
 
-//std::vector<glm::vec3> Manager::GetPos()
-//{
-//	return m_vertexInfo.GetPos();
-//}
+void Manager::Run(CameraInfo & target)
+{
+	if (m_root)
+	{
+		for (int i = 0; i < m_root->GetChildCount(); i++)
+		{
+			target.FillCameraArray(m_root->GetChild(i));
+			//target.PrintCamera0Info();
+		}
+	}
+}
 

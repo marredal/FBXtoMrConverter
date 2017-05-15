@@ -149,6 +149,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraInfo.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="MaterialHandler.cpp" />
@@ -157,6 +159,8 @@
     <ClCompile Include="VertexInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraInfo.h" />
     <ClInclude Include="ExporterStruct.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="MaterialHandler.h" />
