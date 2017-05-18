@@ -1,6 +1,8 @@
 #ifndef __CAMERA_H__
 #define	__CAMERA_H__
 
+#define FBXSDK_SHARED
+
 #include <fbxsdk.h>
 #include <glm.hpp>
 

@@ -21,9 +21,10 @@ public:
 	void SaveUV(FbxNode* pNode);
 	void SavetNormal(FbxNode* pNode);
 	void SaveTangent(FbxNode* pNode);
-	void SaveBiTangent (FbxNode* pNode);
+	void SaveBiTangent(FbxNode* pNode);
 	void SaveIndices(FbxNode* pNode);
-
+	void GetCustomAttribute(FbxNode* pNode);
+	void GetGroups(FbxNode* pNode);
 	//..::GET FUNCTIONS::..//
 	uint32_t getCount()const;
 	std::vector<glm::vec3> GetPos() const;
@@ -41,8 +42,10 @@ private:
 	std::vector <glm::vec3>		m_normal;
 	std::vector <glm::vec3>		m_tangent;
 	std::vector <glm::vec3>		m_bitangent;
-	std::vector <int>		m_indices;
-
+	std::vector <int>			m_indices;
+	int							m_customAttributeValue;
+	std::string					m_customAttributeName;
+	std::vector<std::string>	m_groupInfo;
 
 };
 
