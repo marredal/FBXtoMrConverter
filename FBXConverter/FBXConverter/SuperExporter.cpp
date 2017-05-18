@@ -508,7 +508,6 @@ void SuperExporter::Export()
 	std::cout << "INPUT ::";
 	std::getline(std::cin, name);
 
-
 	MrHandler * handler = new MrHandler;
 
 	handler->SetName(name.c_str());
@@ -516,10 +515,7 @@ void SuperExporter::Export()
 	handler->SetSkelHandlers(m_skel, 1);
 	handler->SetAnimHandlers(m_animHandler, 1);
 
-
 	handler->Export();
-	
-	
 }
 
 void SuperExporter::CalculateTangents(VertexInfo & vertInfo, std::vector<glm::vec3> & tangents, std::vector<glm::vec3> & biTangents)
