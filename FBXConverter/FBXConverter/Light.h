@@ -6,18 +6,28 @@
 #include <fbxsdk.h>
 #include <glm.hpp>
 
-class DirectionalLight
+class Light
 {
 public:
-	DirectionalLight();
-	virtual ~DirectionalLight();
+	Light();
+	virtual ~Light();
 
 	void SaveData(FbxNode* node);
 	bool IsLight();
 
 private:
+	enum TYPE
+	{
+		DIRECTIONAL_LIGHT,
+		POINT_LIGHT,
+		SPOT_LIGHT
+	};
 	glm::vec3 m_dirVec;
-	bool m_isLight;
+	glm::vec3 m_pos;
+	glm::vec3 m_scale;
+	bool	  m_isLight;
+	int		  m_type;
+	glm::vec3 m_color;
 
 };
 

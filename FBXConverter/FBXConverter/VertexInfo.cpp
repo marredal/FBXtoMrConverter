@@ -329,7 +329,6 @@ void VertexInfo::SaveIndices(FbxNode * pNode)
 void VertexInfo::GetCustomAttribute(FbxNode* pNode) {
 
 
-
 	//If object is a mesh, search for custom attribute
 	if (pNode->GetMesh()) {
 

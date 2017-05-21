@@ -18,22 +18,13 @@ public:
 	virtual ~SuperExporter();
 
 	void Run();
-	void Convert();
+	bool Convert();
 	void AddMesh();
 	void AddSkeleton();
 	void AddAnimation();
 	void AddMaterial();
-	void Export();
+	void Material();
 	void CalculateTangents(VertexInfo & vertInfo, std::vector<glm::vec3> & tangents, std::vector<glm::vec3> & biTangents);
-
-private:
-	//VertexInfo * m_target;
-	//Manager m_manager;
-
-	MrSkelHandler * m_skel;
-	MrAnimHandler * m_animHandler;
-	MrMeshHandler * m_mesh;
-	MrMatHandler  * m_mat;
 	
 };
 
