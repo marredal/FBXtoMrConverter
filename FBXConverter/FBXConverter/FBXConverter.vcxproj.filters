@@ -39,10 +39,10 @@
     <ClCompile Include="CameraInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DirectionalLight.cpp">
+    <ClCompile Include="LightHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LightHandler.cpp">
+    <ClCompile Include="Light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,10 +74,10 @@
     <ClInclude Include="CameraInfo.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="DirectionalLight.h">
+    <ClInclude Include="LightHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LightHandler.h">
+    <ClInclude Include="Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

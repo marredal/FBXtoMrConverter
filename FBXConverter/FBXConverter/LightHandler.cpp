@@ -13,7 +13,7 @@ LightHandler::~LightHandler()
 
 void LightHandler::SaveData(FbxNode * node)
 {
-	DirectionalLight light;
+	Light light;
 
 	light.SaveData(node);
 
