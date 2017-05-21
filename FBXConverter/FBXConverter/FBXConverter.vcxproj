@@ -151,6 +151,8 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraInfo.cpp" />
+    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="LightHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="MaterialHandler.cpp" />
@@ -161,7 +163,9 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraInfo.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="ExporterStruct.h" />
+    <ClInclude Include="LightHandler.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="MaterialHandler.h" />
     <ClInclude Include="SkeletonAnimation.h" />

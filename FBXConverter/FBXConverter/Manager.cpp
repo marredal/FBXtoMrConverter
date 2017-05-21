@@ -54,6 +54,7 @@ void Manager::Run(VertexInfo &target)
 			target.GetCustomAttribute(m_root->GetChild(i));
 			target.GetGroups(m_root->GetChild(i));
 			m_materialInfo.ImportMaterial(m_root->GetChild(i));
+			m_lightHandler.SaveData(m_root->GetChild(i));
 		}
 	}
 
