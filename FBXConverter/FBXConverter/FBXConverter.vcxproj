@@ -104,13 +104,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>DLLIMPORT;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\MRSDK\MRSDK;.\glm;$(MSBuildProjectDirectory)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\usr1\Source\Repos\FBXtoMrConverter\FBXConverter\FBXConverter\stb-master;$(SolutionDir)\MRSDK\MRSDK;C:\Users\User\Source\Repos\FBXtoMrConverter\FBXConverter\FBXConverter\stb-master;.\glm;$(MSBuildProjectDirectory)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir);$(MSBuildProjectDirectory)\lib\vs2015\x64\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libfbxsdk.lib;MRSDK.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -149,22 +149,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraInfo.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
+    <ClCompile Include="LightHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manager.cpp" />
+    <ClCompile Include="MaterialHandler.cpp" />
     <ClCompile Include="SkeletonAnimation.cpp" />
     <ClCompile Include="SuperExporter.cpp" />
     <ClCompile Include="VertexInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraInfo.h" />
+    <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="ExporterStruct.h" />
+    <ClInclude Include="LightHandler.h" />
     <ClInclude Include="Manager.h" />
+    <ClInclude Include="MaterialHandler.h" />
     <ClInclude Include="SkeletonAnimation.h" />
+    <ClInclude Include="stb-master\stb_image.h" />
     <ClInclude Include="SuperExporter.h" />
     <ClInclude Include="VertexInfo.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="hej.mr" />
-    <None Include="test.Mr" />
+    <None Include="Assets\Skeletons\super.mrskel" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

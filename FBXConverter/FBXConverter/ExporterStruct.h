@@ -14,7 +14,7 @@
 struct Keyframe
 {
 	FbxLongLong FrameNum;
-	FbxAMatrix GlobalTransform;
+	FbxAMatrix LocalTransform;
 	Keyframe* Next;
 };
 
@@ -52,6 +52,7 @@ struct Skeleton
 
 struct BlendingIndexWeightPair
 {
+	uint32_t VertIndex;
 	uint32_t BlendingIndex;
 	float BlendingWeight;
 };

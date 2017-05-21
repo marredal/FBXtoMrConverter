@@ -139,10 +139,10 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 			currentCluster->GetTransformLinkMatrix(transformLinkMat);
 			globalBindposeInverseMat = transformLinkMat.Inverse() * transformMat * identityMatrix;
 
-			std::cout << "<mat>" << static_cast<float>(globalBindposeInverseMat.Get(0, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 3)) << "," << std::endl;
-				std::cout<<static_cast<float>(globalBindposeInverseMat.Get(1, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 3)) << "," << std::endl;
-				std::cout<<static_cast<float>(globalBindposeInverseMat.Get(2, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 3)) << "," << std::endl;
-				std::cout<<static_cast<float>(globalBindposeInverseMat.Get(3, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 3)) << "</mat>\n";
+			//std::cout << "<mat>" << static_cast<float>(globalBindposeInverseMat.Get(0, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 3)) << "," << std::endl;
+			//	std::cout<<static_cast<float>(globalBindposeInverseMat.Get(1, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 3)) << "," << std::endl;
+			//	std::cout<<static_cast<float>(globalBindposeInverseMat.Get(2, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 3)) << "," << std::endl;
+			//	std::cout<<static_cast<float>(globalBindposeInverseMat.Get(3, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 3)) << "</mat>\n";
 
 			//Convert to mat4
 			for (int i = 0; i < 4; i++) {
@@ -158,14 +158,22 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 			m_Skeleton.Joints[currentJointIndex].GlobalBindposeInverse = globalBindposeInverseMat;
 			m_Skeleton.Joints[currentJointIndex].Node = currentCluster->GetLink();
 
-			uint32_t numIndice = currentCluster->GetControlPointIndicesCount();
-			for (int indiceIndex = 0; indiceIndex < numIndice; indiceIndex++)
+			int * clusterInd = currentCluster->GetControlPointIndices();
+			uint32_t vertCount = currentCluster->GetControlPointIndicesCount();
+
+			for (int vertIndex = 0; vertIndex < vertCount; vertIndex++)
 			{
-				BlendingIndexWeightPair currentBlendingIndexWeightPair;
-				currentBlendingIndexWeightPair.BlendingIndex = currentJointIndex;
-				currentBlendingIndexWeightPair.BlendingWeight = currentCluster->GetControlPointWeights()[indiceIndex];
-				m_ControlPoints[currentCluster->GetControlPointIndices()[indiceIndex]]->BlendingInfo.push_back(currentBlendingIndexWeightPair);
+				int boneVertexIndex = clusterInd[vertIndex];
+				int currentJoint = currentJointIndex;
+				float boneWeight = (float)currentCluster->GetControlPointWeights()[vertIndex];
+
+				BlendingIndexWeightPair pair;
+				pair.VertIndex = boneVertexIndex;
+				pair.BlendingIndex = currentJoint;
+				pair.BlendingWeight = boneWeight;
+				m_skinWeights.push_back(pair);
 			}
+
 
 			FbxAnimStack* currentAnimStack = m_Scene->GetSrcObject<FbxAnimStack>(0);
 			FbxString currentAnimStackName = currentAnimStack->GetName();
@@ -178,8 +186,8 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 			m_firstFrame = start.GetFrameCount(FbxTime::eFrames24);
 			m_lastFrame = end.GetFrameCount(FbxTime::eFrames24);
 
-			std::cout << m_firstFrame << std::endl;
-			std::cout << m_lastFrame << std::endl;
+		//	std::cout << m_firstFrame << std::endl;
+			//std::cout << m_lastFrame << std::endl;
 			Keyframe** currentAnimation = &m_Skeleton.Joints[currentJointIndex].Animation;
 
 
@@ -191,13 +199,35 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 				*currentAnimation = new Keyframe();
 				(*currentAnimation)->FrameNum = i;
 				FbxAMatrix currentTransformOffset = node->EvaluateLocalTransform(currentTime) * identityMatrix;
-				(*currentAnimation)->GlobalTransform = currentTransformOffset.Inverse() * currentCluster->GetLink()->EvaluateLocalTransform(currentTime);
+				(*currentAnimation)->LocalTransform = currentTransformOffset.Inverse() * currentCluster->GetLink()->EvaluateLocalTransform(currentTime);
 
 				//std::cout << "Node name: " << node->GetName() << std::endl;
-				//std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[0] << ", ";
+				//std::cout << (*currentAnimation)->LocalTransform.GetT().mData[0] << ", ";
 				//std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[1] << ", ";
 				//std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[2] << std::endl;
 
+
+				glm::vec3 tempTransform, tempRotation, tempScale;
+
+				//Transformation information
+				tempTransform.x = (*currentAnimation)->LocalTransform.GetT().mData[0];
+				tempTransform.y = (*currentAnimation)->LocalTransform.GetT().mData[1];
+				tempTransform.z = (*currentAnimation)->LocalTransform.GetT().mData[2];
+				m_localTransformMat.push_back(tempTransform);
+
+				//Rotation information
+				tempRotation.x = (*currentAnimation)->LocalTransform.GetR().mData[0];
+				tempRotation.y = (*currentAnimation)->LocalTransform.GetR().mData[1];
+				tempRotation.z = (*currentAnimation)->LocalTransform.GetR().mData[2];
+				m_localRotationMat.push_back(tempRotation);
+
+				//Scaling information
+				tempScale.x = (*currentAnimation)->LocalTransform.GetS().mData[0];
+				tempScale.y = (*currentAnimation)->LocalTransform.GetS().mData[1];
+				tempScale.z = (*currentAnimation)->LocalTransform.GetS().mData[2];
+				m_localScaleMat.push_back(tempScale);
+			
+				std::cout << tempTransform.x << " " << tempTransform.y << " " << tempTransform.z << std::endl;
 				currentAnimation = &((*currentAnimation)->Next);
 
 			}
@@ -210,17 +240,21 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 void SkeletonAnimation::CheckMesh(FbxNode * node)
 {
 
+
+
+
 	if (node->GetNodeAttribute())
 	{
 		switch (node->GetNodeAttribute()->GetAttributeType())
 		{
-			std::cout << node->GetName() << std::endl;
+			//std::cout << node->GetName() << std::endl;
 		case FbxNodeAttribute::eMesh:
 			FixControlPoints(node);
 			if (m_HasAnimation)
 			{
 				SkeletonJointsAndAnimations(node);
 			}
+			
 			break;
 		}
 	}
@@ -251,6 +285,16 @@ void SkeletonAnimation::GetAnimation()
 	}
 }
 
+std::vector<BlendingIndexWeightPair> SkeletonAnimation::GetWeights()const
+{
+	return m_skinWeights;
+}
+
+std::vector<int*> SkeletonAnimation::GetClusterInd()
+{
+	return m_clusterInd;
+}
+
 void SkeletonAnimation::Export()
 {
 	SkeletonHierachy(m_Scene->GetRootNode());
@@ -272,18 +316,7 @@ void SkeletonAnimation::SetScene(FbxScene * scene)
 	m_Scene = scene;
 }
 
-const char* SkeletonAnimation::GetName() {
 
-
-	for (int index = 0; index < m_Skeleton.Joints.size(); index++) {
-
-		std::cout << "current index: " << m_index.at(index) << std::endl;
-		std::cout << "current parent index: " << m_parentIndex.at(index) << std::endl;
-		std::cout << "__________________________" << std::endl;
-
-	}
-	return "hello";
-}
 
 int32_t SkeletonAnimation::GetFirstKeyFrame() {
 	
@@ -305,10 +338,23 @@ void SkeletonAnimation::SetBindPose(int32_t &bindPoseJointID, glm::mat4 &BindPos
 
 std::vector<int32_t> SkeletonAnimation::GetJointID() {
 
+	for (int i = 0; i < m_index.size(); i++) {
+		std::cout << m_index.at(i) << std::endl;
+	}
 	return  m_index;
 }
 
 std::vector<int32_t> SkeletonAnimation::GetParentID() {
 
 	return  m_parentIndex;
+}
+
+std::vector<glm::vec3>SkeletonAnimation::GetTransformationMatrices(){
+	return m_localTransformMat;
+}
+std::vector<glm::vec3>SkeletonAnimation::GetRotationMatrices(){
+	return m_localRotationMat;
+}
+std::vector<glm::vec3>SkeletonAnimation::GetScalingMatrices(){
+	return m_localScaleMat;
 }

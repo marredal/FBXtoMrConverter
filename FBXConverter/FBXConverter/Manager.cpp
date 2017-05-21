@@ -10,9 +10,9 @@ Manager::~Manager()
 }
 
 
-void Manager::Init()
+void Manager::Init(const char* filepath)
 {
-	const char* m_FilePath = ".\\Assets\\kub_fbx.fbx";
+	const char* m_FilePath = filepath;
 
 	m_Manager = FbxManager::Create();
 	FbxIOSettings *ios = FbxIOSettings::Create(m_Manager, IOSROOT);
@@ -48,9 +48,16 @@ void Manager::Run(VertexInfo &target)
 			target.SavePosition(m_root->GetChild(i));
 			target.SaveUV(m_root->GetChild(i));
 			target.SavetNormal(m_root->GetChild(i));
-
+			target.SaveTangent(m_root->GetChild(i));
+			target.SaveBiTangent(m_root->GetChild(i));
+			target.SaveIndices(m_root->GetChild(i));
+			target.GetCustomAttribute(m_root->GetChild(i));
+			target.GetGroups(m_root->GetChild(i));
+			m_materialInfo.ImportMaterial(m_root->GetChild(i));
+			m_lightHandler.SaveData(m_root->GetChild(i));
 		}
 	}
+
 }
 
 void Manager::Run(SkeletonAnimation & target)
@@ -60,8 +67,15 @@ void Manager::Run(SkeletonAnimation & target)
 
 }
 
-//std::vector<glm::vec3> Manager::GetPos()
-//{
-//	return m_vertexInfo.GetPos();
-//}
+void Manager::Run(CameraInfo & target)
+{
+	if (m_root)
+	{
+		for (int i = 0; i < m_root->GetChildCount(); i++)
+		{
+			target.FillCameraArray(m_root->GetChild(i));
+			//target.PrintCamera0Info();
+		}
+	}
+}
 
