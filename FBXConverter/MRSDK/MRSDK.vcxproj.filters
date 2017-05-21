@@ -27,5 +27,8 @@
     <ClInclude Include="MRSDK\MrMatHandler.h">
       <Filter>MRSDK</Filter>
     </ClInclude>
+    <ClInclude Include="MRSDK\MrLightHandler.h">
+      <Filter>MRSDK</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

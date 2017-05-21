@@ -138,15 +138,18 @@ inline void MrMatHandler::Free()
 	// TODO
 }
 
+
 inline uint32_t MrMatHandler::GetNumTextures()
 {
 	return uint32_t();
 }
 
+
 inline MrTexture * MrMatHandler::GetTextures()
 {
 	return m_textures;
 }
+
 
 inline void MrMatHandler::SetTextures(MrTexture * textures, uint32_t num)
 {

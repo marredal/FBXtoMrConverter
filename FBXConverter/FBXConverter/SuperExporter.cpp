@@ -11,9 +11,6 @@
 
 SuperExporter::SuperExporter()
 {
-	m_skel = new MrSkelHandler;
-	m_mesh = new MrMeshHandler;
-	m_animHandler = new MrAnimHandler;
 }
 
 
@@ -26,90 +23,57 @@ void SuperExporter::Run()
 	system("CLS");
 	bool isRunning = true;
 
-	while (isRunning)
-	{
-		system("CLS");
-		int input = 0;
-
-//		system("CLS");
-
-		std::cout << "HELLO AND WELCOME TO THE FBX TO MR CONVERT." << std::endl;
-		std::cout << "My name is mr Edwar Scully and I am here to assist you." << std::endl;
-		std::cout << std::endl << std::endl;
-
-		std::cout << "What would you like to do?" << std::endl;
-		std::cout << "(1) CONVERT" << std::endl;
-		std::cout << "(0) EXIT" << std::endl;
-		std::cout << "INPUT :: ";
-		std::cin >> input;
-		std::cin.ignore();
-		switch (input)
-		{
-		case 1:
-			Convert();
-			break;
-		case 0:
-			isRunning = false;
-		default:
-			break;
-		}
-	}
+	while (Convert());
+	
 }
 
-void SuperExporter::Convert()
+bool SuperExporter::Convert()
 {
-	//system("CLS");
 	int input = 0;
-	//	system("CLS");
 
 	bool isRunning = true;
 
-	while (isRunning)
+	std::cout << "What would you like to do?" << std::endl;
+	std::cout << "(1) EXPORT MESH" << std::endl;
+	std::cout << "(2) EXPORT SKELETON" << std::endl;
+	std::cout << "(3) EXPORT ANIMATION" << std::endl;
+	std::cout << "(4) CONVERT TEXTURE" << std::endl;
+	std::cout << "(5) EXPORT MATERIAL" << std::endl;
+	std::cout << "(0) EXIT" << std::endl;
+	std::cout << "INPUT :: ";
+	std::cin >> input;
+	std::cin.ignore();
+
+	switch (input)
 	{
-	//	system("CLS");
-		std::cout << "I HOPE YOU HAVE BUT ALL THE FBX FILES IN THE FBX FOLDER" << std::endl;
-		std::cout << std::endl << std::endl;
+	case 1:
+		AddMesh();
+		break;
+	case 2:
+		AddSkeleton();
+		break;
+	case 3:
+		AddAnimation();
+		break;
 
-		std::cout << "What would you like to do?" << std::endl;
-		std::cout << "(1) ADD MESH" << std::endl;
-		std::cout << "(2) ADD SKELETON" << std::endl;
-		std::cout << "(3) ADD ANIMATION" << std::endl;
-		std::cout << "(4) MATERIAL" << std::endl;
-		std::cout << "(9) EXPORT" << std::endl;
-		std::cout << "(0) EXIT" << std::endl;
-		std::cout << "INPUT :: ";
-		std::cin >> input;
-		std::cin.ignore();
-
-		switch (input)
-		{
-		case 1:
-			AddMesh();
-			break;
-		case 2:
-			AddSkeleton();
-			break;
-		case 3:
-			AddAnimation();
-			break;
-
-		case 4:
-			AddMaterial();
-			break;
-		case 9:
-		{
-			Export();
-
-			break;
-		}
-		case 0:
-			isRunning = false;
-			break;
-		default:
-			break;
-		}
-
+	case 4:
+		AddMaterial();
+		break;
+	case 5:
+	{
+		Material();
+		break;
 	}
+	case 0:
+		return false;
+		break;
+	default:
+		break;
+	}
+
+
+
+	return true;
 }
 
 void SuperExporter::AddMesh()
@@ -121,7 +85,7 @@ void SuperExporter::AddMesh()
 	std::string fullpath = ".\\FBX\\";
 	std::string path;
 
-	std::cout << "Scene with skeleton: " << std::endl;
+	std::cout << "Scene with mesh: " << std::endl;
 	std::cout << "INPUT :: .\\FBX\\";
 	std::getline(std::cin, path);
 	fullpath.append(path);
@@ -134,28 +98,28 @@ void SuperExporter::AddMesh()
 	std::cin.ignore();
 
 	VertexInfo target;
-	Manager m_manager;
+	Manager manager;
 
 	SkeletonAnimation skel;
-	m_mesh = new MrMeshHandler;
+	MrMeshHandler * mesh = new MrMeshHandler;
 
 	if (hasSkinWeights == 1)
 	{
-		m_manager.Run(skel);
-		m_mesh->SetHasSkinWeights(true);
+		manager.Run(skel);
+		mesh->SetHasSkinWeights(true);
 	}
 	else
 	{
-		m_mesh->SetHasSkinWeights(false);
+		mesh->SetHasSkinWeights(false);
 	}
 
 
 
-	m_manager.Init(fullpath.c_str());
-	m_manager.Run(target);
+	manager.Init(fullpath.c_str());
+	manager.Run(target);
 
 	CameraInfo camInfo;
-	m_manager.Run(camInfo);
+	manager.Run(camInfo);
 	skel.GetJointID();
 
 
@@ -175,6 +139,7 @@ void SuperExporter::AddMesh()
 	glm::vec4 * we;
 	glm::vec4 * id2;
 	glm::vec4 * we2;
+
 	if (hasSkinWeights == 1)
 	{
 
@@ -182,9 +147,6 @@ void SuperExporter::AddMesh()
 		we = new glm::vec4[numVerts];
 		skel.GetJointID().size();
 	}
-
-
-
 
 	for (uint32_t i = 0; i < numVerts; i++)
 	{
@@ -227,27 +189,35 @@ void SuperExporter::AddMesh()
 		}
 	}
 
-
-	m_mesh->SetNumVerts(numVerts);
-	m_mesh->SetPositions(&pos[0]);
-	m_mesh->SetNormals(&nor[0]);
-	m_mesh->SetTexCoords(&uv[0]);
-	m_mesh->SetTangents(&tan[0]);
-	m_mesh->SetBiTangents(&bi[0]);
+	mesh->SetNumVerts(numVerts);
+	mesh->SetPositions(&pos[0]);
+	mesh->SetNormals(&nor[0]);
+	mesh->SetTexCoords(&uv[0]);
+	mesh->SetTangents(&tan[0]);
+	mesh->SetBiTangents(&bi[0]);
 
 	if (hasSkinWeights == 1)
 	{
-		m_mesh->SetSkinWeights(&we2[0]);
-		m_mesh->SetJointIDs(&id2[0]);
+		mesh->SetSkinWeights(&we2[0]);
+		mesh->SetJointIDs(&id2[0]);
 	}
 
-	// CLEAR SCENE
+	fullpath = ".\\Assets\\Meshes\\";
+
+	std::cout << "Name: " << std::endl;
+	std::cout << "INPUT :: .\\Assets\\Meshes\\";
+	std::getline(std::cin, path);
+	fullpath.append(path);
+	fullpath.append(".mrmesh");
+	mesh->Export(fullpath.c_str());
 }
+
 
 void SuperExporter::AddSkeleton()
 {
 	Manager manager;
-
+	MrSkelHandler * skelHandler = new MrSkelHandler;
+	
 	bool isRunning = true;
 	
 	while (isRunning)
@@ -262,8 +232,6 @@ void SuperExporter::AddSkeleton()
 		std::cout << "INPUT :: .\\FBX\\";
 		std::getline(std::cin, path);
 		fullpath.append(path);
-
-
 
 		int input = 0;
 
@@ -319,18 +287,25 @@ void SuperExporter::AddSkeleton()
 				std::cout <<"ID " << ids[i] << std::endl;
 			}
 			
-			// I GUESS THIS IS IT // MJ
-			m_skel->SetIDs(ids);
-			m_skel->SetParentIDs(parIDs);
-			m_skel->SetMatrix(localMat);
-			m_skel->SetNumJoints(size);
+			skelHandler->SetIDs(ids);
+			skelHandler->SetParentIDs(parIDs);
+			skelHandler->SetMatrix(localMat);
+			skelHandler->SetNumJoints(size);
 
+
+
+
+			std::string fullpath = ".\\Assets\\Skeletons\\";
+
+			std::cout << "Name: " << std::endl;
+			std::cout << "INPUT :: .\\Assets\\Skeletons\\";
+			std::getline(std::cin, path);
+			fullpath.append(path);
+			fullpath.append(".mrskel");
+			skelHandler->Export(fullpath.c_str());
 
 			isRunning = false;
 
-			system("CLS");
-
-			std::cout << "OMG YOU ARE GOOD AT THIS :D // ES" << std::endl;
 			break;
 		}
 		case 2:
@@ -341,19 +316,16 @@ void SuperExporter::AddSkeleton()
 		default:
 			break;
 		}
-
 	}
 }
+
 
 void SuperExporter::AddAnimation()
 {
 	system("CLS");
-//	m_manager.Init(".\\Assets\\kranen.fbx");
 	SkeletonAnimation skel;
-//	skel.SetBindPose(joint, matrix);
-	system("CLS");
-
 	Manager manager;
+	MrAnimHandler * animHandler = new MrAnimHandler;
 
 	bool isRunning = true;
 
@@ -365,7 +337,7 @@ void SuperExporter::AddAnimation()
 
 		std::string fullpath = ".\\FBX\\";
 
-		std::cout << "Scene with skeleton: " << std::endl;
+		std::cout << "Scene with animation: " << std::endl;
 		std::cout << "INPUT :: .\\FBX\\";
 		std::getline(std::cin, path);
 		fullpath.append(path);
@@ -434,12 +406,22 @@ void SuperExporter::AddAnimation()
 				}
 			}
 
-			m_animHandler->SetName(name.c_str());
+			animHandler->SetName(name.c_str());
 			
-			m_animHandler->SetKeyframedJoint(key);
-			m_animHandler->SetNumKeyFramedJoints(numJoints);
-			m_animHandler->SetFirstKeyFrame(1);
-			m_animHandler->SetLastKeyFrame(numKeys);
+			animHandler->SetKeyframedJoint(key);
+			animHandler->SetNumKeyFramedJoints(numJoints);
+			animHandler->SetFirstKeyFrame(1);
+			animHandler->SetLastKeyFrame(numKeys);
+
+
+			std::string fullpath = ".\\Assets\\Skeletons\\";
+
+			std::cout << "Name: " << std::endl;
+			std::cout << "INPUT :: .\\Assets\\Skeletons\\";
+			std::getline(std::cin, path);
+			fullpath.append(path);
+			fullpath.append(".mranim");
+			animHandler->Export(fullpath.c_str());
 
 			isRunning = false;
 
@@ -454,9 +436,9 @@ void SuperExporter::AddAnimation()
 	}
 }
 
+
 void SuperExporter::AddMaterial()
 {
-
 	int nrOfTextures = 1;
 
 	MrTexture * textures = new MrTexture[nrOfTextures];
@@ -496,31 +478,27 @@ void SuperExporter::AddMaterial()
 		textures[i].data = imageData;
 	}
 
-	m_mat = new MrMatHandler;
-	m_mat->SetTextures(textures, nrOfTextures);
+	MrMatHandler * mat = new MrMatHandler;
+	mat->SetTextures(textures, nrOfTextures);
 	
-	m_mat->Export(".\\Assets\\Materials\\super.mrmat");
+
+	fullpath = ".\\Assets\\Materials\\";
+
+	std::cout << "Name: " << std::endl;
+	std::cout << "INPUT :: .\\Assets\\Materials\\";
+	std::getline(std::cin, path);
+	fullpath.append(path);
+	fullpath.append(".mrmat");
+	mat->Export(fullpath.c_str());
+
+	delete mat;
 }
 
-void SuperExporter::Export()
+
+void SuperExporter::Material()
 {
-	system("CLS");
-
-	std::string name;
-
-	std::cout << "Name the file: " << std::endl;
-	std::cout << "INPUT ::";
-	std::getline(std::cin, name);
-
-	MrHandler * handler = new MrHandler;
-
-	handler->SetName(name.c_str());
-	handler->SetMeshHandlers(m_mesh, 1);
-	handler->SetSkelHandlers(m_skel, 1);
-	handler->SetAnimHandlers(m_animHandler, 1);
-
-	handler->Export();
 }
+
 
 void SuperExporter::CalculateTangents(VertexInfo & vertInfo, std::vector<glm::vec3> & tangents, std::vector<glm::vec3> & biTangents)
 {
@@ -548,6 +526,5 @@ void SuperExporter::CalculateTangents(VertexInfo & vertInfo, std::vector<glm::ve
 
 		tangents.push_back(tangent);
 		biTangents.push_back(bitangent);
-
 	}
 }

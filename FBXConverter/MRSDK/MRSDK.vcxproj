@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="MRSDK\MrAnimHandler.h" />
     <ClInclude Include="MRSDK\MrHandler.h" />
+    <ClInclude Include="MRSDK\MrLightHandler.h" />
     <ClInclude Include="MRSDK\MrMatHandler.h" />
     <ClInclude Include="MRSDK\MrMeshHandler.h" />
     <ClInclude Include="MRSDK\MrSkelHandler.h" />

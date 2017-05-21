@@ -12,11 +12,6 @@ int main(int argc, char** argv) {
 	//MrSkelHandler mrHandler;
 	//mrHandler.Import(".\\Assets\\Skeletons\\super.mrskel");
 
-
-	std::cout << "DONE" << std::endl;
-
-	getchar();
-
 	SuperExporter super;
 //
 	super.Run();
