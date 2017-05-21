@@ -155,7 +155,7 @@ void SuperExporter::AddMesh()
 	m_manager.Run(target);
 
 	CameraInfo camInfo;
-	m_manager.Run(camInfo);
+	m_manager.Run(camInfo); //CAMERA HEJ
 	skel.GetJointID();
 
 

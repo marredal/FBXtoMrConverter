@@ -41,6 +41,7 @@ void Manager::Init(const char* filepath)
 
 void Manager::Run(VertexInfo &target)
 {
+
 	if (m_root)
 	{
 		for (int i = 0; i < m_root->GetChildCount(); i++)
@@ -55,6 +56,7 @@ void Manager::Run(VertexInfo &target)
 			target.GetGroups(m_root->GetChild(i));
 			m_materialInfo.ImportMaterial(m_root->GetChild(i));
 			m_lightHandler.SaveData(m_root->GetChild(i));
+
 		}
 	}
 
