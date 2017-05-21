@@ -12,6 +12,7 @@
 #include <iostream>
 #include "MaterialHandler.h"
 #include "CameraInfo.h"
+#include "LightHandler.h"
 
 
 class Manager
@@ -39,6 +40,10 @@ private:
 	MaterialHandler m_materialInfo;
 
 	CameraInfo		m_camerainfo;
+
+	LightHandler	m_lightHandler;
+
+
 	
 	//VertexInfo		m_vertexInfo;
 };
