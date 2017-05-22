@@ -138,10 +138,6 @@ void SuperExporter::AddMesh()
 	manager.Init(fullpath.c_str());
 	manager.Run(target);
 
-	CameraInfo camInfo;
-	manager.Run(camInfo);
-	skel.GetJointID();
-
 
 
 	int indSize = target.GetIndices().size();
@@ -462,16 +458,25 @@ void SuperExporter::AddMaterial()
 {
 	int nrOfTextures = 1;
 
+	Manager manager;
 	MrTexture * textures = new MrTexture[nrOfTextures];
 
 	std::string fullpath = ".\\FBX\\";
 	std::string path;
 
-	std::cout << "Texture path: " << std::endl;
+	std::cout << "FBX path: " << std::endl;
 	std::cout << "INPUT :: .\\FBX\\";
 	std::getline(std::cin, path);
 	fullpath.append(path);
-	
+
+	MaterialHandler matInfo;
+	manager.Run(matInfo);
+
+	MaterialHandler::Material material = matInfo.GetMaterial(0);
+
+
+
+
 	for (int i = 0; i < nrOfTextures; i++)
 	{
 		int width, height, numComponents;
@@ -515,9 +520,31 @@ void SuperExporter::AddMaterial()
 	delete mat;
 }
 
-
-void SuperExporter::Material()
+void SuperExporter::AddTexture(MrTexture * textures, std::string fullpath, int index, uint32_t type)
 {
+	int width, height, numComponents;
+	unsigned char * imageData = stbi_load(fullpath.c_str(), &width, &height, &numComponents, STBI_rgb_alpha);
+
+	textures[index].type = type;
+	textures[index].width = (uint32_t)width;
+	textures[index].height = (uint32_t)height;
+	textures[index].numComponents = numComponents;
+	textures[index].dataLength = width * height * (numComponents + 1); //sizeof(imageData) / sizeof(imageData[1]);
+
+	textures[index].data = new unsigned char[textures[index].dataLength];
+
+	if (imageData == nullptr)
+	{
+		return;
+	}
+
+	for (int j = 0; j < textures[index].dataLength; j++)
+	{
+		textures[index].data[j] = imageData[j];
+	}
+
+
+	textures[index].data = imageData;
 }
 
 

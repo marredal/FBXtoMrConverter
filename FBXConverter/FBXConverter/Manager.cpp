@@ -69,6 +69,19 @@ void Manager::Run(SkeletonAnimation & target)
 
 }
 
+
+void Manager::Run(MaterialHandler & target)
+{
+	if (m_root)
+	{
+		for (int i = 0; i < m_root->GetChildCount(); i++)
+		{
+			m_materialInfo.ImportMaterial(m_root->GetChild(i));
+		}
+	}
+}
+
+
 void Manager::Run(CameraInfo & target)
 {
 	if (m_root)
