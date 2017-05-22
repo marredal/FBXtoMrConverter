@@ -26,6 +26,7 @@ void Light::SaveData(FbxNode* node)
 		
 		m_color = glm::vec3(light->Color.Get()[0], light->Color.Get()[1], light->Color.Get()[2]);
 
+		m_type = DIRECTIONAL_LIGHT;
 		m_isLight = true;
 
 	}
@@ -39,6 +40,7 @@ void Light::SaveData(FbxNode* node)
 		
 		m_color = glm::vec3(light->Color.Get()[0], light->Color.Get()[1], light->Color.Get()[2]);
 
+		m_type = POINT_LIGHT;
 		m_isLight = true;
 
 
@@ -59,6 +61,7 @@ void Light::SaveData(FbxNode* node)
 
 		m_color = glm::vec3(light->Color.Get()[0], light->Color.Get()[1], light->Color.Get()[2]);
 
+		m_type = SPOT_LIGHT;
 		m_isLight = true;
 	}
 
@@ -67,4 +70,29 @@ void Light::SaveData(FbxNode* node)
 bool Light::IsLight()
 {
 	return m_isLight;
+}
+
+glm::vec3 Light::GetDirection()
+{
+	return m_dirVec;
+}
+
+int Light::GetType()
+{
+	return m_type;
+}
+
+glm::vec3 Light::GetPos()
+{
+	return m_pos;
+}
+
+glm::vec3 Light::GetScale()
+{
+	return m_scale;
+}
+
+glm::vec3 Light::GetColor()
+{
+	return m_color;
 }

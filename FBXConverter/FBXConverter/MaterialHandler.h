@@ -20,6 +20,8 @@ public:
 		std::string	m_textureFilePath;
 		std::string	m_normalFilePath;
 		std::string	m_specularFilePath;
+		int			nrOfTextures;
+		int			nrOfNormalMaps;
 	};
 
 	MaterialHandler();

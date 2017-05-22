@@ -24,7 +24,7 @@ void SuperExporter::Run()
 	bool isRunning = true;
 
 	while (Convert());
-	
+
 }
 
 bool SuperExporter::Convert()
@@ -39,6 +39,8 @@ bool SuperExporter::Convert()
 	std::cout << "(3) EXPORT ANIMATION" << std::endl;
 	std::cout << "(4) CONVERT TEXTURE" << std::endl;
 	std::cout << "(5) EXPORT MATERIAL" << std::endl;
+	std::cout << "(6) EXPORT CAMERA" << std::endl;
+	std::cout << "(7) EXPORT LIGHT" << std::endl;
 	std::cout << "(0) EXIT" << std::endl;
 	std::cout << "INPUT :: ";
 	std::cin >> input;
@@ -55,7 +57,6 @@ bool SuperExporter::Convert()
 	case 3:
 		AddAnimation();
 		break;
-
 	case 4:
 		AddMaterial();
 		break;
@@ -64,6 +65,11 @@ bool SuperExporter::Convert()
 		Material();
 		break;
 	}
+	case 6:
+		AddCamera();
+		break;
+	case 7:
+		AddLight();
 	case 0:
 		return false;
 		break;
@@ -167,7 +173,7 @@ void SuperExporter::AddMesh()
 	for (uint32_t i = 0; i < numVerts; i++)
 	{
 		pos[i] = glm::vec3(target.GetPos()[ind[i]].x, target.GetPos()[ind[i]].y, target.GetPos()[ind[i]].z);
-		nor[i] =  glm::vec3(target.GetNormal()[ind[i]].x, target.GetNormal()[ind[i]].y, target.GetNormal()[ind[i]].z);
+		nor[i] = glm::vec3(target.GetNormal()[ind[i]].x, target.GetNormal()[ind[i]].y, target.GetNormal()[ind[i]].z);
 		uv[i] = glm::vec2(target.GetUV()[i].x, target.GetUV()[i].y);
 		//tan[i] = glm::vec3(target.GetTangent()[i].x, target.GetTangent()[i].y,target.GetTangent()[i].z);
 		//bi[i] = glm::vec3(target.GetBiTangent()[i].x, target.GetBiTangent()[i].y, target.GetBiTangent()[i].z);
@@ -234,9 +240,9 @@ void SuperExporter::AddSkeleton()
 {
 	Manager manager;
 	MrSkelHandler * skelHandler = new MrSkelHandler;
-	
+
 	bool isRunning = true;
-	
+
 	while (isRunning)
 	{
 
@@ -263,7 +269,7 @@ void SuperExporter::AddSkeleton()
 
 		switch (input)
 		{
-		case 1: 
+		case 1:
 		{
 			manager.Init(fullpath.c_str());
 			VertexInfo info;
@@ -301,9 +307,9 @@ void SuperExporter::AddSkeleton()
 				parIDs[i] = skel.GetParentID()[i];
 
 				std::cout << std::endl;
-				std::cout <<"ID " << ids[i] << std::endl;
+				std::cout << "ID " << ids[i] << std::endl;
 			}
-			
+
 			skelHandler->SetIDs(ids);
 			skelHandler->SetParentIDs(parIDs);
 			skelHandler->SetMatrix(localMat);
@@ -385,12 +391,12 @@ void SuperExporter::AddAnimation()
 			manager.Run(info);
 			manager.Run(skel);
 			MrAnimHandler * animHandler = new MrAnimHandler;
-			
+
 			int numJoints = skel.GetParentID().size();
 			int numKeys = skel.GetTransformationMatrices().size() / skel.GetParentID().size();
 
 			MrKeyFramedJoint * key = new MrKeyFramedJoint[numJoints];
-		
+
 
 			for (int i = 0; i < numJoints; i++)
 			{
@@ -424,7 +430,7 @@ void SuperExporter::AddAnimation()
 			}
 
 			animHandler->SetName(name.c_str());
-			
+
 			animHandler->SetKeyframedJoint(key);
 			animHandler->SetNumKeyFramedJoints(numJoints);
 			animHandler->SetFirstKeyFrame(1);
@@ -448,7 +454,7 @@ void SuperExporter::AddAnimation()
 			break;
 		default:
 			break;
-		
+
 		}
 	}
 }
@@ -506,7 +512,7 @@ void SuperExporter::AddMaterial()
 
 	MrMatHandler * mat = new MrMatHandler;
 	mat->SetTextures(textures, nrOfTextures);
-	
+
 
 	fullpath = ".\\Assets\\Materials\\";
 
@@ -519,6 +525,35 @@ void SuperExporter::AddMaterial()
 
 	delete mat;
 }
+
+void SuperExporter::AddCamera()
+{
+	std::string fullpath = ".\\FBX\\";
+	std::string path;
+
+	Manager manager;
+	CameraInfo target;
+	MrCameraHandler * cameraHandler = new MrCameraHandler;
+	std::cout << "Camera path: " << std::endl;
+	std::cout << "INPUT :: .\\FBX\\";
+	std::getline(std::cin, path);
+	fullpath.append(path);
+
+	manager.Init(fullpath.c_str());
+	manager.Run(target);
+	MrCamera* camera = new MrCamera[target.getCameraArray().size()];
+
+	for (int i = 0; i < target.getCameraArray().size(); i++)
+	{
+		camera[i].m_aspectRatio = target.getCameraArray().at(i).GetAspectRatio();
+		camera[i].m_farPlane = target.getCameraArray().at(i).GetFarPlane();
+		camera[i].m_FOV = target.getCameraArray().at(i).GetFOV();
+		camera[i].m_lookAt = target.getCameraArray().at(i).GetLookAt();
+		camera[i].m_nearPlane = target.getCameraArray().at(i).GetNearPlane();
+		camera[i].m_position = target.getCameraArray().at(i).GetPosition();
+		camera[i].m_upVector = target.getCameraArray().at(i).GetUpVector();
+		target.PrintCamera0Info(i);
+	}
 
 void SuperExporter::AddTexture(MrTexture * textures, std::string fullpath, int index, uint32_t type)
 {
@@ -563,7 +598,7 @@ void SuperExporter::CalculateTangents(VertexInfo & vertInfo, std::vector<glm::ve
 		glm::vec3 deltaPos1 = v1 - v0;
 		glm::vec3 deltaPos2 = v2 - v0;
 
-		glm::vec2 deltaUV1 =  uv1 - uv0;
+		glm::vec2 deltaUV1 = uv1 - uv0;
 		glm::vec2 deltaUV2 = uv2 - uv0;
 
 		float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);

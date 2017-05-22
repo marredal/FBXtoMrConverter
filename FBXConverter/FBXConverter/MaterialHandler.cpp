@@ -37,20 +37,39 @@ void MaterialHandler::ImportMaterial(FbxNode * pNode)
 				if (material->GetClassId().Is(FbxSurfaceLambert::ClassId))
 				{
 
-					FbxProperty prop = material->FindProperty(FbxSurfaceMaterial::sDiffuse);
+					FbxProperty propTexture = material->FindProperty(FbxSurfaceMaterial::sDiffuse);
 
 					Material temp;
 
-					int texture_count = prop.GetSrcObjectCount<FbxTexture>();
+					int texture_count = propTexture.GetSrcObjectCount<FbxTexture>();
+					temp.nrOfTextures = texture_count;
 					for (int j = 0; j<texture_count; j++)
 					{
-						const FbxTexture* texture = FbxCast<FbxTexture>(prop.GetSrcObject<FbxTexture>(j));
+						const FbxTexture* texture = FbxCast<FbxTexture>(propTexture.GetSrcObject<FbxTexture>(j));
 						// Then, you can get all the properties of the texture, include its name
 						const char* texture_name = texture->GetName();
 
 						FbxFileTexture* filetex = (FbxFileTexture*)texture;
 
 						temp.m_textureFilePath = filetex->GetFileName();
+
+					}
+
+					FbxProperty propNormal = material->FindProperty(FbxSurfaceMaterial::sBump);
+
+					int normal_count = propNormal.GetSrcObjectCount<FbxTexture>();
+					temp.nrOfNormalMaps = normal_count;
+					for (int j = 0; j<normal_count; j++)
+					{
+						const FbxTexture* texture = FbxCast<FbxTexture>(propNormal.GetSrcObject<FbxTexture>(j));
+						// Then, you can get all the properties of the texture, include its name
+						const char* texture_name = texture->GetName();
+
+						FbxFileTexture* filetex = (FbxFileTexture*)texture;
+
+						temp.m_normalFilePath = filetex->GetFileName();
+
+						std::cout << temp.m_normalFilePath.c_str() << std::endl;
 
 					}
 
