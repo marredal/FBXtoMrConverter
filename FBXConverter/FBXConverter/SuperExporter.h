@@ -4,7 +4,9 @@
 #include "Manager.h"
 #include "MrHandler.h"
 #include "MrMatHandler.h"
+#include "MrLightHandler.h"
 #include "SkeletonAnimation.h"
+#include "MrCameraHandler.h"
 #include "glm\gtx\transform.hpp"
 
 #include <vector>
@@ -23,6 +25,8 @@ public:
 	void AddSkeleton();
 	void AddAnimation();
 	void AddMaterial();
+	void AddCamera();
+	void AddLight();
 	void Material();
 	void CalculateTangents(VertexInfo & vertInfo, std::vector<glm::vec3> & tangents, std::vector<glm::vec3> & biTangents);
 	

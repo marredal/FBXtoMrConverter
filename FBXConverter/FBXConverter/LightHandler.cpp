@@ -22,3 +22,8 @@ void LightHandler::SaveData(FbxNode * node)
 		m_lights.push_back(light);
 	}
 }
+
+std::vector<Light> LightHandler::GetLights()
+{
+	return m_lights;
+}
