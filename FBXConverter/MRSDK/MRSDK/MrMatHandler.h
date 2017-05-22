@@ -50,10 +50,14 @@ private:
 	void Init();
 
 private:
-	bool		m_isLoaded;
+	bool			m_isLoaded;
 
-	uint32_t	m_numTextures;
-	MrTexture * m_textures;
+	uint32_t		m_numTextures;
+	MrTexture *		m_textures;
+	float			m_ambient;
+	float			m_diffuse;
+	float			m_emissive;
+	float			m_opacity;
 };
 
 

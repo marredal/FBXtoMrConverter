@@ -97,6 +97,7 @@ void SuperExporter::AddMesh()
 	std::cin >> hasSkinWeights;
 	std::cin.ignore();
 
+
 	VertexInfo target;
 	Manager manager;
 
@@ -113,6 +114,25 @@ void SuperExporter::AddMesh()
 		mesh->SetHasSkinWeights(false);
 	}
 
+
+	int32_t hasAttrib;
+	std::cout << "Has custom attribute: " << std::endl;
+	std::cout << "(1) YES" << std::endl;
+	std::cout << "(2) NO" << std::endl;
+	std::cout << "INPUT :: ";
+	std::cin >> hasAttrib;
+	std::cin.ignore();
+
+	if (hasAttrib == 1)
+	{
+		manager.Run(skel);
+		mesh->SetHasAttrib(true);
+		mesh->SetAttrib(target.GetAttrib());
+	}
+	else
+	{
+		mesh->SetHasAttrib(false);
+	}
 
 
 	manager.Init(fullpath.c_str());
@@ -195,6 +215,7 @@ void SuperExporter::AddMesh()
 	mesh->SetTexCoords(&uv[0]);
 	mesh->SetTangents(&tan[0]);
 	mesh->SetBiTangents(&bi[0]);
+
 
 	if (hasSkinWeights == 1)
 	{
