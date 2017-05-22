@@ -70,6 +70,7 @@ bool SuperExporter::Convert()
 		break;
 	case 7:
 		AddLight();
+		break;
 	case 0:
 		return false;
 		break;

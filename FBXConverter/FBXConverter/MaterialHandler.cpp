@@ -97,11 +97,10 @@ void MaterialHandler::ImportMaterial(FbxNode * pNode)
 }
 
 
-MaterialHandler::Material MaterialHandler::GetMaterial(int i)
+std::vector<Material> MaterialHandler::GetMaterialVector()
 {
-	return m_materials[i];
+	return m_materials;
 }
-
 
 int32_t MaterialHandler::GetNumMaterials()
 {
