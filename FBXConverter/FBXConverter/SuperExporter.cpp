@@ -529,9 +529,6 @@ void SuperExporter::AddCamera()
 	Manager manager;
 	CameraInfo target;
 	MrCameraHandler * cameraHandler = new MrCameraHandler;
-	MrCamera* camera = new MrCamera[target.getCameraArray().size()];
-
-
 	std::cout << "Camera path: " << std::endl;
 	std::cout << "INPUT :: .\\FBX\\";
 	std::getline(std::cin, path);
@@ -539,6 +536,7 @@ void SuperExporter::AddCamera()
 
 	manager.Init(fullpath.c_str());
 	manager.Run(target);
+	MrCamera* camera = new MrCamera[target.getCameraArray().size()];
 
 	for (int i = 0; i < target.getCameraArray().size(); i++)
 	{
@@ -572,7 +570,7 @@ void SuperExporter::AddLight()
 	std::string path;
 
 	Manager manager;
-	Light target;
+	LightHandler target;
 	MrLightHandler* lightHandler = new MrLightHandler;
 
 	std::cout << "Light path: " << std::endl;
@@ -580,9 +578,30 @@ void SuperExporter::AddLight()
 	std::getline(std::cin, path);
 	fullpath.append(path);
 
-	for(int i = 0; i < target.)
+	manager.Init(fullpath.c_str());
+	manager.Run(target);
+	MrLight* light = new MrLight[target.GetLights().size()];
 
+	for (int i = 0; i < target.GetLights().size(); i++)
+	{
+		light[i].m_color = target.GetLights().at(i).GetColor();
+		light[i].m_dirVec = target.GetLights().at(i).GetDirection();
+		light[i].m_pos = target.GetLights().at(i).GetPos();
+		light[i].m_scale = target.GetLights().at(i).GetScale();
+		light[i].m_type = target.GetLights().at(i).GetType();
+	}
 
+	lightHandler->SetLights(light, target.GetLights().size());
+
+	fullpath = ".\\Assets\\Light\\";
+	std::cout << "Name: " << std::endl;
+	std::cout << "INPUT :: .\\Assets\\Light\\";
+	std::getline(std::cin, path);
+	fullpath.append(path);
+	fullpath.append(".mrlight");
+	lightHandler->Export(fullpath.c_str());
+
+	delete lightHandler;
 
 }
 

@@ -8,8 +8,7 @@
 
 enum MrLightType
 {
-	AMBIENT = 0,
-	DIRECTIONAL,
+	DIRECTIONAL = 0,
 	SPOT,
 	POINT
 };
@@ -17,10 +16,11 @@ enum MrLightType
 
 struct MrLight
 {
-	uint32_t	type;
-	glm::vec3	pos;
-	glm::vec3	direction;
-	glm::vec3	color;
+	glm::vec3 m_dirVec;
+	glm::vec3 m_pos;
+	glm::vec3 m_scale;
+	glm::vec3 m_color;
+	int		  m_type;
 };
 
 

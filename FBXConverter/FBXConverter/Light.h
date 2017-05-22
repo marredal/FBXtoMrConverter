@@ -14,13 +14,13 @@ public:
 
 	void SaveData(FbxNode* node);
 	bool IsLight();
+
+	//::..Get Functions..:://
 	glm::vec3 GetDirection();
 	int GetType();
 	glm::vec3 GetPos();
 	glm::vec3 GetScale();
-	glm::vec3 GetColor();
-
-	//::..Get Functions..:://
+	glm::vec3 GetColor();	
 
 
 private:
@@ -35,10 +35,10 @@ private:
 	glm::vec3 m_dirVec;
 	glm::vec3 m_pos;
 	glm::vec3 m_scale;
-	bool	  m_isLight;
 	int		  m_type;
 	glm::vec3 m_color;
 
+	bool	  m_isLight;
 };
 
 #endif // !__DIRECTIONALLIGHT_H__
