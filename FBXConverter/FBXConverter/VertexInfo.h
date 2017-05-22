@@ -43,7 +43,7 @@ private:
 	std::vector <glm::vec3>		m_tangent;
 	std::vector <glm::vec3>		m_bitangent;
 	std::vector <int>			m_indices;
-	int							m_customAttributeValue;
+	int32_t						m_customAttributeValue;
 	std::string					m_customAttributeName;
 	std::vector<std::string>	m_groupInfo;
 
