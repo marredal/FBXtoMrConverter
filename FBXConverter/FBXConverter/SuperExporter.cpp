@@ -575,6 +575,13 @@ void SuperExporter::AddLight()
 	Light target;
 	MrLightHandler* lightHandler = new MrLightHandler;
 
+	std::cout << "Light path: " << std::endl;
+	std::cout << "INPUT :: .\\FBX\\";
+	std::getline(std::cin, path);
+	fullpath.append(path);
+
+	for(int i = 0; i < target.)
+
 
 
 }

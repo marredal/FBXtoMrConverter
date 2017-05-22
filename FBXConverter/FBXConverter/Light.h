@@ -15,13 +15,18 @@ public:
 	void SaveData(FbxNode* node);
 	bool IsLight();
 
+	//::..Get Functions..:://
+
+
 private:
+
 	enum TYPE
 	{
 		DIRECTIONAL_LIGHT,
 		POINT_LIGHT,
 		SPOT_LIGHT
 	};
+
 	glm::vec3 m_dirVec;
 	glm::vec3 m_pos;
 	glm::vec3 m_scale;
