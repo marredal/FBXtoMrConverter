@@ -11,12 +11,6 @@
 class MaterialHandler
 {
 public:
-	MaterialHandler();
-	virtual ~MaterialHandler();
-
-	void ImportMaterial(FbxNode * pNode);
-
-private:
 	struct Material
 	{
 		glm::vec3 m_ambient;
@@ -24,7 +18,19 @@ private:
 		glm::vec3 m_emissive;
 		float	  m_opacity;
 		std::string	m_textureFilePath;
+		std::string	m_normalFilePath;
+		std::string	m_specularFilePath;
 	};
+
+	MaterialHandler();
+	virtual ~MaterialHandler();
+
+	void ImportMaterial(FbxNode * pNode);
+
+	Material GetMaterial(int i);
+	int32_t	GetNumMaterials();
+
+private:
 	std::vector<Material> m_materials;
 };
 

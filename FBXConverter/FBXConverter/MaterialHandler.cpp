@@ -75,5 +75,16 @@ void MaterialHandler::ImportMaterial(FbxNode * pNode)
 			}
 		}
 	}
+}
 
+
+MaterialHandler::Material MaterialHandler::GetMaterial(int i)
+{
+	return m_materials[i];
+}
+
+
+int32_t MaterialHandler::GetNumMaterials()
+{
+	return m_materials.size();
 }

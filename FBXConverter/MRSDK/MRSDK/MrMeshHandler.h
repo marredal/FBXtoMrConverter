@@ -6,13 +6,6 @@
 #include <glm.hpp>
 
 
-#if DLLEXPORT
-#define DLL __declspec(dllexport)
-#else
-#define DLL __declspec(dllimport)
-#endif
-
-
 class MrMeshHandler
 {
 public:
@@ -30,6 +23,7 @@ public:
 	const char * GetName();
 	uint32_t GetNumVerts();
 	bool GetHasSkinWeights();
+	bool GetHasAttrib();
 	glm::vec3 * GetPositions();
 	glm::vec2 * GetTexCoords();
 	glm::vec3 * GetNormals();
@@ -37,11 +31,13 @@ public:
 	glm::vec3 * GetBiTangents();
 	glm::vec4 * GetSkinWeights();
 	glm::vec4 * GetJointIDs();
+	int32_t GetAttrib();
 
 	//::.. SET FUNCTIONS ..:://
 	void SetFileName(const char * fileName);
 	void SetNumVerts(uint32_t numVerts);
 	void SetHasSkinWeights(bool hasSkinWeights);
+	void SetHasAttrib(bool value);
 	void SetPositions(glm::vec3 * pos);
 	void SetTexCoords(glm::vec2 * tex);
 	void SetNormals(glm::vec3 * nor);
@@ -49,6 +45,7 @@ public:
 	void SetBiTangents(glm::vec3 * bi);
 	void SetSkinWeights(glm::vec4 * weights);
 	void SetJointIDs(glm::vec4 * jointIDs);
+	void SetAttrib(int32_t value);
 
 
 private:
@@ -62,6 +59,7 @@ private:
 
 	uint32_t		m_numVerts;
 	bool			m_hasSkinWeights;
+	bool			m_hasAttrib;
 
 	glm::vec3 *		m_postions;
 	glm::vec2 *		m_texCoords;
@@ -70,6 +68,7 @@ private:
 	glm::vec3 *		m_bitangents;
 	glm::vec4 *		m_skinWeights;
 	glm::vec4 *		m_jointIDs;
+	int32_t			m_attrib;
 };
 
 
@@ -99,11 +98,6 @@ inline bool MrMeshHandler::Import(const char * filepath)
 	{
 		return false;
 	}
-
-	float x;
-	float y;
-	float z;
-	float w;
 
 	file.read(reinterpret_cast<char*>(&m_numVerts), sizeof(uint32_t));
 
@@ -144,6 +138,12 @@ inline bool MrMeshHandler::Import(const char * filepath)
 		file.read(reinterpret_cast<char*>(m_jointIDs), sizeof(glm::vec4) * m_numVerts);
 	}
 
+	file.read(reinterpret_cast<char*>(&m_hasAttrib), sizeof(bool));
+	if (m_hasAttrib)
+	{
+		file.read(reinterpret_cast<char*>(&m_hasAttrib), sizeof(uint32_t));
+	}
+
 	file.close();
 
 	m_isLoaded = true;
@@ -161,10 +161,6 @@ inline bool MrMeshHandler::Export(const char* filepath)
 		return false;
 	}
 
-	float x;
-	float y;
-	float z;
-	float w;
 
 	file.write(reinterpret_cast<char*>(&m_numVerts), sizeof(uint32_t));
 
@@ -196,6 +192,12 @@ inline bool MrMeshHandler::Export(const char* filepath)
 		file.write(reinterpret_cast<char*>(m_jointIDs), sizeof(glm::vec4) * m_numVerts);
 	}
 	
+
+	file.write(reinterpret_cast<char*>(&m_hasAttrib), sizeof(bool));
+	if (m_hasAttrib)
+	{
+		file.write(reinterpret_cast<char*>(&m_hasAttrib), sizeof(uint32_t));
+	}
 
 	file.close();
 
@@ -234,9 +236,16 @@ inline uint32_t MrMeshHandler::GetNumVerts()
 	return m_numVerts;
 }
 
+
 inline bool MrMeshHandler::GetHasSkinWeights()
 {
 	return m_hasSkinWeights;
+}
+
+
+inline bool MrMeshHandler::GetHasAttrib()
+{
+	return m_hasAttrib;
 }
 
 
@@ -282,6 +291,12 @@ inline glm::vec4 * MrMeshHandler::GetJointIDs()
 }
 
 
+inline int32_t MrMeshHandler::GetAttrib()
+{
+	return m_attrib;
+}
+
+
 //::.. SET FUNCTIONS ..:://
 inline void MrMeshHandler::SetFileName(const char * fileName)
 {
@@ -297,6 +312,11 @@ inline void MrMeshHandler::SetNumVerts(uint32_t numVerts)
 inline void MrMeshHandler::SetHasSkinWeights(bool hasSkinWeights)
 {
 	m_hasSkinWeights = hasSkinWeights;
+}
+
+inline void MrMeshHandler::SetHasAttrib(bool value)
+{
+	m_hasAttrib = value;
 }
 
 
@@ -339,6 +359,12 @@ inline void MrMeshHandler::SetSkinWeights(glm::vec4 * weights)
 inline void MrMeshHandler::SetJointIDs(glm::vec4 * jointIDs)
 {
 	m_jointIDs = jointIDs;
+}
+
+
+inline void MrMeshHandler::SetAttrib(int32_t value)
+{
+	m_attrib = value;
 }
 
 

@@ -326,7 +326,7 @@ void VertexInfo::SaveIndices(FbxNode * pNode)
 }
 
 
-void VertexInfo::GetCustomAttribute(FbxNode* pNode) {
+void VertexInfo::SaveCustomAttribute(FbxNode* pNode) {
 
 
 	//If object is a mesh, search for custom attribute
@@ -412,4 +412,9 @@ std::vector<glm::vec3> VertexInfo::GetBiTangent() const
 std::vector<int> VertexInfo::GetIndices() const
 {
 	return m_indices;
+}
+
+int32_t VertexInfo::GetAttrib()
+{
+	return m_customAttributeValue;
 }
