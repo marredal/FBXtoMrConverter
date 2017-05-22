@@ -54,9 +54,6 @@ void Manager::Run(VertexInfo &target)
 			target.SaveIndices(m_root->GetChild(i));
 			target.SaveCustomAttribute(m_root->GetChild(i));
 			target.GetGroups(m_root->GetChild(i));
-			m_materialInfo.ImportMaterial(m_root->GetChild(i));
-			m_lightHandler.SaveData(m_root->GetChild(i));
-
 		}
 	}
 
@@ -76,7 +73,17 @@ void Manager::Run(CameraInfo & target)
 		for (int i = 0; i < m_root->GetChildCount(); i++)
 		{
 			target.FillCameraArray(m_root->GetChild(i));
-			//target.PrintCamera0Info();
+		}
+	}
+}
+
+void Manager::Run(MaterialHandler & target)
+{
+	if (m_root)
+	{
+		for (int i = 0; i < m_root->GetChildCount(); i++)
+		{
+			target.ImportMaterial(m_root->GetChild(i));
 		}
 	}
 }

@@ -518,6 +518,20 @@ void SuperExporter::AddMaterial()
 
 void SuperExporter::Material()
 {
+	Manager manager;
+
+	std::string fullpath = ".\\FBX\\";
+
+	std::cout << "INPUT :: .\\FBX\\";
+	std::string path;
+	std::getline(std::cin, path);
+	fullpath.append(path);
+
+	MaterialHandler matHandler;
+
+	manager.Init(fullpath.c_str());
+
+	manager.Run(matHandler);
 }
 
 

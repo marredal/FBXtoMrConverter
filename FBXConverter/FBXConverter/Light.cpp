@@ -68,3 +68,28 @@ bool Light::IsLight()
 {
 	return m_isLight;
 }
+
+glm::vec3 Light::GetDirection()
+{
+	return m_dirVec;
+}
+
+int Light::GetType()
+{
+	return m_type;
+}
+
+glm::vec3 Light::GetPos()
+{
+	return m_pos;
+}
+
+glm::vec3 Light::GetScale()
+{
+	return m_scale;
+}
+
+glm::vec3 Light::GetColor()
+{
+	return m_color;
+}

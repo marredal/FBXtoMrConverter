@@ -14,6 +14,11 @@ public:
 
 	void SaveData(FbxNode* node);
 	bool IsLight();
+	glm::vec3 GetDirection();
+	int GetType();
+	glm::vec3 GetPos();
+	glm::vec3 GetScale();
+	glm::vec3 GetColor();
 
 private:
 	enum TYPE

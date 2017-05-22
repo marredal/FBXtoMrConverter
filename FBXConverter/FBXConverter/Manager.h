@@ -24,6 +24,7 @@ public:
 	void Run(VertexInfo &target);
 	void Run(SkeletonAnimation &target);
 	void Run(CameraInfo &target);
+	void Run(MaterialHandler & target);
 
 
 	//..::GET FUNCTIONS::..//
