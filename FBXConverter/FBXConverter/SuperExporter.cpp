@@ -582,6 +582,29 @@ void SuperExporter::AddLight()
 
 void SuperExporter::Material()
 {
+
+	std::string fullpath = ".\\FBX\\";
+	std::string path;
+
+	Manager manager;
+	MaterialHandler target;
+
+
+	std::cout << "Material Path: " << std::endl;
+	std::cout << "INPUT :: .\\FBX\\";
+	std::getline(std::cin, path);
+	fullpath.append(path);
+
+	manager.Init(fullpath.c_str());
+	manager.Run(target);
+
+	fullpath = ".\\Assets\\Camera\\";
+	std::cout << "Name: " << std::endl;
+	std::cout << "INPUT :: .\\Assets\\Camera\\";
+	std::getline(std::cin, path);
+	fullpath.append(path);
+	fullpath.append(".mrcamera");
+
 	// Do something...
 }
 
