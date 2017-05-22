@@ -73,7 +73,7 @@ void Manager::Run(MaterialHandler & target)
 	{
 		for (int i = 0; i < m_root->GetChildCount(); i++)
 		{
-			m_materialInfo.ImportMaterial(m_root->GetChild(i));
+			target.ImportMaterial(m_root->GetChild(i));
 		}
 	}
 }

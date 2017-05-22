@@ -100,7 +100,7 @@ inline bool MrMatHandler::Import(const char * filepath)
 		file.read(reinterpret_cast<char*>(&m_textures[i].height), sizeof(uint32_t));
 		file.read(reinterpret_cast<char*>(&m_textures[i].numComponents), sizeof(uint32_t));
 		file.read(reinterpret_cast<char*>(&m_textures[i].dataLength), sizeof(uint32_t));
-		file.read(reinterpret_cast<char*>(m_textures[i].data), sizeof(unsigned char) * m_textures[i].dataLength);
+		file.read(reinterpret_cast<char*>(&m_textures[i].data), sizeof(unsigned char) * m_textures[i].dataLength);
 	}
 
 	file.close();
