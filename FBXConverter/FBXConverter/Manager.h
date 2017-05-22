@@ -24,7 +24,7 @@ public:
 	void Run(VertexInfo &target);
 	void Run(SkeletonAnimation &target);
 	void Run(CameraInfo &target);
-	void Run(LightHandler &target);
+	void Run(MaterialHandler &target);
 
 
 	//..::GET FUNCTIONS::..//
@@ -33,10 +33,10 @@ public:
 
 
 private:
-	FbxManager*		m_Manager;
-	FbxScene*		m_Scene;
-	FbxImporter*	m_Importer;
-	FbxNode*		m_root;
+	FbxManager *	m_Manager;
+	FbxScene *		m_Scene;
+	FbxImporter *	m_Importer;
+	FbxNode *		m_root;
 
 	MaterialHandler m_materialInfo;
 
