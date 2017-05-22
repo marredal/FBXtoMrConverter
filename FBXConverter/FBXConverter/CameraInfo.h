@@ -18,7 +18,7 @@ public:
 
 	std::vector<Camera> getCameraArray();
 
-	void PrintCamera0Info();
+	void PrintCamera0Info(int value);
 
 
 private:

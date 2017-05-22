@@ -81,3 +81,14 @@ void Manager::Run(CameraInfo & target)
 	}
 }
 
+void Manager::Run(LightHandler & target)
+{
+	if (m_root)
+	{
+		for (int i = 0; i < m_root->GetChildCount(); i++)
+		{
+			target.SaveData(m_root->GetChild(i));
+		}
+	}
+}
+
