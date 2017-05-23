@@ -10,7 +10,7 @@ enum MrTextureType
 {
 	ALBEDO_MAP = 0,
 	NORMAL_MAP,
-	ALPHA_GLOW_SPEC_MAP
+	SPEC_MAP
 };
 
 
@@ -41,6 +41,10 @@ public:
 	//::.. GET FUNCTIONS ..:://
 	uint32_t GetNumTextures();
 	MrTexture * GetTextures();
+	glm::vec3 GetAmbient();
+	glm::vec3 GetDiffuse();
+	glm::vec3 GetEmissive();
+	float GetOpacity();
 
 	//::.. SET FUNCTIONS ..:://
 	void SetTextures(MrTexture * textures, uint32_t num);
@@ -54,9 +58,9 @@ private:
 
 	uint32_t		m_numTextures;
 	MrTexture *		m_textures;
-	float			m_ambient;
-	float			m_diffuse;
-	float			m_emissive;
+	glm::vec3		m_ambient;
+	glm::vec3		m_diffuse;
+	glm::vec3		m_emissive;
 	float			m_opacity;
 };
 
@@ -96,7 +100,7 @@ inline bool MrMatHandler::Import(const char * filepath)
 		file.read(reinterpret_cast<char*>(&m_textures[i].height), sizeof(uint32_t));
 		file.read(reinterpret_cast<char*>(&m_textures[i].numComponents), sizeof(uint32_t));
 		file.read(reinterpret_cast<char*>(&m_textures[i].dataLength), sizeof(uint32_t));
-		file.read(reinterpret_cast<char*>(m_textures[i].data), sizeof(unsigned char) * m_textures[i].dataLength);
+		file.read(reinterpret_cast<char*>(&m_textures[i].data), sizeof(unsigned char) * m_textures[i].dataLength);
 	}
 
 	file.close();

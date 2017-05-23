@@ -37,10 +37,9 @@ bool SuperExporter::Convert()
 	std::cout << "(1) EXPORT MESH" << std::endl;
 	std::cout << "(2) EXPORT SKELETON" << std::endl;
 	std::cout << "(3) EXPORT ANIMATION" << std::endl;
-	std::cout << "(4) CONVERT TEXTURE" << std::endl;
-	std::cout << "(5) EXPORT MATERIAL" << std::endl;
-	std::cout << "(6) EXPORT CAMERA" << std::endl;
-	std::cout << "(7) EXPORT LIGHT" << std::endl;
+	std::cout << "(4) EXPORT MATERIAL" << std::endl;
+	std::cout << "(5) EXPORT CAMERA" << std::endl;
+	std::cout << "(6) EXPORT LIGHT" << std::endl;
 	std::cout << "(0) EXIT" << std::endl;
 	std::cout << "INPUT :: ";
 	std::cin >> input;
@@ -61,15 +60,11 @@ bool SuperExporter::Convert()
 		AddMaterial();
 		break;
 	case 5:
-	{
-		Material();
-		break;
-	}
-	case 6:
 		AddCamera();
 		break;
-	case 7:
+	case 6:
 		AddLight();
+		break;
 	case 0:
 		return false;
 		break;
@@ -143,10 +138,6 @@ void SuperExporter::AddMesh()
 
 	manager.Init(fullpath.c_str());
 	manager.Run(target);
-
-	CameraInfo camInfo;
-	manager.Run(camInfo);
-	skel.GetJointID();
 
 
 
@@ -468,41 +459,63 @@ void SuperExporter::AddMaterial()
 {
 	int nrOfTextures = 1;
 
-	MrTexture * textures = new MrTexture[nrOfTextures];
+	Manager manager;
+	MaterialHandler target;
 
 	std::string fullpath = ".\\FBX\\";
 	std::string path;
 
-	std::cout << "Texture path: " << std::endl;
+	std::cout << "FBX path: " << std::endl;
 	std::cout << "INPUT :: .\\FBX\\";
 	std::getline(std::cin, path);
 	fullpath.append(path);
 
-	for (int i = 0; i < nrOfTextures; i++)
+	manager.Init(fullpath.c_str());
+	MaterialHandler matInfo;
+	manager.Run(target);
+
+	Material* material = new Material[target.GetMaterialVector().size()];
+
+	for (int i = 0; i < target.GetMaterialVector().size(); i++)
 	{
-		int width, height, numComponents;
-		unsigned char * imageData = stbi_load(fullpath.c_str(), &width, &height, &numComponents, STBI_rgb_alpha);
+		material[i].ambient = target.GetMaterialVector()[i].ambient;
+		material[i].diffuse = target.GetMaterialVector()[i].diffuse;
+		material[i].emissive = target.GetMaterialVector()[i].emissive;
+		material[i].normalFilePath = target.GetMaterialVector()[i].normalFilePath;
+		material[i].nrOfNormalMaps = target.GetMaterialVector()[i].nrOfNormalMaps;
+		material[i].nrOfTextures = target.GetMaterialVector()[i].nrOfTextures;
+		material[i].opacity = target.GetMaterialVector()[i].opacity;
+		material[i].specularFilePath = target.GetMaterialVector()[i].specularFilePath;
+		material[i].textureFilePath = target.GetMaterialVector()[i].textureFilePath;
+	}
 
-		textures[i].type = ALBEDO_MAP;
-		textures[i].width = (uint32_t)width;
-		textures[i].height = (uint32_t)height;
-		textures[i].numComponents = numComponents;
-		textures[i].dataLength = width * height * (numComponents + 1); //sizeof(imageData) / sizeof(imageData[1]);
+	int counter = 0;
 
-		textures[i].data = new unsigned char[textures[i].dataLength];
+	if (material[0].nrOfTextures > 0)
+	{
+		counter++;
+	}
 
-		for (int j = 0; j < textures[i].dataLength; j++)
-		{
-			textures[i].data[j] = imageData[j];
-		}
+	if (material[0].nrOfNormalMaps > 0)
+	{
+		counter++;
+	}
+
+	MrTexture * textures = new MrTexture[counter];
 
 
-		if (imageData == nullptr)
-		{
-			return;
-		}
+	counter = 0;
 
-		textures[i].data = imageData;
+	if (material[0].nrOfTextures > 0)
+	{
+		AddTexture(textures, material[0].textureFilePath, counter, ALBEDO_MAP);
+		counter++;
+	}
+
+	if (material[0].nrOfNormalMaps > 0)
+	{
+		AddTexture(textures, material[0].normalFilePath, counter, NORMAL_MAP);
+		counter++;
 	}
 
 	MrMatHandler * mat = new MrMatHandler;
@@ -529,9 +542,6 @@ void SuperExporter::AddCamera()
 	Manager manager;
 	CameraInfo target;
 	MrCameraHandler * cameraHandler = new MrCameraHandler;
-	MrCamera* camera = new MrCamera[target.getCameraArray().size()];
-
-
 	std::cout << "Camera path: " << std::endl;
 	std::cout << "INPUT :: .\\FBX\\";
 	std::getline(std::cin, path);
@@ -539,6 +549,7 @@ void SuperExporter::AddCamera()
 
 	manager.Init(fullpath.c_str());
 	manager.Run(target);
+	MrCamera* camera = new MrCamera[target.getCameraArray().size()];
 
 	for (int i = 0; i < target.getCameraArray().size(); i++)
 	{
@@ -552,60 +563,73 @@ void SuperExporter::AddCamera()
 		target.PrintCamera0Info(i);
 	}
 
-	cameraHandler->SetCameras(camera, target.getCameraArray().size());
-
-	fullpath = ".\\Assets\\Camera\\";
-	std::cout << "Name: " << std::endl;
-	std::cout << "INPUT :: .\\Assets\\Camera\\";
-	std::getline(std::cin, path);
-	fullpath.append(path);
-	fullpath.append(".mrcamera");
-	cameraHandler->Export(fullpath.c_str());
-
-
-	delete cameraHandler;
 }
-
 void SuperExporter::AddLight()
 {
-	std::string fullpath = ".\\FBX\\";
 	std::string path;
+	std::string fullpath = ".\\FBX\\";
 
 	Manager manager;
-	Light target;
+	LightHandler target;
 	MrLightHandler* lightHandler = new MrLightHandler;
 
-
-
-}
-
-
-void SuperExporter::Material()
-{
-
-	std::string fullpath = ".\\FBX\\";
-	std::string path;
-
-	Manager manager;
-	MaterialHandler target;
-
-
-	std::cout << "Material Path: " << std::endl;
+	std::cout << "Light path: " << std::endl;
 	std::cout << "INPUT :: .\\FBX\\";
 	std::getline(std::cin, path);
 	fullpath.append(path);
 
 	manager.Init(fullpath.c_str());
 	manager.Run(target);
+	MrLight* light = new MrLight[target.GetLights().size()];
 
-	fullpath = ".\\Assets\\Camera\\";
+	for (int i = 0; i < target.GetLights().size(); i++)
+	{
+		light[i].m_color = target.GetLights().at(i).GetColor();
+		light[i].m_dirVec = target.GetLights().at(i).GetDirection();
+		light[i].m_pos = target.GetLights().at(i).GetPos();
+		light[i].m_scale = target.GetLights().at(i).GetScale();
+		light[i].m_type = target.GetLights().at(i).GetType();
+	}
+
+	lightHandler->SetLights(light, target.GetLights().size());
+
+	fullpath = ".\\Assets\\Light\\";
 	std::cout << "Name: " << std::endl;
-	std::cout << "INPUT :: .\\Assets\\Camera\\";
+	std::cout << "INPUT :: .\\Assets\\Light\\";
 	std::getline(std::cin, path);
 	fullpath.append(path);
-	fullpath.append(".mrcamera");
+	fullpath.append(".mrlight");
+	lightHandler->Export(fullpath.c_str());
 
-	// Do something...
+	delete lightHandler;
+}
+
+
+void SuperExporter::AddTexture(MrTexture * textures, std::string fullpath, int index, uint32_t type)
+{
+	int width, height, numComponents;
+	unsigned char * imageData = stbi_load(fullpath.c_str(), &width, &height, &numComponents, STBI_rgb_alpha);
+
+	textures[index].type = type;
+	textures[index].width = (uint32_t)width;
+	textures[index].height = (uint32_t)height;
+	textures[index].numComponents = numComponents;
+	textures[index].dataLength = width * height * (numComponents + 1); //sizeof(imageData) / sizeof(imageData[1]);
+
+	textures[index].data = new unsigned char[textures[index].dataLength];
+
+	if (imageData == nullptr)
+	{
+		return;
+	}
+
+	for (int j = 0; j < textures[index].dataLength; j++)
+	{
+		textures[index].data[j] = imageData[j];
+	}
+
+
+	textures[index].data = imageData;
 }
 
 

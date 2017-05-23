@@ -66,16 +66,6 @@ void Manager::Run(SkeletonAnimation & target)
 
 }
 
-void Manager::Run(CameraInfo & target)
-{
-	if (m_root)
-	{
-		for (int i = 0; i < m_root->GetChildCount(); i++)
-		{
-			target.FillCameraArray(m_root->GetChild(i));
-		}
-	}
-}
 
 void Manager::Run(MaterialHandler & target)
 {
@@ -87,6 +77,29 @@ void Manager::Run(MaterialHandler & target)
 		}
 	}
 }
+
+
+void Manager::Run(CameraInfo & target)
+{
+	if (m_root)
+	{
+		for (int i = 0; i < m_root->GetChildCount(); i++)
+		{
+			target.FillCameraArray(m_root->GetChild(i));
+		}
+	}
+}
+
+//void Manager::Run(MaterialHandler & target)
+//{
+//	if (m_root)
+//	{
+//		for (int i = 0; i < m_root->GetChildCount(); i++)
+//		{
+//			target.ImportMaterial(m_root->GetChild(i));
+//		}
+//	}
+//}
 
 void Manager::Run(LightHandler & target)
 {

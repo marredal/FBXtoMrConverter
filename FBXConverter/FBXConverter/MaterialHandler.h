@@ -8,28 +8,29 @@
 #pragma comment(lib, "libfbxsdk.lib")
 #include <iostream>
 
+struct Material
+{
+	glm::vec3		ambient;
+	glm::vec3		diffuse;
+	glm::vec3		emissive;
+	float			opacity;
+	std::string		textureFilePath;
+	std::string		normalFilePath;
+	std::string		specularFilePath;
+	int				nrOfTextures;
+	int				nrOfNormalMaps;
+};
+
 class MaterialHandler
 {
 public:
-	struct Material
-	{
-		glm::vec3 m_ambient;
-		glm::vec3 m_diffuse;
-		glm::vec3 m_emissive;
-		float	  m_opacity;
-		std::string	m_textureFilePath;
-		std::string	m_normalFilePath;
-		std::string	m_specularFilePath;
-		int			nrOfTextures;
-		int			nrOfNormalMaps;
-	};
 
 	MaterialHandler();
 	virtual ~MaterialHandler();
 
 	void ImportMaterial(FbxNode * pNode);
 
-	Material GetMaterial(int i);
+	std::vector<Material> GetMaterialVector();
 	int32_t	GetNumMaterials();
 
 private:
