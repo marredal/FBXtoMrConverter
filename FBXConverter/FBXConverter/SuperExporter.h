@@ -29,7 +29,6 @@ public:
 	void AddCamera();
 	void AddLight();
 	void AddTexture(MrTexture * textures, std::string fullpath, int index, uint32_t type);
-	void CalculateTangents(VertexInfo & vertInfo, std::vector<glm::vec3> & tangents, std::vector<glm::vec3> & biTangents);
 	
 };
 

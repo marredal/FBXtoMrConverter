@@ -170,8 +170,8 @@ void SuperExporter::AddMesh()
 		pos[i] = glm::vec3(target.GetPos()[ind[i]].x, target.GetPos()[ind[i]].y, target.GetPos()[ind[i]].z);
 		nor[i] = glm::vec3(target.GetNormal()[ind[i]].x, target.GetNormal()[ind[i]].y, target.GetNormal()[ind[i]].z);
 		uv[i] = glm::vec2(target.GetUV()[i].x, target.GetUV()[i].y);
-		//tan[i] = glm::vec3(target.GetTangent()[i].x, target.GetTangent()[i].y,target.GetTangent()[i].z);
-		//bi[i] = glm::vec3(target.GetBiTangent()[i].x, target.GetBiTangent()[i].y, target.GetBiTangent()[i].z);
+		tan[i] = glm::vec3(target.GetTangent()[i].x, target.GetTangent()[i].y,target.GetTangent()[i].z);
+		bi[i] = glm::vec3(target.GetBiTangent()[i].x, target.GetBiTangent()[i].y, target.GetBiTangent()[i].z);
 	}
 
 	if (hasSkinWeights == 1)
@@ -391,7 +391,6 @@ void SuperExporter::AddAnimation()
 			int numKeys = skel.GetTransformationMatrices().size() / skel.GetParentID().size();
 
 			MrKeyFramedJoint * key = new MrKeyFramedJoint[numJoints];
-
 
 			for (int i = 0; i < numJoints; i++)
 			{
@@ -630,34 +629,4 @@ void SuperExporter::AddTexture(MrTexture * textures, std::string fullpath, int i
 
 
 	textures[index].data = imageData;
-}
-
-
-void SuperExporter::CalculateTangents(VertexInfo & vertInfo, std::vector<glm::vec3> & tangents, std::vector<glm::vec3> & biTangents)
-{
-	for (int i = 0; i < vertInfo.GetPos().size(); i++)
-	{
-		glm::vec3 v0 = vertInfo.GetPos()[vertInfo.GetIndices()[i]];
-		glm::vec3 v1 = vertInfo.GetPos()[vertInfo.GetIndices()[i] + 1];
-		glm::vec3 v2 = vertInfo.GetPos()[vertInfo.GetIndices()[i] + 2];
-
-		glm::vec2 uv0 = vertInfo.GetUV()[vertInfo.GetIndices()[i]];
-		glm::vec2 uv1 = vertInfo.GetUV()[vertInfo.GetIndices()[i + 1]];
-		glm::vec2 uv2 = vertInfo.GetUV()[vertInfo.GetIndices()[i + 2]];
-
-		glm::vec3 deltaPos1 = v1 - v0;
-		glm::vec3 deltaPos2 = v2 - v0;
-
-		glm::vec2 deltaUV1 = uv1 - uv0;
-		glm::vec2 deltaUV2 = uv2 - uv0;
-
-		float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);
-
-		glm::vec3 tangent = (deltaPos1 * deltaUV2.y - deltaPos2 * deltaUV1.y)*r;
-
-		glm::vec3 bitangent = (deltaPos2 * deltaUV1.x - deltaPos1 * deltaUV2.x)*r;
-
-		tangents.push_back(tangent);
-		biTangents.push_back(bitangent);
-	}
 }
