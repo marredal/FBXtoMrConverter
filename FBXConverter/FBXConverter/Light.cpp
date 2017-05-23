@@ -13,6 +13,11 @@ Light::~Light()
 
 void Light::SaveData(FbxNode* node)
 {
+	if (!node)
+	{
+		return;
+	}
+
 	m_isLight = false;
 	FbxLight* light = node->GetLight();
 
@@ -42,8 +47,6 @@ void Light::SaveData(FbxNode* node)
 			m_color = glm::vec3(light->Color.Get()[0], light->Color.Get()[1], light->Color.Get()[2]);
 
 			m_isLight = true;
-
-
 		}
 		if (light->LightType.Get() == FbxLight::eSpot)
 		{
@@ -68,10 +71,6 @@ void Light::SaveData(FbxNode* node)
 			m_color = glm::vec3(light->Color.Get()[0], light->Color.Get()[1], light->Color.Get()[2]);
 
 			m_isLight = true;
-		}
-		for (int i = 0; i < light->GetNodeCount(); i++)
-		{
-			SaveData(light->GetNode(i));
 		}
 
 	}
