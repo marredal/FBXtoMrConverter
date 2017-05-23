@@ -357,10 +357,10 @@ void VertexInfo::SaveCustomAttribute(FbxNode* pNode) {
 }
 void VertexInfo::GetGroups(FbxNode* pNode) {
 
-
-	//If object is not mesh (it is propably a group)
-
-	if (!pNode->GetMesh()) {
+	if (pNode->GetNodeAttribute()->GetAttributeType() != FbxNodeAttribute::eSkeleton && 
+		pNode->GetNodeAttribute()->GetAttributeType() != FbxNodeAttribute::eMesh &&
+		pNode->GetNodeAttribute()->GetAttributeType() != FbxNodeAttribute::eCamera &&
+		pNode->GetNodeAttribute()->GetAttributeType() != FbxNodeAttribute::eLight) {
 
 		std::cout << "Group name:" << pNode->GetName() << std::endl;
 
