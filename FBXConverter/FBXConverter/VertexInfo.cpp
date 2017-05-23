@@ -373,9 +373,7 @@ void VertexInfo::GetGroups(FbxNode* pNode) {
 			//Save the group name and the name of its children.
 			m_groupInfo.push_back(pNode->GetChild(i)->GetName());
 		}
-	}
-
-	
+	}	
 }
 
 
