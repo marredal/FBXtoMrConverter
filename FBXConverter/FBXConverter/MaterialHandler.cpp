@@ -20,7 +20,6 @@ void MaterialHandler::ImportMaterial(FbxNode * pNode)
 
 	FbxNode* childNode = 0;
 
-
 	childNode = pNode;
 	FbxMesh* mesh = childNode->GetMesh();
 

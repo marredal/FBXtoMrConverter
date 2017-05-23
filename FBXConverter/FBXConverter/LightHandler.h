@@ -14,10 +14,12 @@ public:
 	virtual ~LightHandler();
 
 	void SaveData(FbxNode * node);
+	void SaveAllNodes(FbxNode * node);
 	std::vector<Light> GetLights();
 
 private:
 	std::vector<Light> m_lights;
+	std::vector<FbxNode*> m_nodes;
 	
 };
 
