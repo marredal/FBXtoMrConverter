@@ -20,7 +20,8 @@ public:
 	int GetType();
 	glm::vec3 GetPos();
 	glm::vec3 GetScale();
-	glm::vec3 GetColor();	
+	glm::vec3 GetColor();
+
 
 
 private:

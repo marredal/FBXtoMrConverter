@@ -139,11 +139,6 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 			currentCluster->GetTransformLinkMatrix(transformLinkMat);
 			globalBindposeInverseMat = transformLinkMat.Inverse() * transformMat * identityMatrix;
 
-			//std::cout << "<mat>" << static_cast<float>(globalBindposeInverseMat.Get(0, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(0, 3)) << "," << std::endl;
-			//	std::cout<<static_cast<float>(globalBindposeInverseMat.Get(1, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(1, 3)) << "," << std::endl;
-			//	std::cout<<static_cast<float>(globalBindposeInverseMat.Get(2, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(2, 3)) << "," << std::endl;
-			//	std::cout<<static_cast<float>(globalBindposeInverseMat.Get(3, 0)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 1)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 2)) << "," << static_cast<float>(globalBindposeInverseMat.Get(3, 3)) << "</mat>\n";
-
 			//Convert to mat4
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 4; j++) {
@@ -179,16 +174,17 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 			FbxString currentAnimStackName = currentAnimStack->GetName();
 			std::string mAnimName = currentAnimStackName.Buffer();
 			FbxTakeInfo* takeInfo = m_Scene->GetTakeInfo(currentAnimStackName);
-			FbxTime start = takeInfo->mLocalTimeSpan.GetStart();
 
+			FbxTime start = takeInfo->mLocalTimeSpan.GetStart();
 			FbxTime end = takeInfo->mLocalTimeSpan.GetStop();
+
 			FbxLongLong animationLength = end.GetFrameCount(FbxTime::eFrames24) - start.GetFrameCount(FbxTime::eFrames24) + 1;
 			m_firstFrame = start.GetFrameCount(FbxTime::eFrames24);
 			m_lastFrame = end.GetFrameCount(FbxTime::eFrames24);
 
 		//	std::cout << m_firstFrame << std::endl;
 			//std::cout << m_lastFrame << std::endl;
-			Keyframe** currentAnimation = &m_Skeleton.Joints[currentJointIndex].Animation;
+			Keyframe** currentKeyFrame = &m_Skeleton.Joints[currentJointIndex].Animation;
 
 
 
@@ -196,39 +192,33 @@ void SkeletonAnimation::SkeletonJointsAndAnimations(FbxNode * node)
 			{
 				FbxTime currentTime;
 				currentTime.SetFrame(i, FbxTime::eFrames24);
-				*currentAnimation = new Keyframe();
-				(*currentAnimation)->FrameNum = i;
+				*currentKeyFrame = new Keyframe();
+				(*currentKeyFrame)->FrameNum = i;
 				FbxAMatrix currentTransformOffset = node->EvaluateLocalTransform(currentTime) * identityMatrix;
-				(*currentAnimation)->LocalTransform = currentTransformOffset.Inverse() * currentCluster->GetLink()->EvaluateLocalTransform(currentTime);
-
-				//std::cout << "Node name: " << node->GetName() << std::endl;
-				//std::cout << (*currentAnimation)->LocalTransform.GetT().mData[0] << ", ";
-				//std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[1] << ", ";
-				//std::cout << (*currentAnimation)->GlobalTransform.GetT().mData[2] << std::endl;
-
+				(*currentKeyFrame)->LocalTransform = currentTransformOffset.Inverse() * currentCluster->GetLink()->EvaluateLocalTransform(currentTime);
 
 				glm::vec3 tempTransform, tempRotation, tempScale;
 
 				//Transformation information
-				tempTransform.x = (*currentAnimation)->LocalTransform.GetT().mData[0];
-				tempTransform.y = (*currentAnimation)->LocalTransform.GetT().mData[1];
-				tempTransform.z = (*currentAnimation)->LocalTransform.GetT().mData[2];
+				tempTransform.x = (*currentKeyFrame)->LocalTransform.GetT().mData[0];
+				tempTransform.y = (*currentKeyFrame)->LocalTransform.GetT().mData[1];
+				tempTransform.z = (*currentKeyFrame)->LocalTransform.GetT().mData[2];
 				m_localTransformMat.push_back(tempTransform);
 
 				//Rotation information
-				tempRotation.x = (*currentAnimation)->LocalTransform.GetR().mData[0];
-				tempRotation.y = (*currentAnimation)->LocalTransform.GetR().mData[1];
-				tempRotation.z = (*currentAnimation)->LocalTransform.GetR().mData[2];
+				tempRotation.x = (*currentKeyFrame)->LocalTransform.GetR().mData[0];
+				tempRotation.y = (*currentKeyFrame)->LocalTransform.GetR().mData[1];
+				tempRotation.z = (*currentKeyFrame)->LocalTransform.GetR().mData[2];
 				m_localRotationMat.push_back(tempRotation);
 
 				//Scaling information
-				tempScale.x = (*currentAnimation)->LocalTransform.GetS().mData[0];
-				tempScale.y = (*currentAnimation)->LocalTransform.GetS().mData[1];
-				tempScale.z = (*currentAnimation)->LocalTransform.GetS().mData[2];
+				tempScale.x = (*currentKeyFrame)->LocalTransform.GetS().mData[0];
+				tempScale.y = (*currentKeyFrame)->LocalTransform.GetS().mData[1];
+				tempScale.z = (*currentKeyFrame)->LocalTransform.GetS().mData[2];
 				m_localScaleMat.push_back(tempScale);
 			
 				std::cout << tempTransform.x << " " << tempTransform.y << " " << tempTransform.z << std::endl;
-				currentAnimation = &((*currentAnimation)->Next);
+				currentKeyFrame = &((*currentKeyFrame)->Next);
 
 			}
 		}
