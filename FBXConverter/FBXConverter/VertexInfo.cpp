@@ -295,6 +295,7 @@ void VertexInfo::SaveBiTangent(FbxNode * pNode)
 						int BITangentIndex = 0;
 
 						if (BiTangentElement->GetReferenceMode() == FbxGeometryElement::eDirect)
+
 							BITangentIndex = indexByPolygonVertex;
 
 						if (BiTangentElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
@@ -358,9 +359,7 @@ void VertexInfo::SaveCustomAttribute(FbxNode* pNode) {
 void VertexInfo::GetGroups(FbxNode* pNode) {
 
 
-	//If object is not mesh (it is propably a group)
-
-	if (!pNode->GetMesh()) {
+	if (pNode->GetNodeAttribute==FbxNodeAttribute::eLODGroup) {
 
 		std::cout << "Group name:" << pNode->GetName() << std::endl;
 
@@ -369,13 +368,13 @@ void VertexInfo::GetGroups(FbxNode* pNode) {
 		for (int i = 0; i < pNode->GetChildCount(); i++) {
 
 			std::cout << "child name: " << pNode->GetChild(i)->GetName() << std::endl;
-			
+
 			//Save the group name and the name of its children.
 			m_groupInfo.push_back(pNode->GetChild(i)->GetName());
 		}
 	}
 
-	
+
 }
 
 
